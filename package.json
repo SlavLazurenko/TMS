@@ -1,0 +1,23 @@
+{
+  "name": "tms",
+  "version": "1.0.0",
+  "description": "Tournament Management System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SlavLazurenko/TMS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SlavLazurenko/TMS/issues"
+  },
+  "homepage": "https://github.com/SlavLazurenko/TMS#readme",
+  "devDependencies": {
+    "concurrently": "^6.3.0"
+  }
+}
