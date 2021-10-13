@@ -1,4 +1,3 @@
-import './App.css';
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navigation, Home, Events, Profile } from "./components";

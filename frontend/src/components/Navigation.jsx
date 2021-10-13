@@ -1,26 +1,27 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
+import '../css/Navigation.css';
 
 function Navigation(props) {
   return (
     <div className="navigation">
-      <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <ul>
-            <li>
-              <Link to="/">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/events">
-                Events
-              </Link>
-            </li>
-            <li>
-              <Link to="/profile">
-                Profile
-              </Link>
-            </li>
+      <nav className="navbar">
+        <ul className="links">
+          <li className={`link ${ props.location.pathname === "/" ? "active" : "" }`}>
+            <Link to="/">
+              <span>Home</span>
+            </Link>
+          </li>
+          <li className={`link ${ props.location.pathname === "/events" ? "active" : "" }`}>
+            <Link to="/events">
+              <span>Events</span>
+            </Link>
+          </li>
+          <li className={`link ${ props.location.pathname === "/profile" ? "active" : "" }`}>
+            <Link to="/profile">
+              <span>Profile</span>
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>
