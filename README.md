@@ -2,8 +2,11 @@
 
 
 ### Developers
-- Sage A Pages
+
+- Sage A Pages 
 - [Vyacheslav Lazurenko](https://github.com/SlavLazurenko)
+- Bryant Rone
+
 
 ### Usage
 1. Clone the repository and go to its directory
