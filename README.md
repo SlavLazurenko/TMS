@@ -2,7 +2,7 @@
 
 
 ### Developers
-- Sage A Pages
+- Sage Pages 
 - Vyacheslav Lazurenko
 - Bryant Rone
 
