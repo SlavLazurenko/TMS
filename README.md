@@ -3,7 +3,7 @@
 
 ### Developers
 - Sage A Pages
-- Vyacheslav Lazurenko
+- [Vyacheslav Lazurenko](https://github.com/SlavLazurenko)
 
 ### Usage
 1. Clone the repository and go to its directory
