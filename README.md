@@ -4,6 +4,7 @@
 ### Developers
 - Sage A Pages
 - Vyacheslav Lazurenko
+- Bryant Rone
 
 ### Usage
 1. Clone the repository and go to its directory
