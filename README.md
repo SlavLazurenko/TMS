@@ -8,6 +8,7 @@
 - Bryant Rone
 - Carlos Fiallo Reyes
 - [Jorge Burgos](https://github.com/Jburg0304)
+- Jorge was here.
 
 
 
