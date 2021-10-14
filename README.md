@@ -3,7 +3,7 @@
 
 ### Developers
 
-- Sage A Pages 
+- [Sage A Pages](https://github.com/sagepages) 
 - [Vyacheslav Lazurenko](https://github.com/SlavLazurenko)
 - Bryant Rone
 
