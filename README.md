@@ -6,6 +6,7 @@
 - Sage A Pages 
 - [Vyacheslav Lazurenko](https://github.com/SlavLazurenko)
 - Bryant Rone
+- Carlos Fiallo Reyes
 
 
 ### Usage
