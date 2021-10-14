@@ -13,7 +13,8 @@
     -ms-flex-direction: row;
     -o-flex-direction: row;
     flex-direction: row;
-    justify-content: center;
+    justify-content: right;
+    padding-right: 15px;
 	position: relative;
     top:0;
 	width: 100%;
@@ -39,9 +40,11 @@
 }
 
 .navigation nav.navbar > .links > li {
+
     margin-right: 3.6em;
     padding: 0.4em 0;
     color: #d4d4dc;
+
 }
 
 .navigation nav.navbar > .links > li:last-child {
@@ -56,6 +59,7 @@
 
 .navigation nav.navbar > .links > li span {
     font-size: 1.2em;
+    
 }
 
 .navigation nav.navbar > .links > li:not(.active):hover a {
