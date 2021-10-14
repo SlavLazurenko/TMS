@@ -1,31 +1,45 @@
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 
-// or as an es module:
-// import { MongoClient } from 'mongodb'
+//IMPLEMENT ASYNC FUNCTIONS TO CALL MONGO (CONNECT, FIND)
 
-// Connection URL
-const url = process.env.MONGODB_URI;
-const client = new MongoClient(url);
+class Datastore {
+  constructor() {
+    this.client = new MongoClient(process.env.MONGODB_URI);
+    await this.client.connect();
+    console.log('Connected successfully to server');
+  }
 
-// Database Name
-const dbName = 'tms';
+  findUser(userName) {
+    const db = client.db('tms');
+    const collection = db.collection('users');
 
-async function main() {
-  // Use connect method to connect to the server
-  await client.connect();
-  console.log('Connected successfully to server');
-  const db = client.db(dbName);
-  const collection = db.collection('users');
+    const result = await collection.findOne({tag: userName});
 
-  // the following code examples can be pasted here...
-  const findResult = await collection.find({}).toArray();
-  console.log('Found documents =>', findResult);
+    return result;
 
-  return 'done.';
+    //USE ASYNC FUNCTIONS
+
+  }
 }
 
-main()
-  .then(console.log)
-  .catch(console.error)
-  .finally(() => client.close());
+
+
+// async function main() {
+//   // Use connect method to connect to the server
+//   await client.connect();
+//   console.log('Connected successfully to server');
+//   const db = client.db(dbName);
+//   const collection = db.collection('users');
+
+//   // the following code examples can be pasted here...
+//   const findResult = await collection.find({}).toArray();
+//   console.log('Found documents =>', findResult);
+
+//   return 'done.';
+// }
+
+// main()
+//   .then(console.log)
+//   .catch(console.error)
+//   .finally(() => client.close());
