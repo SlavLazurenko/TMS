@@ -22,6 +22,12 @@ function Navigation(props) {
               <span>Profile</span>
             </Link>
           </li>
+          <li className={`link ${ props.location.pathname === "/login" ? "active" : "" }`}>
+            <Link to="/login">
+              <span>Login</span>
+            </Link>
+          </li>
+
         </ul>
       </nav>
     </div>
