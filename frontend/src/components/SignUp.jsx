@@ -1,10 +1,10 @@
 import React from "react"
-import "../css/Login.css";
+import "../css/SignUp.css";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
-function LoginCard() { 
+function SignUpCard() { 
 
     const { register, handleSubmit } = useForm();
     const [result, setResult] = useState("");
@@ -15,15 +15,13 @@ function LoginCard() {
 
         <div className="form-card-background">
             <div className="form-card">
-            <h1>Login</h1>  
+            <h1>Sign Up</h1>  
                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <input {...register("email")} placeholder="Email"></input>
                     <input {...register("username")} placeholder="Username"></input>
                     <input {...register("password")} placeholder="Password"></input>
-                    <input type="submit" value="Login"/>
-                    <div className="extra-options">
-                        <p className="left"><a href="/login">Sign-up</a></p>
-                        <p className="right"><a href="/login">Forgot password?</a></p>
-                    </div>
+                    <input {...register("confirmedpass")} placeholder="Confirm Password"></input>
+                    <input type="submit" value="Signup"/>
                     <p>Result: {result}</p>
                 </form>
            
@@ -35,14 +33,14 @@ function LoginCard() {
 
 }
 
-function Login() {
+function SignUp() {
 
     return(
         
-        <div className="login">
-            <LoginCard></LoginCard>
+        <div className="signup">
+            <SignUpCard/>
         </div>
     );
 }
 
-export default Login;
+export default SignUp;
