@@ -9,7 +9,7 @@
 - Carlos Fiallo Reyes
 - [Jorge Burgos](https://github.com/Jburg0304)
 
-
+- 
 
 ### Usage
 1. Create `backend/.env` file:
