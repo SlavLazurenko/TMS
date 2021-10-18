@@ -5,7 +5,7 @@
 
 - [Sage A Pages](https://github.com/sagepages) 
 - [Vyacheslav Lazurenko](https://github.com/SlavLazurenko)
-- Bryant Rone
+- [Bryant Rone](https://github.com/bryfry2)
 - Carlos Fiallo Reyes
 - [Jorge Burgos](https://github.com/Jburg0304)
 
