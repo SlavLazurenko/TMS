@@ -20,9 +20,14 @@ function Search() {
 
 function Create() {
   return (
-    <button className="create-event">Create Event +</button>
+    <button onClick={openRegistration} className="create-event">Create Event +</button>
   );
 }
+
+function openRegistration(){
+  window.open('http://localhost:3000/event-registration')
+}
+
 
 const tmpEvents = [
   {
