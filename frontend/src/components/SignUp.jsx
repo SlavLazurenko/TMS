@@ -1,46 +1,73 @@
-import React from "react"
+import React, {useState} from "react"
 import "../css/SignUp.css";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 
+const SignUp = props => {
 
-function SignUpCard() { 
+    const initialUserState = {
 
-    const { register, handleSubmit } = useForm();
-    const [result, setResult] = useState("");
-    const onSubmit = (data) => setResult(JSON.stringify(data));
+        email: "",
+        username: "",
+        password: "",
+        confirmpassword: ""
+    }
 
+    const [user, setUser] = useState(initialUserState);
+
+    const handleInputChange = event => {
+
+        const{name, value} = event.target;
+        setUser({...user, [name]: value});
+
+    }
+
+    const signup = () => {
+
+        props.signup(user)
+        props.history.push("/");
+    }
 
     return (
 
         <div className="form-card-background">
             <div className="form-card">
             <h1>Sign Up</h1>  
-                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <input {...register("email")} placeholder="Email"></input>
-                    <input {...register("username")} placeholder="Username"></input>
-                    <input {...register("password")} placeholder="Password"></input>
-                    <input {...register("confirmedpass")} placeholder="Confirm Password"></input>
-                    <input type="submit" value="Signup"/>
-                    <p>Result: {result}</p>
+                 <form>
+                    <input  placeholder="Email"
+                    id= "email"
+                    require value= {user.email}
+                    onChange={handleInputChange}
+                    name="email"></input>
+
+                    <input  placeholder="Username"
+                    id= "username"
+                    require value= {user.username}
+                    onChange={handleInputChange}
+                    name="username"></input>
+
+                    <input  placeholder="Password"
+                    id= "password"
+                    require value= {user.password}
+                    onChange={handleInputChange}
+                    name="password"></input>
+
+                    <input  placeholder="Confirm Password"
+                    id= "confirmpassword"
+                    require value= {user.confirmpassword}
+                    onChange={handleInputChange}
+                    name="confirmpassword"></input>
+
+                    <input 
+                    type="submit"
+                    value="Signup"
+                    onClick={signup}/>
                 </form>
            
             </div>
         </div>
-        
+
 
     )
 
-}
-
-function SignUp() {
-
-    return(
-        
-        <div className="signup">
-            <SignUpCard/>
-        </div>
-    );
 }
 
 export default SignUp;

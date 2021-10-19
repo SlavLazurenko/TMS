@@ -1,48 +1,62 @@
-import React from "react"
+import React, { useState } from "react"
 import "../css/Login.css";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+
+const Login = props => {
 
 
-function LoginCard() { 
+    const initialUserState = {
 
-    const { register, handleSubmit } = useForm();
-    const [result, setResult] = useState("");
-    const onSubmit = (data) => setResult(JSON.stringify(data));
+        username: "",
+        password: "",
 
+    }
+
+    const [user, setUser] = useState(initialUserState);
+
+    const handleInputChange = event => {
+        const {name, value} = event.target;
+        setUser({...user, [name]: value});
+    }
+
+    const login = () => {
+
+        props.login(user)
+        props.history.push("/");
+    }
 
     return (
 
         <div className="form-card-background">
-            <div className="form-card">
-            <h1>Login</h1>  
-                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <input {...register("username")} placeholder="Username"></input>
-                    <input {...register("password")} placeholder="Password"></input>
-                    <input type="submit" value="Login"/>
-                    <div className="extra-options">
-                        <p className="left"><a href="/login">Sign-up</a></p>
-                        <p className="right"><a href="/login">Forgot password?</a></p>
-                    </div>
-                    <p>Result: {result}</p>
-                </form>
+             <div className="form-card">
+             <h1>Login</h1>  
+                  <form>
+                     <input 
+                     placeholder="Username" 
+                     id= "username"
+                     require value= {user.username}
+                     onChange={handleInputChange}
+                     name="username" ></input>
+
+                     <input placeholder="Password"
+                     id= "password"
+                     require value= {user.password}
+                     onChange={handleInputChange}
+                     name="password"></input>
+
+                     <input 
+                     type="submit" 
+                     value="Login"
+                     onClick={login}/>
+
+                     <div className="extra-options">
+                         <p className="left"><a href="/login">Sign-up</a></p>
+                         <p className="right"><a href="/login">Forgot password?</a></p>
+                     </div>
+                 </form>
            
-            </div>
-        </div>
-        
-
+             </div>
+         </div>
     )
-
-}
-
-function Login() {
-
-    return(
-        
-        <div className="login">
-            <LoginCard></LoginCard>
-        </div>
-    );
 }
 
 export default Login;
