@@ -1,5 +1,6 @@
 import React from "react";
 import "../css/Events.css";
+import { useHistory } from "react-router-dom";
 
 function Search() {
   return (
@@ -19,14 +20,20 @@ function Search() {
 }
 
 function Create() {
+
+  const history = useHistory()
+
+  const handleRoute = () => {
+    
+    history.push("/event-registration");
+    
+  }
+
   return (
-    <button onClick={openRegistration} className="create-event">Create Event +</button>
+    <button onClick={handleRoute} className="create-event">Create Event +</button>
   );
 }
 
-function openRegistration(){
-  window.open('http://localhost:3000/event-registration')
-}
 
 
 const tmpEvents = [

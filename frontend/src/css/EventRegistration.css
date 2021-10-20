@@ -1,0 +1,57 @@
+.header{
+
+    display: flex;
+    justify-content: center;
+}
+
+p.header-text{
+
+    font-size: 32pt;
+    color: #E5E5E5;
+
+}
+
+input[type="text"]{
+
+    background-color: #C4C4C4;
+    border-radius: 10px;
+    border: 1px solid #555;
+    padding-left: 15px;
+    outline: none;
+    margin: 8px 0;
+   
+    font-size: 16pt;
+}
+
+input[type="text"]:focus{
+
+	background-color: #C34D4D;
+}
+
+.name-field{
+
+    width: 250px;
+    height: 50px;
+}
+
+.event-container-left{
+
+    display: flex;
+    float: left;
+    justify-content: left;
+    width: 50%;
+
+    padding-left: 150px;
+
+}
+
+.event-container-right{
+
+    display: flex;
+    float: right;
+    justify-content: center;
+    width: 50%;
+
+    padding-right: 150px;
+}
+

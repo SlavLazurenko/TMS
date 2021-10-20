@@ -1,54 +1,31 @@
 import React from "react";
+import "../css/EventRegistration.css";
 
 function EventRegistration() {
 
     return (
-      <div className="event-registration">
-				<DropMenu />
-			<input
-        type="text"
-        id="first-name"
-        placeholder="Name"
-        name="s"
-      />  
-				<input
-        type="text"
-        id="from"
-        placeholder="From"
-        name="s"
-      />  
-			<input
-        type="text"
-        id="to"
-        placeholder="To"
-        name="s"
-      />  
-				<input
-        type="textarea"
-        id="description"
-        placeholder="Description"
-        name="s"
-      /> 
-        <h3>Event Registration</h3>
+      <div className="container">
+        <div className="header">
+          <p className="header-text">Event Registration</p>
+        </div>
+        <form>
+          <div className="event-container-left">
+            <input 
+            className="name-field" 
+            type="text"></input>
+          </div>
+          <div className="event-container-right">
+          </div>
+        </form>
       </div>
     );
   }
 
-	function DropMenu() {
-		return (
-			<form action="/events" method="get">
-						
-				<select> Accesibility
-					<option value="Private">Private</option>
-					<option value="Public">Public</option>
-					<option value="Invite only">Invite only</option>
-				</select>
-			</form>
-		);
-	}
+
 
 
 
 
 
 export default EventRegistration; 
+
