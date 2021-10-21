@@ -58,7 +58,7 @@ function EventEntry(props) {
   const { data } = props;
 
   return (
-    <div className="event" id={data.id}>
+    <div className="event" id={data.id} style={{ backgroundImage: `linear-gradient(to right, #CFCFCF 30%, transparent), url(/img/event-icons/${data.logo})` }}>
       <h3 className="name">{data.name}</h3>
       <ul className="info">
         <li className="time">
@@ -96,7 +96,8 @@ const tmpEvents = [
     type: "Double Elimination",
     participantType: "player",
     maxParticipants: 32,
-    discipline: "DOTA 2"
+    discipline: "DOTA 2",
+    logo: "dota-2.jpg"
   },
   {
     id: 2,
@@ -106,7 +107,8 @@ const tmpEvents = [
     type: "Single Elimination",
     participantType: "team",
     maxParticipants: 8,
-    discipline: "World of Tanks"
+    discipline: "World of Tanks",
+    logo: "world-of-tanks.jpg"
   },
   {
     id: 3,
@@ -116,7 +118,8 @@ const tmpEvents = [
     type: "Round Robin",
     participantType: "team",
     maxParticipants: 12,
-    discipline: "Soccer"
+    discipline: "Soccer",
+    logo: "soccer.jpg"
   },
   {
     id: 4,
@@ -126,7 +129,8 @@ const tmpEvents = [
     type: "Single Elimination",
     participantType: "player",
     maxParticipants: 24,
-    discipline: "Basketball"
+    discipline: "Basketball",
+    logo: "basketball.jpg"
   }
 ];
 
