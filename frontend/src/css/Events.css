@@ -43,6 +43,11 @@ body {
     margin-left: -100px;
 }
 
+.events .header form > button[type=submit]:hover {
+    background-color: #c01414;
+    /* outline: 0.2em solid #C34D4D; */
+}
+
 .events .header button.create-event {
     margin-left: auto;
     border: none;
@@ -53,6 +58,17 @@ body {
     font-size: 16px;
     padding: 10px 20px;
     border-radius: 999px;
+}
+
+.events .header button.create-event:hover {
+    background-color: #438f57;
+    outline: 0.2em solid white;
+    
+}
+
+.events .header button.create-event:active {
+    background-color: #48A461;
+    outline: 0.2em solid #3d814fCA;
 }
 
 .events .entries {

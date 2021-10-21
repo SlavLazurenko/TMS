@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/Events.css";
 import eventDateIcon from "../img/event-date.svg";
 import participantsIcon from "../img/participants-count.svg";
@@ -6,8 +6,21 @@ import durationIcon from "../img/duration.svg";
 import disciplineIcon from "../img/discipline.svg";
 
 function Search() {
+
+  const [state, setState] = useState({eventName: ""});
+
+  const handleChange = event => {
+    const {name, value} = event.target;
+    setState({...state, [name]: value});
+  }
+
+  const handleSubmit = event => {
+    console.log(state.eventName);
+    event.preventDefault(); 
+  }
+
   return (
-    <form action="/events" method="get">
+    <form onSubmit={handleSubmit}>
       <label htmlFor="header-search">
         <span className="visually-hidden">Search blog posts</span>
       </label>
@@ -15,7 +28,8 @@ function Search() {
         type="text"
         id="header-search"
         placeholder="Search events"
-        name="s"
+        name="eventName"
+        onChange={handleChange}
       />
       <button type="submit">Search</button>
     </form>
