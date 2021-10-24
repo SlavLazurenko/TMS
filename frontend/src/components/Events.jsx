@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "../css/Events.css";
-import eventDateIcon from "../img/event-date.svg";
-import participantsIcon from "../img/participants-count.svg";
-import durationIcon from "../img/duration.svg";
-import disciplineIcon from "../img/discipline.svg";
+import {ReactComponent as EventDateIcon} from "../img/event-date.svg";
+// import eventDateIcon from "../img/event-date.svg";
+import {ReactComponent as ParticipantsIcon} from "../img/participants-count.svg";
+import {ReactComponent as DurationIcon} from "../img/duration.svg";
+import {ReactComponent as DisciplineIcon} from "../img/discipline.svg";
 
 function Search() {
 
@@ -15,7 +16,7 @@ function Search() {
   }
 
   const handleSubmit = event => {
-    console.log(state.eventName);
+    console.log(`searching events: ${state.eventName}`);
     event.preventDefault(); 
   }
 
@@ -38,7 +39,14 @@ function Search() {
 
 function Create() {
   return (
-    <button className="create-event">Create Event +</button>
+    <button
+      className="create-event"
+      onClick={() => {
+        console.log("going to register event page...")
+      }}
+    >
+      Create Event +
+    </button>
   );
 }
 
@@ -71,32 +79,46 @@ function EventEntry(props) {
 
   const { data } = props;
 
+  const goToEvent = () => {
+    console.log(`going to ${data.id} event page...`);
+  }
+
   return (
-    <div className="event" id={data.id} style={{ backgroundImage: `linear-gradient(to right, #CFCFCF 30%, transparent), url(/img/event-icons/${data.logo})` }}>
-      <h3 className="name">{data.name}</h3>
-      <ul className="info">
-        <li className="time">
-          <img src={eventDateIcon} alt="event date"></img>
-          <span>{new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(data.start)}</span>
-        </li>
-        <li className="participants">
-          <img src={participantsIcon} alt="maximum participants"></img>
-          <ParticipantsInfo
-            type={data.participantType}
-            count={data.maxParticipants}
-          />
-        </li>
-        <li className="duration">
-          <img src={durationIcon} alt="duration"></img>
-          <DurationInfo
-            value={data.end - data.start}
-          />
-        </li>
-        <li className="discipline">
-          <img src={disciplineIcon} alt="discipline"></img>
-          <span>{data.discipline}</span>
-        </li>
-      </ul>
+    <div
+      className="event" 
+      id={data.id} 
+      style={{ 
+        backgroundImage: `url(/img/event-icons/${data.logo})`
+      }}
+      onClick={goToEvent}
+    >
+      <div className="wrapper">
+        <h3 className="name">{data.name}</h3>
+        <ul className="info">
+          <li className="time">
+            <EventDateIcon />
+            {/* <img src={eventDateIcon} alt="event date"></img> */}
+            <span>{new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(data.start)}</span>
+          </li>
+          <li className="participants">
+            <ParticipantsIcon />
+            <ParticipantsInfo
+              type={data.participantType}
+              count={data.maxParticipants}
+            />
+          </li>
+          <li className="duration">
+            <DurationIcon />
+            <DurationInfo
+              value={data.end - data.start}
+            />
+          </li>
+          <li className="discipline">
+            <DisciplineIcon />
+            <span>{data.discipline}</span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }
