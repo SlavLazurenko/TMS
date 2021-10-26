@@ -53,14 +53,14 @@ h1{
 }
 
 
-form{
+form.signup-form{
 
     max-width: 300px;
     margin: 0 auto;
 
 }
 
-input{
+input.signup-input{
 
     background-color: lightgray;
 
@@ -78,7 +78,7 @@ input{
 
 }
 
-input[type="submit"], .button{
+input[type="submit"].signup-submit, .button{
 
     background: #ec5990;
     border: 1px solid black;
@@ -87,10 +87,13 @@ input[type="submit"], .button{
     font-size: 16px;
     font-weight: 100;
 
+    width: 100%;
+    border-radius: 4px;
+
 
 }
 
-input[type="submit"]:hover{
+input[type="submit"].signup-submit:hover{
 
     background-color: #b3436c;
 }

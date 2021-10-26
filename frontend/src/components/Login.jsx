@@ -29,21 +29,26 @@ const Login = props => {
         <div className="form-card-background">
              <div className="form-card">
              <h1>Login</h1>  
-                  <form>
-                     <input 
+                  <form className="login-form">
+                     <input
+                     className="login-input" 
                      placeholder="Username" 
                      id= "username"
                      require value= {user.username}
                      onChange={handleInputChange}
                      name="username" ></input>
 
-                     <input placeholder="Password"
+                     <input
+                     className="login-input"
+                     type="password" 
+                     placeholder="Password"
                      id= "password"
                      require value= {user.password}
                      onChange={handleInputChange}
                      name="password"></input>
 
-                     <input 
+                     <input
+                     className="login-submit" 
                      type="submit" 
                      value="Login"
                      onClick={login}/>
