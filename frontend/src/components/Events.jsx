@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/Events.css";
 import {ReactComponent as EventDateIcon} from "../img/event-date.svg";
+import {useHistory} from "react-router-dom"
 // import eventDateIcon from "../img/event-date.svg";
 import {ReactComponent as ParticipantsIcon} from "../img/participants-count.svg";
 import {ReactComponent as DurationIcon} from "../img/duration.svg";
