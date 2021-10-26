@@ -55,8 +55,7 @@ function Create() {
 
     <button
       className="create-event"
-      onClick={() => {
-        console.log("going to register event page...")
+      onClick={() => {handleRoute()
       }}
     >
       Create Event +
