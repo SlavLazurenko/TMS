@@ -6,6 +6,7 @@ import {ReactComponent as ParticipantsIcon} from "../img/participants-count.svg"
 import {ReactComponent as DurationIcon} from "../img/duration.svg";
 import {ReactComponent as DisciplineIcon} from "../img/discipline.svg";
 
+
 function Search() {
 
   const [state, setState] = useState({eventName: ""});
@@ -38,7 +39,19 @@ function Search() {
 }
 
 function Create() {
+
+  const history = useHistory()
+
+  const handleRoute = () => {
+    
+    history.push("/event-registration");
+    
+  }
+
   return (
+
+
+
     <button
       className="create-event"
       onClick={() => {
@@ -122,6 +135,8 @@ function EventEntry(props) {
     </div>
   );
 }
+
+
 
 const tmpEvents = [
   {

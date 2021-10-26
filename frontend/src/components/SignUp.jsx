@@ -31,32 +31,43 @@ const SignUp = props => {
         <div className="form-card-background">
             <div className="form-card">
             <h1>Sign Up</h1>  
-                 <form>
-                    <input  placeholder="Email"
+                 <form className="signup-form">
+                    <input
+                    className="signup-input"  
+                    placeholder="Email"
                     id= "email"
                     require value= {user.email}
                     onChange={handleInputChange}
                     name="email"></input>
 
-                    <input  placeholder="Username"
+                    <input
+                    className="signup-input"
+                    placeholder="Username"
                     id= "username"
                     require value= {user.username}
                     onChange={handleInputChange}
                     name="username"></input>
 
-                    <input  placeholder="Password"
+                    <input 
+                    className="signup-input"
+                    type="password" 
+                    placeholder="Password"
                     id= "password"
                     require value= {user.password}
                     onChange={handleInputChange}
                     name="password"></input>
 
-                    <input  placeholder="Confirm Password"
+                    <input
+                    className="signup-input"
+                    type="password"  
+                    placeholder="Confirm Password"
                     id= "confirmpassword"
                     require value= {user.confirmpassword}
                     onChange={handleInputChange}
                     name="confirmpassword"></input>
 
-                    <input 
+                    <input
+                    className="signup-submit" 
                     type="submit"
                     value="Signup"
                     onClick={signup}/>
