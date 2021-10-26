@@ -47,14 +47,12 @@ const EventRegistration = props => {
     setEventData({...eventData, [name]:value});
   }
 
-  const eventregistration = () => {
+  // const eventregistration = () => {
 
-    props.eventregistration(eventData);
-    props.history.push("/");
-  }
-
-
-
+  //   props.eventregistration(eventData);
+  //   props.history.push("/");
+  // }
+  
     return (
       <div className="container">
         <div className="header">
