@@ -1,24 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../css/EventRegistration.css";
-import { useDropzone } from "react-dropzone";
 
+const Image = ({onFileSelect}) =>{
 
-function Dropzone(props){
+  const[imgData, setImgData] = useState(null)
+  const fileInput = useRef(null)
 
-  const {getRootProps, getInputProps, acceptedFiles} = useDropzone({noDrag: true});
-  const files = acceptedFiles.map(file => <p key={file.path}> {file.path}</p>);
+  const onChangePic = event => {
 
-  return(
+    const file = event.target.files[0]
+    if(file){
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImgData(reader.result);
+      })
+      reader.readAsDataURL(file);
+    }
 
-    <section className="container">
-      <div {...getRootProps({className: "dropzone"})}>
-        <div className="logo-image"></div>
-          <input {...getInputProps()}/>
-      </div>
-      <aside>
-        <p className="file-identifier">File:{files}</p>
-      </aside>
-    </section>
+    onFileSelect(file);
+  }
+
+  return (
+         
+           <div 
+            className="img-holder bckg-img" 
+            onClick={() => {
+            document.getElementById("event-logo").click() && fileInput.current && fileInput.current.click()}}
+            >
+              <img  
+              src={imgData} 
+              alt="" 
+              id="img" 
+              className="img" />
+              <input  
+              className="fileUploader fileNone" 
+              type="file" 
+              name="image-upload" 
+              id="event-logo" 
+              accept="image/*" 
+              onChange={onChangePic}/> 
+            </div>
+        
   )
 }
 
@@ -29,7 +51,6 @@ const EventRegistration = props => {
   const initialEventState = {
 
     eventName: "",
-    importFile: null,
     description: "",
     accessibilityOption: null,
     bracketOption: null,
@@ -40,6 +61,7 @@ const EventRegistration = props => {
   }
 
   const [eventData, setEventData] = useState(initialEventState);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleInputChange = event => {
 
@@ -47,12 +69,13 @@ const EventRegistration = props => {
     setEventData({...eventData, [name]:value});
   }
 
-  // const eventregistration = () => {
+  const eventregistration = () => {
 
-  //   props.eventregistration(eventData);
-  //   props.history.push("/");
-  // }
-  
+    props.eventregistration(eventData);
+    props.history.push("/");
+    
+  }
+
     return (
       <div className="container">
         <div className="header">
@@ -64,37 +87,50 @@ const EventRegistration = props => {
             type="text"
             className="name-field registration-input"
             placeholder="Event Name"
-            require value={eventData.eventName}
-            onChange={handleInputChange}></input>
-            <Dropzone
-            require value={eventData.importFile}
+            value={eventData.eventName}
             onChange={handleInputChange}
-            ></Dropzone>
+            name="eventName"></input>
+            <Image
+            onFileSelect={(file) => setSelectedFile(file)}
+            value={selectedFile}  // this line is here to prevent warning until axios is implemented
+            />
             <textarea 
             type="text"
-            className="description-box"
+            className="description-box padd"
             placeholder="Description"
-            require value={eventData.description}
-            onChange={handleInputChange}></textarea>
+            value={eventData.description}
+            onChange={handleInputChange}
+            name="description"></textarea>
 
           </div>
           <div className="event-right">
-            <select className="dropdown">
-              <option selected value="0" className="dropdown-option">Accessibility</option>
-              <option value="1" className="dropdown-option">Accessibility1</option>
-              <option value="2" className="dropdown-option">Accessibility2</option>
-              <option value="3" className="dropdown-option">Accessibility3</option>
+            <select 
+            className="dropdown"
+            defaultValue=""
+            value={eventData.accessibilityOption}
+            onChange={handleInputChange}
+            name="accessibilityOption">
+              <option selected value="Public" className="dropdown-option">Public</option>
+              <option value="Private" className="dropdown-option">Private</option>
             </select>
-            <select className="dropdown">
-              <option selected value="0" className="dropdown-option">Single Elimination</option>
-              <option value="1" className="dropdown-option">Double Elimination</option>
-              <option value="1" className="dropdown-option">Straight Round Robin</option>
-              <option value="1" className="dropdown-option">Multilevel</option>
+            <select 
+            className="dropdown"
+            defaultValue=""
+            value={eventData.bracketOption}
+            onChange={handleInputChange}
+            name="bracketOption">
+              <option selected value="SingleElimination" className="dropdown-option">Single Elimination</option>
+              <option value="DoubleElimination" className="dropdown-option">Double Elimination</option>
+              <option value="StraightRoundRobin" className="dropdown-option">Straight Round Robin</option>
+              <option value="Multilevel" className="dropdown-option">Multilevel</option>
             </select>
             <input 
             type="number"
             className="participant-field number-field" 
             placeholder="Number of Participants"
+            value={eventData.numOfParticipants}
+            onChange={handleInputChange}
+            name="numOfParticipants"
             min="4"
             max="128"
             ></input>
@@ -105,18 +141,25 @@ const EventRegistration = props => {
                 <input 
                 type="datetime-local"
                 className="date-field date-input"
-                placeholder="Start Date"></input>
+                placeholder="Start Date"
+                value={eventData.startDate}
+                onChange={handleInputChange}
+                name="startDate"></input>
                 <p className="start-tag">End Date</p>
                 <input
                 type="datetime-local"
                 className="date-field date-input"
-                placeholder="End Date"></input>
+                placeholder="End Date"
+                value={eventData.endDate}
+                onChange={handleInputChange}
+                name="endDate"></input>
               </div>
             </div>
             <input 
             type="submit" 
             value="Create Event"
-            className="submit-create-event"></input>
+            className="submit-create-event"
+            onClick={eventregistration}></input>
           </div>
         </form>
       </div>

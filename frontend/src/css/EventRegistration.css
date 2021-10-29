@@ -65,6 +65,7 @@ p.start-tag{
     width: 50%;
 }
 
+
 input[type="text"].registration-input{
 
     background-color: #C4C4C4;
@@ -87,6 +88,11 @@ input[type="number"].participant-field{
     margin-top: 30px;
    
     font-size: 14pt;
+}
+
+textarea.padd{
+
+    padding: 10px;
 }
 
 input[type="text"].registration-input:focus, input[type="number"].participant-field:focus{
@@ -211,6 +217,7 @@ input[type="datetime-local"].date-input{
     margin-bottom: 30px;
    
     font-size: 14pt;
+    font-family: arial;
 }
 
 input[type="datetime-local"].date-input:focus{
@@ -219,22 +226,6 @@ input[type="datetime-local"].date-input:focus{
     background-color: #ffffff;
 }
 
-.dropzone{
-
-    width: 146px;
-    height: 120px;
-
-    text-align: center;
-    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
-    background-color: #C4C4C4;
-    border-radius: 10px;
-    border: 1px solid #555;
-    outline: none;
-    margin-top: 30px;
-
-    cursor: pointer;
-    font-size: 14pt;
-}
 
 .logo-image{
 
@@ -260,9 +251,42 @@ input[type="submit"].submit-create-event{
 input[type="submit"].submit-create-event:active{
 
     background-color: #C34D4D;
-    box-shadow: 0 5px #666;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
     transform: translateY(4px); 
 }
 
+.img-holder{
 
+    width: 300px;
+    height: 200px;
+    background-size: 75px, cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #C4C4C4;
+    border-radius: 10px;
+    cursor: pointer; 
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
 
+}
+
+.img{
+
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
+    
+}
+
+input[type="file"].fileUploader{
+    display: contents;
+}
+
+input[type="file"].fileNone{
+
+    display: none;
+}
+
+div.bckg-img{
+
+    background-image: url("../css/Images/icons8-upload-64.png");
+}
