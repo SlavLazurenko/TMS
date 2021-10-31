@@ -1,126 +1,32 @@
-/**
- * Class for communicating with users collection in MongoDB
- */
-class UserDao {
-  constructor(db) {
-    /**
-     * MongoDB users collection reference 
-     * @type {Collection}
-     * @private
-     */
-    this.collection = db.collection("users");
-  }
-  
-  /**
-   * Adds new documents
-   * @param  {...UserData} docs user documents to be added
-   * @returns {UserAddResult} add result
-   */
-  async add(...docs) {
-    try {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: UserDAO.js</title>
 
-      docs = docs.filter(doc => {
-        return "tag" in doc && "email" in doc && "discordTag" in doc;
-      })
-      .map(doc => {
-        const { tag, email, discordTag } = doc;
-        return {tag, email, discordTag};
-      });
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
 
-      if (isEmptyObject(docs)) {
-        throw new Error("Invalid argument for User.add()");
-      }
+<body>
 
-      const result = await this.collection.insertMany(docs, {ordered: false});
-      return { count: result.insertedCount, ids: result.insertedIds };
+<div id="main">
 
-    } catch (e) {
-      if (e.result) {
-        const { nInserted, insertedIds } = e.result;
-        const failedIds = e.writeErrors.map((val) => { return val.err.op._id });
+    <h1 class="page-title">Source: UserDAO.js</h1>
 
-        //FILTER IDS THAT WERE SUCCESSFULLY INSERTED
-        const actualInsertedIds = Object.keys(insertedIds)
-          .filter(key => {
-            return !failedIds.includes(insertedIds[key]);
-          })
-          .reduce((result, key) => {
-            result[key] = insertedIds[key];
-            return result;
-          }, {});
-        
-        return { error: e, count: nInserted, ids: actualInsertedIds };
-      }
-
-      return { error: e };
-    }
-  }
-
-  /**
-   * Updates document that satisfies selector with specified data
-   * @param {UserSelector} selector target document selector
-   * @param {Object} data key value pairs which define modifications
-   * @returns {UserUpdateResult} update operation result
-   */
-  async update(selector, data) {
-    try {
-
-      data = Object.keys(data)
-      .filter(key => {
-        return key == "tag" || key == "discordTag" || key == "email";
-      })
-      .reduce((result, key) => {
-        result[key] = data[key];
-        return result;
-      }, {});
-
-      const result = await this.collection.updateMany(selector, {$set: data});
-      return { count: result.modifiedCount };
-      
-    } catch (e) {
-      return { error: e, count: 0 };
-    }
-  }
-
-  /**
-   * Finds documents which satisfy selector
-   * @param {UserSelector} selector target document selector
-   * @returns {UserData|{error: Object}} found document or error object
-   */
-  async find(selector) {
-    try {
-      const result = await this.collection.findOne(selector);
-      return result;
-    } catch (e) {
-      return { error: e };
-    }
-  }
-
-  /**
-   * Removes document which satisfies the selector
-   * @param {UserSelector} selector target document selector
-   * @returns {UserRemoveResult} remove result
-   */
-  async remove(selector) {
-    try {
-
-      if(isEmptyObject(selector)) {
-        throw new Error('Argument for User.remove() cannot be empty');
-      }
-
-      const result = await this.collection.deleteOne(selector);
-      return { count: result.deletedCount };
-
-    } catch (e) {
-      return { error: e, count: 0 };
-    }
-  }
-}
-
-module.exports = UserDao;
+    
 
 
-isEmptyObject = function(obj) {
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>isEmptyObject = function(obj) {
   var name;
   for (name in obj) {
     return false;
@@ -166,3 +72,148 @@ isEmptyObject = function(obj) {
  * @property {number} count number of documents updated
  * @property {Object} [error] exception object, only when error occurs
  */
+
+/**
+ * Class for communicating with users collection in MongoDB
+ */
+class UserDao {
+  constructor(db) {
+    /**
+     * MongoDB users collection reference 
+     * @type {Collection}
+     * @private
+     */
+    this.collection = db.collection("users");
+  }
+  
+  /**
+   * Adds new documents
+   * @param  {...UserData} docs user documents to be added
+   * @returns {UserAddResult} add result
+   */
+  async add(...docs) {
+    try {
+
+      //VALIDATE INPUT
+      docs = docs.filter(doc => {
+        return "tag" in doc &amp;&amp; "email" in doc &amp;&amp; "discordTag" in doc;
+      })
+      .map(doc => {
+        const { tag, email, discordTag } = doc;
+        return {tag, email, discordTag};
+      });
+
+      if (isEmptyObject(docs)) {
+        throw new Error("Invalid argument for User.add()");
+      }
+
+      //EXECUTE
+      const result = await this.collection.insertMany(docs, {ordered: false});
+
+      return { count: result.insertedCount, ids: result.insertedIds };
+
+    } catch (e) {
+
+      if (e.result) {
+        const { nInserted, insertedIds } = e.result;
+        const failedIds = e.writeErrors.map((val) => { return val.err.op._id });
+
+        //FILTER IDS THAT WERE SUCCESSFULLY INSERTED
+        const actualInsertedIds = Object.keys(insertedIds)
+          .filter(key => {
+            return !failedIds.includes(insertedIds[key]);
+          })
+          .reduce((result, key) => {
+            result[key] = insertedIds[key];
+            return result;
+          }, {});
+        
+        return { error: e, count: nInserted, ids: actualInsertedIds };
+      }
+
+      return { error: e };
+    }
+  }
+
+  /**
+   * Updates document that satisfies selector with specified data
+   * @param {UserSelector} selector target document selector
+   * @param {Object} data key value pairs which define modifications
+   * @returns {UserUpdateResult} update operation result
+   */
+  async update(selector, data) {
+    try {
+
+      data = Object.keys(data)
+      .filter(key => {
+        return key == "tag" || key == "discordTag" || key == "email";
+      })
+      .reduce((result, key) => {
+        result[key] = data[key];
+        return result;
+      }, {});
+
+      const result = await this.collection.updateMany(selector, {$set: data});
+
+      return { count: result.modifiedCount };
+      
+    } catch (e) {
+      return { error: e, count: 0 };
+    }
+  }
+
+  /**
+   * Finds documents which satisfy selector
+   * @param {UserSelector} selector target document selector
+   * @returns {UserData|{error: Object}} found document or error object
+   */
+  async find(selector) {
+    try {
+      const result = await this.collection.findOne(selector);
+      return result;
+    } catch (e) {
+      return { error: e };
+    }
+  }
+
+  /**
+   * Removes document which satisfies the selector
+   * @param {UserSelector} selector target document selector
+   * @returns {UserRemoveResult} remove result
+   */
+  async remove(selector) {
+    try {
+      if(isEmptyObject(selector)) {
+        throw new Error('Argument for User.remove() cannot be empty');
+      }
+      const result = await this.collection.deleteOne(selector);
+      return { count: result.deletedCount };
+    } catch (e) {
+      return { error: e, count: 0 };
+    }
+  }
+}
+
+module.exports = UserDao;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Datastore.html">Datastore</a></li><li><a href="UserDao.html">UserDao</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 31 2021 02:57:44 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
