@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: UserDao</title>
+    <title>JSDoc: Class: Dao</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: UserDao</h1>
+    <h1 class="page-title">Class: Dao</h1>
 
     
 
@@ -28,9 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>UserDao<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="Datastore.html">Datastore</a>.</span>Dao<span class="signature">(db, collection)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Class for communicating with users collection in MongoDB</div>
+            <div class="class-description">Class for basic communication with MongoDB collection</div>
         
     
 </header>
@@ -45,19 +46,95 @@
     
 
     
-    <h4 class="name" id="UserDao"><span class="type-signature"></span>new UserDao<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Dao"><span class="type-signature"></span>new Dao<span class="signature">(db, collection)</span><span class="type-signature"></span></h4>
     
 
     
 
 
 
+<div class="description">
+    Initializes Dao object
+</div>
 
 
 
 
 
 
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>db</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Db</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">MongoDB Db object</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>collection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">collection name</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -93,7 +170,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserDAO.js.html">UserDAO.js</a>, <a href="UserDAO.js.html#line51">line 51</a>
+        <a href="DAO.js.html">DAO.js</a>, <a href="DAO.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -149,7 +226,7 @@
     
 
     
-    <h4 class="name" id="add"><span class="type-signature">(async) </span>add<span class="signature">(&hellip;docs)</span><span class="type-signature"> &rarr; {<a href="global.html#UserAddResult">UserAddResult</a>}</span></h4>
+    <h4 class="name" id="add"><span class="type-signature">(async) </span>add<span class="signature">(&hellip;docs)</span><span class="type-signature"> &rarr; {AddResult}</span></h4>
     
 
     
@@ -157,7 +234,7 @@
 
 
 <div class="description">
-    Adds new documents
+    Adds new documents to the collection
 </div>
 
 
@@ -201,7 +278,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#UserData">UserData</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -221,7 +298,7 @@
 
             
 
-            <td class="description last">user documents to be added</td>
+            <td class="description last">document(s) to be added</td>
         </tr>
 
     
@@ -262,7 +339,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserDAO.js.html">UserDAO.js</a>, <a href="UserDAO.js.html#line66">line 66</a>
+        <a href="DAO.js.html">DAO.js</a>, <a href="DAO.js.html#line27">line 27</a>
     </li></ul></dd>
     
 
@@ -302,7 +379,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#UserAddResult">UserAddResult</a></span>
+<span class="param-type">AddResult</span>
 
 
     </dd>
@@ -320,7 +397,7 @@
     
 
     
-    <h4 class="name" id="find"><span class="type-signature">(async) </span>find<span class="signature">(selector)</span><span class="type-signature"> &rarr; {<a href="global.html#UserData">UserData</a>|Object}</span></h4>
+    <h4 class="name" id="find"><span class="type-signature">(async) </span>find<span class="signature">(selector)</span><span class="type-signature"> &rarr; {Object|Object}</span></h4>
     
 
     
@@ -328,7 +405,7 @@
 
 
 <div class="description">
-    Finds documents which satisfy selector
+    Finds document which satisfies selector
 </div>
 
 
@@ -370,7 +447,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#UserSelector">UserSelector</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -421,7 +498,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserDAO.js.html">UserDAO.js</a>, <a href="UserDAO.js.html#line142">line 142</a>
+        <a href="DAO.js.html">DAO.js</a>, <a href="DAO.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -461,7 +538,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#UserData">UserData</a></span>
+<span class="param-type">Object</span>
 |
 
 <span class="param-type">Object</span>
@@ -482,7 +559,7 @@
     
 
     
-    <h4 class="name" id="remove"><span class="type-signature">(async) </span>remove<span class="signature">(selector)</span><span class="type-signature"> &rarr; {<a href="global.html#UserRemoveResult">UserRemoveResult</a>}</span></h4>
+    <h4 class="name" id="remove"><span class="type-signature">(async) </span>remove<span class="signature">(selector)</span><span class="type-signature"> &rarr; {RemoveResult}</span></h4>
     
 
     
@@ -532,7 +609,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#UserSelector">UserSelector</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -583,7 +660,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserDAO.js.html">UserDAO.js</a>, <a href="UserDAO.js.html#line156">line 156</a>
+        <a href="DAO.js.html">DAO.js</a>, <a href="DAO.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -623,7 +700,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#UserRemoveResult">UserRemoveResult</a></span>
+<span class="param-type">RemoveResult</span>
 
 
     </dd>
@@ -641,7 +718,7 @@
     
 
     
-    <h4 class="name" id="update"><span class="type-signature">(async) </span>update<span class="signature">(selector, data)</span><span class="type-signature"> &rarr; {<a href="global.html#UserUpdateResult">UserUpdateResult</a>}</span></h4>
+    <h4 class="name" id="update"><span class="type-signature">(async) </span>update<span class="signature">(selector, data)</span><span class="type-signature"> &rarr; {UpdateResult}</span></h4>
     
 
     
@@ -649,7 +726,7 @@
 
 
 <div class="description">
-    Updates document that satisfies selector with specified data
+    Updates existing document(s) that satisfy selector
 </div>
 
 
@@ -691,7 +768,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#UserSelector">UserSelector</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -765,7 +842,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserDAO.js.html">UserDAO.js</a>, <a href="UserDAO.js.html#line116">line 116</a>
+        <a href="DAO.js.html">DAO.js</a>, <a href="DAO.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -805,7 +882,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#UserUpdateResult">UserUpdateResult</a></span>
+<span class="param-type">UpdateResult</span>
 
 
     </dd>
@@ -833,13 +910,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Datastore.html">Datastore</a></li><li><a href="UserDao.html">UserDao</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Datastore.html">Datastore</a></li></ul><h3>Classes</h3><ul><li><a href="Datastore.AccountDao.html">AccountDao</a></li><li><a href="Datastore.Dao.html">Dao</a></li><li><a href="Datastore.Datastore.html">Datastore</a></li><li><a href="Datastore.UserDao.html">UserDao</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 31 2021 02:57:44 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Nov 01 2021 20:10:42 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
