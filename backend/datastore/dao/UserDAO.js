@@ -1,4 +1,4 @@
-const Dao = require("../DAO.js");
+const Dao = require("./DAO.js");
 
 /**
  * Class for communicating with users collection in MongoDB

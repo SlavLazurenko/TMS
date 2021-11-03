@@ -1,4 +1,4 @@
-const { isEmptyObject, getInsertedIds } = require("./utils.js");
+const { isEmptyObject, getInsertedIds } = require("../utils.js");
 
 /**
  * Class for basic communication with MongoDB collection

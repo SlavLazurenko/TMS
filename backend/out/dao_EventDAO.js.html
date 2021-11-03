@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: dao/UserDAO.js</title>
+    <title>JSDoc: Source: dao/EventDAO.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: dao/UserDAO.js</h1>
+    <h1 class="page-title">Source: dao/EventDAO.js</h1>
 
     
 
@@ -29,18 +29,18 @@
             <pre class="prettyprint source linenums"><code>const Dao = require("../DAO.js");
 
 /**
- * Class for communicating with users collection in MongoDB
+ * Class for communicating with events collection in MongoDB
  * @extends Dao
  * @memberof Datastore
  */
-class UserDao extends Dao {
+class EventDao extends Dao {
   constructor(db) {
-    super(db, "users");
+    super(db, "events");
   }
 
   /**
-   * Adds new user(s) documents to the database
-   * @param  {...UserData} docs user document(s) to be added
+   * Adds new event(s) documents to the database
+   * @param  {...EventData} docs event document(s) to be added
    * @returns {AddResult} add result
    */
   async add(...docs) {
@@ -48,8 +48,8 @@ class UserDao extends Dao {
   }
 
   /**
-   * Updates existing user document(s) that satisfy selector
-   * @param {UserSelector} selector target document selector
+   * Updates existing event document(s) that satisfy selector
+   * @param {EventSelector} selector target document selector
    * @param {Object} data key value pairs which define modifications
    * @returns {UpdateResult} update operation result
    */
@@ -58,17 +58,22 @@ class UserDao extends Dao {
   }
 
   /**
-   * Finds user document which satisfies selector
-   * @param {UserSelector} selector target document selector
-   * @returns {UserData|{error: Object}} found document or error object
+   * Finds event document which satisfies selector
+   * @param {EventSelector} selector target document selector
+   * @returns {EventData|{error: Object}} found document or error object
    */
   async find(selector) {
-    return super.find(selector);
+    try {
+      const result = await this.collection.findMany(selector);
+      return result;
+    } catch (e) {
+      return { error: e };
+    }
   }
 
   /**
-   * Removes user document which satisfies the selector
-   * @param {UserSelector} selector target document selector
+   * Removes event document which satisfies the selector
+   * @param {EventSelector} selector target document selector
    * @returns {RemoveResult} remove result
    */
   async remove(selector) {
@@ -76,25 +81,29 @@ class UserDao extends Dao {
   }
 }
 
-module.exports = UserDao;
+module.exports = EventDao;
 
 /**
- * Used to specify target document in users collection to execute different operations against
+ * Used to specify target document in events collection to execute different operations against
  * @memberof Datastore
- * @typedef {Object} UserSelector
- * @property {string} [tag] to match the document with tag
- * @property {string} [discordTag] to match the document with discordTag
- * @property {string} [email] to match the document with email
+ * @typedef {Object} EventSelector
+ * @property {number} [id] to match the document with event id
+ * @property {string} [name] to match the document with event name
+ * @property {"SingleElimination"|"DoubleElimination"|"Multilevel"|"RoundRobin"} [type] to match the documents with type 
+ * @property {string} [accessibility] to match the documents with accessibility
+ * @property {string} [description] to match the documents with description
  */
 
 /**
- * User data structure
+ * Event data structure
  * @memberof Datastore
- * @typedef {Object} UserData
+ * @typedef {Object} EventData
  * @property {ObjectId} [_id] BSON document identifier for MongoDB 
- * @property {string} tag username - main identifier of the user
- * @property {string} discordTag user's discord tag
- * @property {string} email user's email address
+ * @property {number} id event unique identifier
+ * @property {string} name event name
+ * @property {"SingleElimination"|"DoubleElimination"|"Multilevel"|"RoundRobin"} type to match the documents with type 
+ * @property {string} accessibility to match the documents with accessibility
+ * @property {string} description to match the documents with description
  */</code></pre>
         </article>
     </section>
