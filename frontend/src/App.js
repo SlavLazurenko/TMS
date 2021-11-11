@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navigation, Home, Events, Profile, Login, SignUp, EventRegistration } from "./components";
+import { Navigation, Home, Events, Event, Profile, Login, SignUp, EventRegistration } from "./components";
 
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
           <Route path="/login" exact component={() => <Login />} />
           <Route path="/event-registration" exact component={() => <EventRegistration />} />
           <Route path="/signup" exact component={() => <SignUp />} />
+          <Route path="/event/:id" render={(props) => <Event {...props} />}/> 
         </Switch>
       </Router>
     </div>
