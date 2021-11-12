@@ -31,6 +31,8 @@ class Datastore {
   /**
    * Performs connection to MongoDB and 
    * initializes database access objects (DAO)
+   * @pre isConnected() = false
+   * @post isConnected() = true
    */
   async init() {
     try {
@@ -62,6 +64,10 @@ class Datastore {
     } catch (e) {
       console.log('Connection to MongoDB failed', e);
     }
+  }
+
+  isConnected() {
+    return !!this.client && !!this.client.topology && this.client.topology.isConnected();
   }
 }
 

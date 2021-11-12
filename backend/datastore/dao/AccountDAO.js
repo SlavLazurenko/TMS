@@ -52,7 +52,6 @@ module.exports = AccountDao;
 
 /**
  * Used to specify target document in accounts collection to execute different operations against
- * @memberof Datastore
  * @typedef {Object} AccountSelector
  * @property {string} [username] to match the document with username
  * @property {string} [password] to match the document with hashed password
@@ -60,7 +59,6 @@ module.exports = AccountDao;
 
 /**
  * Account data structure
- * @memberof Datastore
  * @typedef {Object} AccountData
  * @property {ObjectId} [_id] BSON document identifier for MongoDB 
  * @property {string} username account's username (same as user's tag)
