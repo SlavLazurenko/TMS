@@ -12,8 +12,8 @@ class UserDao extends Dao {
 
   /**
    * Adds new user(s) documents to the database
-   * @param  {...UserData} docs user document(s) to be added
-   * @returns {AddResult} add result
+   * @param  {...Datastore.UserData} docs user document(s) to be added
+   * @returns {Datastore.AddResult} add result
    */
   async add(...docs) {
     return super.add(...docs);
@@ -21,9 +21,9 @@ class UserDao extends Dao {
 
   /**
    * Updates existing user document(s) that satisfy selector
-   * @param {UserSelector} selector target document selector
+   * @param {Datastore.UserSelector} selector target document selector
    * @param {Object} data key value pairs which define modifications
-   * @returns {UpdateResult} update operation result
+   * @returns {Datastore.UpdateResult} update operation result
    */
   async update(selector, data) {
     return super.update(selector, data);
@@ -31,8 +31,8 @@ class UserDao extends Dao {
 
   /**
    * Finds user document which satisfies selector
-   * @param {UserSelector} selector target document selector
-   * @returns {UserData|{error: Object}} found document or error object
+   * @param {Datastore.UserSelector} selector target document selector
+   * @returns {Datastore.UserData|{error: Object}} found document or error object
    */
   async find(selector) {
     return super.find(selector);
@@ -40,8 +40,8 @@ class UserDao extends Dao {
 
   /**
    * Removes user document which satisfies the selector
-   * @param {UserSelector} selector target document selector
-   * @returns {RemoveResult} remove result
+   * @param {Datastore.UserSelector} selector target document selector
+   * @returns {Datastore.RemoveResult} remove result
    */
   async remove(selector) {
     return super.remove(selector);

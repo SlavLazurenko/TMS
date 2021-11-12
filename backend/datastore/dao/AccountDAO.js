@@ -12,8 +12,8 @@ class AccountDao extends Dao {
 
   /**
    * Adds new account(s) documents to the database
-   * @param  {...AccountData} docs account document(s) to be added
-   * @returns {AddResult} add result
+   * @param  {...Datastore.AccountData} docs account document(s) to be added
+   * @returns {Datastore.AddResult} add result
    */
   async add(...docs) {
     return super.add(...docs);
@@ -21,9 +21,9 @@ class AccountDao extends Dao {
 
   /**
    * Updates existing account document(s) that satisfy selector
-   * @param {AccountSelector} selector target document selector
+   * @param {Datastore.AccountSelector} selector target document selector
    * @param {Object} data key value pairs which define modifications
-   * @returns {UpdateResult} update operation result
+   * @returns {Datastore.UpdateResult} update operation result
    */
   async update(selector, data) {
     return super.update(selector, data);
@@ -31,8 +31,8 @@ class AccountDao extends Dao {
 
   /**
    * Finds account document which satisfies selector
-   * @param {AccountSelector} selector target document selector
-   * @returns {AccountData|{error: Object}} found document or error object
+   * @param {Datastore.AccountSelector} selector target document selector
+   * @returns {Datastore.AccountData|{error: Object}} found document or error object
    */
   async find(selector) {
     return super.find(selector);
@@ -40,8 +40,8 @@ class AccountDao extends Dao {
 
   /**
    * Removes account document which satisfies the selector
-   * @param {AccountSelector} selector target document selector
-   * @returns {RemoveResult} remove result
+   * @param {Datastore.AccountSelector} selector target document selector
+   * @returns {Datastore.RemoveResult} remove result
    */
   async remove(selector) {
     return super.remove(selector);
@@ -52,16 +52,16 @@ module.exports = AccountDao;
 
 /**
  * Used to specify target document in accounts collection to execute different operations against
- * @memberof Datastore
  * @typedef {Object} AccountSelector
+ * @memberof Datastore
  * @property {string} [username] to match the document with username
  * @property {string} [password] to match the document with hashed password
  */
 
 /**
  * Account data structure
- * @memberof Datastore
  * @typedef {Object} AccountData
+ * @memberof Datastore
  * @property {ObjectId} [_id] BSON document identifier for MongoDB 
  * @property {string} username account's username (same as user's tag)
  * @property {string} password account's hashed password
