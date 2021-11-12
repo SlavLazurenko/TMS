@@ -22,7 +22,7 @@ class Dao {
   /**
    * Adds new documents to the collection
    * @param  {...Object} docs document(s) to be added
-   * @returns {AddResult} add result
+   * @returns {Datastore.AddResult} add result
    * @pre self.docs->forAll(doc|!find()->includes(doc))
    * @post self.docs->forAll(doc|find()->includes(doc))
    */
@@ -45,7 +45,7 @@ class Dao {
    * Updates existing document(s) that satisfy selector
    * @param {Object} selector target document selector
    * @param {Object} data key value pairs which define modifications
-   * @returns {UpdateResult} update operation result
+   * @returns {Datastore.UpdateResult} update operation result
    * @pre find(self.selector).error = null
    * @post find(self.selector)->includes(data)
    */
@@ -79,7 +79,7 @@ class Dao {
   /**
    * Removes document which satisfies the selector
    * @param {Object} selector target document selector
-   * @returns {RemoveResult} remove result
+   * @returns {Datastore.RemoveResult} remove result
    * @pre find(selector).error = null
    * @post find(selector).error != null
    */
@@ -103,16 +103,16 @@ module.exports = Dao;
 
 /**
  * Used as a return object of remove method
- * @memberof Datastore
  * @typedef {Object} RemoveResult
+ * @memberof Datastore
  * @property {number} count number of documents removed
  * @property {Object} [error] exception object, only when error occurs
  */
 
 /**
  * Used as a return object of add method
- * @memberof Datastore
  * @typedef {Object} AddResult
+ * @memberof Datastore
  * @property {number} count number of documents successfully added
  * @property {Object} ids set of document ids that were successfully added
  * @property {Object} [error] exception object, only when error occurs
@@ -120,8 +120,8 @@ module.exports = Dao;
 
 /**
  * Used as a return object of update method
- * @memberof Datastore
  * @typedef {Object} UpdateResult
+ * @memberof Datastore
  * @property {number} count number of documents updated
  * @property {Object} [error] exception object, only when error occurs
  */

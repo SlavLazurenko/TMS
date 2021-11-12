@@ -12,8 +12,8 @@ class EventDao extends Dao {
 
   /**
    * Adds new event(s) documents to the database
-   * @param  {...EventData} docs event document(s) to be added
-   * @returns {AddResult} add result
+   * @param  {...Datastore.EventData} docs event document(s) to be added
+   * @returns {Datastore.AddResult} add result
    */
   async add(...docs) {
     return super.add(...docs);
@@ -21,9 +21,9 @@ class EventDao extends Dao {
 
   /**
    * Updates existing event document(s) that satisfy selector
-   * @param {EventSelector} selector target document selector
+   * @param {Datastore.EventSelector} selector target document selector
    * @param {Object} data key value pairs which define modifications
-   * @returns {UpdateResult} update operation result
+   * @returns {Datastore.UpdateResult} update operation result
    */
   async update(selector, data) {
     return super.update(selector, data);
@@ -31,8 +31,8 @@ class EventDao extends Dao {
 
   /**
    * Finds event document which satisfies selector
-   * @param {EventSelector} selector target document selector
-   * @returns {EventData[]|{error: Object}} found document or error object
+   * @param {Datastore.EventSelector} selector target document selector
+   * @returns {Datastore.EventData[]|{error: Object}} found document or error object
    */
   async find(selector) {
     try {
@@ -45,8 +45,8 @@ class EventDao extends Dao {
 
   /**
    * Removes event document which satisfies the selector
-   * @param {EventSelector} selector target document selector
-   * @returns {RemoveResult} remove result
+   * @param {Datastore.EventSelector} selector target document selector
+   * @returns {Datastore.RemoveResult} remove result
    */
   async remove(selector) {
     return super.remove(selector);
@@ -104,6 +104,3 @@ module.exports = EventDao;
  * @property {Date} end timestamp of event's end
  * @property {number} maxParticipants maximum number of participants allowed  
  */
-
-// const test = new EventDao;
-// test.find({type:})
