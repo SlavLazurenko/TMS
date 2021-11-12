@@ -1,13 +1,13 @@
 /**
  * Group of websocket methods
  * @namespace Logic
- * @class 
  */
 
 /**
  * @memberof Logic
+ * @class
  */
-class Websocket{
+class Websocket {
     
     /**
      * 

@@ -4,7 +4,7 @@
  * @memberof Logic
  * @class
  */
-class Api{
+class Api {
 
     /**
      * 
