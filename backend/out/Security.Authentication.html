@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: EventDao</title>
+    <title>JSDoc: Class: Authentication</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: EventDao</h1>
+    <h1 class="page-title">Class: Authentication</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="Datastore.html">Datastore</a>.</span>EventDao<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="Security.html">Security</a>.</span>Authentication<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Class for communicating with events collection in MongoDB</div>
+            <div class="class-description">Class used by Logic classes to authenticate incoming requests</div>
         
     
 </header>
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="EventDao"><span class="type-signature"></span>new EventDao<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Authentication"><span class="type-signature"></span>new Authentication<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -94,7 +94,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="datastore_dao_EventDAO.js.html">datastore/dao/EventDAO.js</a>, <a href="datastore_dao_EventDAO.js.html#line8">line 8</a>
+        <a href="authentication.js.html">authentication.js</a>, <a href="authentication.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -128,17 +128,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>Dao</li>
-    </ul>
-
-
-    
 
     
 
@@ -161,7 +150,7 @@
     
 
     
-    <h4 class="name" id="add"><span class="type-signature">(async) </span>add<span class="signature">(&hellip;docs)</span><span class="type-signature"> &rarr; {<a href="Datastore.html#.AddResult">Datastore.AddResult</a>}</span></h4>
+    <h4 class="name" id="storeCredentials"><span class="type-signature">(async) </span>storeCredentials<span class="signature">(username, password)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -169,7 +158,7 @@
 
 
 <div class="description">
-    Adds new event(s) documents to the database
+    Save user account data
 </div>
 
 
@@ -193,8 +182,6 @@
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -207,33 +194,46 @@
 
         <tr>
             
-                <td class="name"><code>docs</code></td>
+                <td class="name"><code>username</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Datastore.html#.EventData">Datastore.EventData</a></span>
+<span class="param-type">Object</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
 
-                
+            
 
+            <td class="description last">unique identifier of a user</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
                 
-                    &lt;repeatable><br>
-                
-                </td>
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
             
 
             
 
-            <td class="description last">event document(s) to be added</td>
+            <td class="description last">password used to login into account</td>
         </tr>
 
     
@@ -274,7 +274,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="datastore_dao_EventDAO.js.html">datastore/dao/EventDAO.js</a>, <a href="datastore_dao_EventDAO.js.html#line18">line 18</a>
+        <a href="authentication.js.html">authentication.js</a>, <a href="authentication.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -303,7 +303,7 @@
 
         
 <div class="param-desc">
-    add result
+    unique user token
 </div>
 
 
@@ -314,7 +314,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="Datastore.html#.AddResult">Datastore.AddResult</a></span>
+<span class="param-type">string</span>
 
 
     </dd>
@@ -332,7 +332,7 @@
     
 
     
-    <h4 class="name" id="find"><span class="type-signature">(async) </span>find<span class="signature">(selector)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Datastore.html#.EventData">Datastore.EventData</a>>|Object}</span></h4>
+    <h4 class="name" id="validateCredentials"><span class="type-signature">(async) </span>validateCredentials<span class="signature">(username, password)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
     
 
     
@@ -340,7 +340,7 @@
 
 
 <div class="description">
-    Finds event document which satisfies selector
+    Validates account information provided by the user
 </div>
 
 
@@ -376,13 +376,13 @@
 
         <tr>
             
-                <td class="name"><code>selector</code></td>
+                <td class="name"><code>username</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Datastore.html#.EventSelector">Datastore.EventSelector</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -392,7 +392,30 @@
 
             
 
-            <td class="description last">target document selector</td>
+            <td class="description last">username provided by the user</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">password provided by the user</td>
         </tr>
 
     
@@ -433,7 +456,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="datastore_dao_EventDAO.js.html">datastore/dao/EventDAO.js</a>, <a href="datastore_dao_EventDAO.js.html#line37">line 37</a>
+        <a href="authentication.js.html">authentication.js</a>, <a href="authentication.js.html#line43">line 43</a>
     </li></ul></dd>
     
 
@@ -462,7 +485,7 @@
 
         
 <div class="param-desc">
-    found document or error object
+    unique user token if credentials are valid, null otherwise
 </div>
 
 
@@ -473,10 +496,10 @@
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;<a href="Datastore.html#.EventData">Datastore.EventData</a>></span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">undefined</span>
 
 
     </dd>
@@ -494,7 +517,7 @@
     
 
     
-    <h4 class="name" id="remove"><span class="type-signature">(async) </span>remove<span class="signature">(selector)</span><span class="type-signature"> &rarr; {<a href="Datastore.html#.RemoveResult">Datastore.RemoveResult</a>}</span></h4>
+    <h4 class="name" id="validateToken"><span class="type-signature"></span>validateToken<span class="signature">(token)</span><span class="type-signature"> &rarr; {Object|undefined}</span></h4>
     
 
     
@@ -502,7 +525,7 @@
 
 
 <div class="description">
-    Removes event document which satisfies the selector
+    Extract user information form token
 </div>
 
 
@@ -538,13 +561,13 @@
 
         <tr>
             
-                <td class="name"><code>selector</code></td>
+                <td class="name"><code>token</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Datastore.html#.EventSelector">Datastore.EventSelector</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -554,7 +577,7 @@
 
             
 
-            <td class="description last">target document selector</td>
+            <td class="description last">token provided by the user</td>
         </tr>
 
     
@@ -595,7 +618,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="datastore_dao_EventDAO.js.html">datastore/dao/EventDAO.js</a>, <a href="datastore_dao_EventDAO.js.html#line51">line 51</a>
+        <a href="authentication.js.html">authentication.js</a>, <a href="authentication.js.html#line77">line 77</a>
     </li></ul></dd>
     
 
@@ -624,7 +647,7 @@
 
         
 <div class="param-desc">
-    remove result
+    user data if token is valid, null otherwise
 </div>
 
 
@@ -635,189 +658,10 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="Datastore.html#.RemoveResult">Datastore.RemoveResult</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="update"><span class="type-signature">(async) </span>update<span class="signature">(selector, data)</span><span class="type-signature"> &rarr; {<a href="Datastore.html#.UpdateResult">Datastore.UpdateResult</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Updates existing event document(s) that satisfy selector
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>selector</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Datastore.html#.EventSelector">Datastore.EventSelector</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">target document selector</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
 <span class="param-type">Object</span>
+|
 
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">key value pairs which define modifications</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="datastore_dao_EventDAO.js.html">datastore/dao/EventDAO.js</a>, <a href="datastore_dao_EventDAO.js.html#line28">line 28</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    update operation result
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Datastore.html#.UpdateResult">Datastore.UpdateResult</a></span>
+<span class="param-type">undefined</span>
 
 
     </dd>

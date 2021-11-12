@@ -7,7 +7,7 @@
 class Api {
 
     /**
-     * 
+     * Provides list of events that match the filter
      * @param {Object} filter constraints used to filter events
      * @param {number} maxNum of events
      * @returns {Object} list of event objects
@@ -18,7 +18,7 @@ class Api {
     }
 
     /**
-     * 
+     * Provides detailed information about specific event
      * @param {number} eventID event ID number
      * @returns {Object} event object
      */
@@ -28,7 +28,7 @@ class Api {
     }
 
     /**
-     * 
+     * Provides information about specific user
      * @param {number} tag user tag ID
      * @returns {Object} user object
      */
@@ -39,7 +39,7 @@ class Api {
     }
 
     /**
-     * 
+     * Provides information about specific match
      * @param {number} eventId event ID number
      * @param {number} matchID match ID number
      * @returns {Object} match object
@@ -50,7 +50,7 @@ class Api {
     }
 
     /**
-     * 
+     * Handles user registration 
      * @param {Object} userData fields used to register new user
      * @returns {message} success or fail message
      */
@@ -60,7 +60,7 @@ class Api {
     }
 
     /**
-     * 
+     * Handles event registration
      * @param {Object} eventData fields used to register new event
      * @returns {message} success or fail message 
      */
@@ -70,7 +70,7 @@ class Api {
     } 
 
     /**
-     * 
+     * Handles team registration
      * @param {Object} teamData fields used to register new team
      * @returns {message} success or fail message
      */
@@ -80,7 +80,7 @@ class Api {
     }
 
     /**
-     * 
+     * Updates user profile with provided data
      * @param {number} tag user tag ID
      * @param {Object} newData fields used to update existing user
      * @returns {message} success or fail message
@@ -92,7 +92,7 @@ class Api {
     }
 
     /**
-     * 
+     * Adds a new member to a team
      * @param {number} teamID team ID
      * @param {number} tag user tag ID
      * @returns {message} success or fail message
@@ -101,17 +101,9 @@ class Api {
         console.log("Adding new team memeber with username tag to team with teamID.")
         return
     }
+    
     /**
-     * 
-     * @returns {string} token 
-     */
-
-    static async generateToken(){
-        console.log("Generating new token.")
-        return
-    }
-    /**
-     * 
+     * Handles login process
      * @param {Object} loginData fields use to add authentication
      * @returns {message} success or fail 
      */
