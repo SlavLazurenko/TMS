@@ -111,7 +111,40 @@ async function event() {
   console.log(result);
 }
 
-event();
+async function account() {
+  await Datastore.init();
+
+  let result;
+
+  // result = await Datastore.account.findByUsername("Eventski596");
+  // result = await Datastore.account.find();
+  // result = await Datastore.account.add({ username: "newuser", password: "coolpass"});
+  // result = await Datastore.account.update({ username: "newuser"}, {password: "newpass"});
+  // result = await Datastore.account.remove({username: "newuser"});
+
+
+
+  console.log(result);
+}
+
+async function team() {
+  await Datastore.init();
+
+  let result;
+
+  // result = await Datastore.team.add({
+  //   tag: "Power Rangers",
+  //   owner: "Eventski596",
+  //   logo: "/some/logo.png",
+  //   members: ["Eventski596"]
+  // });
+
+  result = await Datastore.team.find({}, { findOne: true, memberDetails: true });
+
+  console.log(result);
+}
+
+team();
 
 /*
 {

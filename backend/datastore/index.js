@@ -2,6 +2,7 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const AccountDao = require('./dao/AccountDAO');
 const EventDao = require('./dao/EventDAO');
+const TeamDao = require('./dao/TeamDAO');
 const UserDao = require('./dao/UserDAO');
 
 /**
@@ -60,6 +61,13 @@ class Datastore {
        * @public
        */
       this.event = new EventDao(db);
+
+      /**
+       * Database access object (DAO) for teams collection
+       * @type {TeamDao}
+       * @public
+       */
+      this.team = new TeamDao(db);
 
     } catch (e) {
       console.log('Connection to MongoDB failed', e);

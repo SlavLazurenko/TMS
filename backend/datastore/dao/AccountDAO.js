@@ -39,6 +39,15 @@ class AccountDao extends Dao {
   }
 
   /**
+   * Finds account which satisfies username
+   * @param {string} username user tag used to search for account
+   * @returns {Datastore.AccountData|{error: Object}} found document or error object
+   */
+  async findByUsername(username) {
+    return this.find({username: username});
+  }
+
+  /**
    * Removes account document which satisfies the selector
    * @param {Datastore.AccountSelector} selector target document selector
    * @returns {Datastore.RemoveResult} remove result

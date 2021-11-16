@@ -20,7 +20,10 @@ module.exports.getInsertedIds = function(error) {
   }, {});
 
   return actualInsertedIds;
-  
+}
+
+module.exports.defaultFindOptions = {
+  findOne: true
 }
 
 // module.exports.sanitizeInsertDocs = function(docs, requiredFields) {

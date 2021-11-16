@@ -32,24 +32,11 @@ class EventDao extends Dao {
   /**
    * Finds event document which satisfies selector
    * @param {Datastore.EventSelector} selector target document selector
+   * @param {FindOptions} [options] regulates format of returned document
    * @returns {Datastore.EventData[]|{error: Object}} found document or error object
    */
-  async find(selector) {
-    try {
-      const result = await this.collection.find(selector).toArray();
-      return result;
-    } catch (e) {
-      return { error: e };
-    }
-  }
-
-  /**
-   * Removes event document which satisfies the selector
-   * @param {Datastore.EventSelector} selector target document selector
-   * @returns {Datastore.RemoveResult} remove result
-   */
-  async remove(selector) {
-    return super.remove(selector);
+  async find(selector, options) {
+    return super.find(selector, options);
   }
 
   async findMatchOf(username) {
@@ -73,6 +60,15 @@ class EventDao extends Dao {
     } catch (e) {
       return { error: e };
     }
+  }
+
+  /**
+   * Removes event document which satisfies the selector
+   * @param {Datastore.EventSelector} selector target document selector
+   * @returns {Datastore.RemoveResult} remove result
+   */
+  async remove(selector) {
+    return super.remove(selector);
   }
 }
 

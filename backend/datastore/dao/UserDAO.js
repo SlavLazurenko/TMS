@@ -34,8 +34,17 @@ class UserDao extends Dao {
    * @param {Datastore.UserSelector} selector target document selector
    * @returns {Datastore.UserData|{error: Object}} found document or error object
    */
-  async find(selector) {
-    return super.find(selector);
+  async find(selector, options = defaultFindOptions) {
+    return super.find(selector, options);
+  }
+
+  /**
+   * Finds user document which satisfies user tag
+   * @param {string} tag username
+   * @returns {Datastore.UserData|{error: Object}} found document or error object
+   */
+  async findByTag(tag) {
+    return this.find({tag: tag});
   }
 
   /**

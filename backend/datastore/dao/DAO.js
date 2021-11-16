@@ -1,4 +1,4 @@
-const { isEmptyObject, getInsertedIds } = require("../utils.js");
+const { isEmptyObject, getInsertedIds, defaultFindOptions } = require("../utils.js");
 
 /**
  * Class for basic communication with MongoDB collection
@@ -63,13 +63,18 @@ class Dao {
   /**
    * Finds document which satisfies selector
    * @param {Object} selector target document selector
-   * @returns {Object|{error: Object}} found document or error object
+   * @param {FindOptions} [options] regulates format of returned document
+   * @returns {Object|Object[]|{error: Object}} found document or error object
    * @pre collection->size() > 0
    * @pre collection->exists(doc|doc->includes(selector))
    */
-  async find(selector) {
+  async find(selector, options = defaultFindOptions) {
     try {
-      const result = await this.collection.findOne(selector);
+      let result;
+      if (options.findOne)
+        result = await this.collection.findOne(selector);
+      else
+        result = await this.collection.find(selector).toArray();
       return result;
     } catch (e) {
       return { error: e };
@@ -100,6 +105,13 @@ class Dao {
 }
 
 module.exports = Dao;
+
+/**
+ * Used to customize return values for find operations
+ * @typedef {Object} FindOptions
+ * @memberof Datastore
+ * @property {boolean} [findOne=true] returns first found document, array otherwise
+ */
 
 /**
  * Used as a return object of remove method
