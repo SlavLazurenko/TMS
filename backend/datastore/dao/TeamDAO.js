@@ -10,18 +10,13 @@ class TeamDao extends Dao {
   constructor() {
     super();
   }
-  
-  injectDB(db) {
-    super.injectDB(db, "teams");
-  }
 
   /**
-   * Adds new team(s) documents to the database
-   * @param  {...Datastore.TeamData} docs team document(s) to be added
-   * @returns {Datastore.AddResult} add result
+   * Initializes connection with collection
+   * @param {Db} db MongoDB Db object
    */
-  async add(...docs) {
-    return super.add(...docs);
+  injectDB(db) {
+    super.injectDB(db, "teams");
   }
 
   /**
@@ -48,16 +43,6 @@ class TeamDao extends Dao {
   }
 
   /**
-   * Updates existing team document(s) that satisfy selector
-   * @param {Datastore.TeamSelector} selector target document selector
-   * @param {Object} data key value pairs which define modifications
-   * @returns {Datastore.UpdateResult} update operation result
-   */
-  async update(selector, data) {
-    return super.update(selector, data);
-  }
-
-  /**
    * Finds team document which satisfies selector
    * @param {Datastore.TeamSelector} selector target document selector
    * @param {Object} [options] regulates format of returned document
@@ -67,6 +52,7 @@ class TeamDao extends Dao {
    */
   async find(selector={}, { findOne = true, memberDetails = true }={}) {
     try {
+      //TODO: call super.find()
       let result;
       if (findOne) {
         result = await this.collection.findOne(selector);
@@ -118,18 +104,48 @@ class TeamDao extends Dao {
   async findByTag(tag, { memberDetails = true }={}) {
     return this.find({tag: tag}, {memberDetails: memberDetails});
   }
-
-  /**
-   * Removes team document which satisfies the selector
-   * @param {Datastore.TeamSelector} selector target document selector
-   * @returns {Datastore.RemoveResult} remove result
-   */
-  async remove(selector) {
-    return super.remove(selector);
-  }
 }
 
 module.exports = new TeamDao();
+
+/**********************************************/
+/************* INHERITED METHODS **************/
+/**********************************************/
+
+/**
+ * Adds new team(s) documents to the database
+ * @name Datastore.TeamDao#add
+ * @function
+ * @async
+ * @override
+ * @param  {...Datastore.TeamData} docs team document(s) to be added
+ * @returns {Datastore.AddResult} add result
+ */
+
+/**
+ * Updates existing team document(s) that satisfy selector
+ * @name Datastore.TeamDao#update
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.TeamSelector} selector target document selector
+ * @param {Object} data key value pairs which define modifications
+ * @returns {Datastore.UpdateResult} update operation result
+ */
+
+/**
+ * Removes team document which satisfies the selector
+ * @name Datastore.TeamDao#remove
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.TeamSelector} selector target document selector
+ * @returns {Datastore.RemoveResult} remove result
+ */
+
+/**********************************************/
+/************** DATA STRUCTURES ***************/
+/**********************************************/
 
 /**
  * Used to specify target document in teams collection to execute different operations against
