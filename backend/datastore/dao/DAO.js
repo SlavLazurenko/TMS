@@ -1,21 +1,26 @@
-const { isEmptyObject, getInsertedIds, defaultFindOptions } = require("../utils.js");
+const { isEmptyObject, getInsertedIds } = require("../utils.js");
 
 /**
  * Class for basic communication with MongoDB collection
  * @memberof Datastore
  */
 class Dao {
-  /**
-   * Initializes Dao object
-   * @param {Db} db MongoDB Db object
-   * @param {string} collection collection name
-   */
-  constructor(db, collection) {
+
+  constructor() {
     /**
      * MongoDB collection reference 
      * @type {Collection}
      * @private
      */
+    this.collection = null;
+  }
+
+  /**
+   * Initializes Dao collection (must be called before using the object!)
+   * @param {Db} db MongoDB Db object
+   * @param {string} collection collection name
+   */
+  injectDB(db, collection) {
     this.collection = db.collection(collection);
   }
 
@@ -63,15 +68,16 @@ class Dao {
   /**
    * Finds document which satisfies selector
    * @param {Object} selector target document selector
-   * @param {FindOptions} [options] regulates format of returned document
+   * @param {Object} [options] regulates format of returned document
+   * @param {boolean} [options.findOne=true] returns first found document, array otherwise
    * @returns {Object|Object[]|{error: Object}} found document or error object
    * @pre collection->size() > 0
    * @pre collection->exists(doc|doc->includes(selector))
    */
-  async find(selector, options = defaultFindOptions) {
+  async find(selector, { findOne = true }={}) {
     try {
       let result;
-      if (options.findOne)
+      if (findOne)
         result = await this.collection.findOne(selector);
       else
         result = await this.collection.find(selector).toArray();

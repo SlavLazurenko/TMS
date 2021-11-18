@@ -1,9 +1,18 @@
 const Dao = require("./DAO");
 const UserDao = require("./UserDAO");
 
+/**
+ * Class for communicating with teams collection in MongoDB
+ * @extends Dao
+ * @memberof Datastore
+ */
 class TeamDao extends Dao {
-  constructor(db) {
-    super(db, "teams");
+  constructor() {
+    super();
+  }
+  
+  injectDB(db) {
+    super.injectDB(db, "teams");
   }
 
   /**
@@ -13,6 +22,29 @@ class TeamDao extends Dao {
    */
   async add(...docs) {
     return super.add(...docs);
+  }
+
+  /**
+   * Adds user(s) to members array of team document
+   * @param {string} teamTag name of team
+   * @param  {...string} username user tag(s)
+   * @returns {Datastore.UpdateResult} update operation result
+   */
+  async addMember(teamTag, ...username) {
+    try {
+      const result = await this.collection.updateOne(
+        { 
+          tag: teamTag 
+        }, 
+        {
+          $addToSet: { members: { $each: username } }
+        }
+      );
+
+      return { count: result.modifiedCount };
+    } catch (e) {
+      return { error: e, count: 0 };
+    }
   }
 
   /**
@@ -33,20 +65,31 @@ class TeamDao extends Dao {
    * @param {boolean} [options.memberDetails=true] more information in members array
    * @returns {Datastore.TeamData[]|{error: Object}} found documents or error object
    */
-  async find(selector, options = { findOne: true, memberDetails: true }) {
+  async find(selector={}, { findOne = true, memberDetails = true }={}) {
     try {
       let result;
-      if (options.findOne) {
+      if (findOne) {
         result = await this.collection.findOne(selector);
-        if (options.memberDetails)
-          result.members = await this.resolveUsers(result.members);
+
+        if (memberDetails) {
+          const memberDocs = await this.resolveUsers(...result.members);
+          if (!memberDocs.error) {
+            result.members = memberDocs;
+          }
+        }
+
       } else {
         result = await this.collection.find(selector).toArray();
-        if (options.memberDetails) {
+
+        if (memberDetails) {
           result.forEach(async (team) => {
-            team.members = await this.resolveUsers(team.members);
+            const memberDocs = await this.resolveUsers(...team.members);
+            if (!memberDocs.error) {
+              team.members = memberDocs;
+            }
           });
         }
+        
       }
 
       return result;
@@ -62,7 +105,7 @@ class TeamDao extends Dao {
    * @returns {UserData[]} list of users found
    */
   async resolveUsers(...tags) {
-    return UserDao.find({ tag: {$in: tags} }, { findOne: false }).toArray();
+    return UserDao.find({ tag: {$in: tags} }, { findOne: false });
   }
 
   /**
@@ -72,8 +115,8 @@ class TeamDao extends Dao {
    * @param {boolean} [options.memberDetails=true] more information in members array
    * @returns @returns {Datastore.TeamData|{error: Object}} found document or error object
    */
-  async findByTag(tag, options = { memberDetails: true }) {
-    return this.find({tag: tag}, options);
+  async findByTag(tag, { memberDetails = true }={}) {
+    return this.find({tag: tag}, {memberDetails: memberDetails});
   }
 
   /**
@@ -86,7 +129,7 @@ class TeamDao extends Dao {
   }
 }
 
-module.exports = TeamDao;
+module.exports = new TeamDao();
 
 /**
  * Used to specify target document in teams collection to execute different operations against
