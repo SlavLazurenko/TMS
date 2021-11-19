@@ -58,6 +58,7 @@ module.exports = new EventDao();
  * Adds new event(s) documents to the database
  * @name Datastore.EventDao#add
  * @function
+ * @async
  * @override
  * @param  {...Datastore.EventData} docs event document(s) to be added
  * @returns {Datastore.AddResult} add result
@@ -67,6 +68,7 @@ module.exports = new EventDao();
  * Updates existing event document(s) that satisfy selector
  * @name Datastore.EventDao#update
  * @function
+ * @async
  * @override
  * @param {Datastore.EventSelector} selector target document selector
  * @param {Object} data key value pairs which define modifications
@@ -77,6 +79,7 @@ module.exports = new EventDao();
  * Finds event document which satisfies selector
  * @name Datastore.EventDao#find
  * @function
+ * @async
  * @override
  * @param {Datastore.EventSelector} selector target document selector
  * @param {Object} [options] regulates format of returned document
@@ -88,6 +91,7 @@ module.exports = new EventDao();
  * Removes event document which satisfies the selector
  * @name Datastore.EventDao#remove
  * @function
+ * @async
  * @override
  * @param {Datastore.EventSelector} selector target document selector
  * @returns {Datastore.RemoveResult} remove result
