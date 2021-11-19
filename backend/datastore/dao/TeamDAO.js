@@ -48,26 +48,19 @@ class TeamDao extends Dao {
    * @param {Object} [options] regulates format of returned document
    * @param {boolean} [options.findOne=true] returns first found document, array otherwise
    * @param {boolean} [options.memberDetails=true] more information in members array
-   * @returns {Datastore.TeamData[]|{error: Object}} found documents or error object
+   * @returns {Datastore.TeamData|Datastore.TeamData[]|{error: Object}} found documents or error object
    */
   async find(selector={}, { findOne = true, memberDetails = true }={}) {
     try {
-      //TODO: call super.find()
-      let result;
-      if (findOne) {
-        result = await this.collection.findOne(selector);
+      let result = await super.find(selector, {findOne, memberDetails});
 
-        if (memberDetails) {
+      if (memberDetails) {
+        if (findOne) {
           const memberDocs = await this.resolveUsers(...result.members);
           if (!memberDocs.error) {
             result.members = memberDocs;
           }
-        }
-
-      } else {
-        result = await this.collection.find(selector).toArray();
-
-        if (memberDetails) {
+        } else {
           result.forEach(async (team) => {
             const memberDocs = await this.resolveUsers(...team.members);
             if (!memberDocs.error) {
@@ -75,10 +68,9 @@ class TeamDao extends Dao {
             }
           });
         }
-        
       }
-
       return result;
+
     } catch (e) {
       return { error: e };
     }
@@ -102,7 +94,7 @@ class TeamDao extends Dao {
    * @returns @returns {Datastore.TeamData|{error: Object}} found document or error object
    */
   async findByTag(tag, { memberDetails = true }={}) {
-    return this.find({tag: tag}, {memberDetails: memberDetails});
+    return this.find({tag: tag}, { memberDetails });
   }
 }
 

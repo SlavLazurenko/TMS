@@ -64,7 +64,7 @@ module.exports = new UserDao();
  * @param {Datastore.UserSelector} selector target document selector
  * @param {Object} [options] regulates format of returned document
  * @param {boolean} [options.findOne=true] returns first found document, array otherwise
- * @returns {Datastore.UserData|{error: Object}} found document or error object
+ * @returns {Datastore.UserData|Datastore.UserData[]|{error: Object}} found document or error object
  */
 
 /**

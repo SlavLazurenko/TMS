@@ -24,7 +24,7 @@ class AccountDao extends Dao {
    * @returns {Datastore.AccountData|{error: Object}} found document or error object
    */
   async findByUsername(username) {
-    return this.find({username: username});
+    return this.find({username: username}, {findOne: true});
   }
 }
 

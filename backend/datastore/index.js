@@ -62,6 +62,14 @@ class Datastore {
       this.event.injectDB(db);
 
       /**
+       * Database access object (DAO) for match documents in events collection
+       * @type {Datastore.EventDao}
+       * @public
+       */
+      this.match = require("./dao/MatchDAO");
+      this.match.injectDB(db);
+
+      /**
        * Database access object (DAO) for teams collection
        * @type {Datastore.TeamDao}
        * @public

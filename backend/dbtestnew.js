@@ -106,7 +106,17 @@ async function event() {
 
   // result = await Datastore.event.find({participants: "Testuser"}); //events where user participates in
   
-  // result = await Datastore.event.findMatchOf("NewUser#2"); //matches that user participated in
+  result = await Datastore.event.findMatchOf("NewUser#2"); //matches that user participated in
+
+  console.log(result);
+}
+
+async function match() {
+  await Datastore.init();
+
+  let result;
+
+  result = await Datastore.match.find({competitors: "NewUser#3"});
 
   console.log(result);
 }
@@ -146,7 +156,7 @@ async function team() {
   // console.log(result);
 }
 
-team();
+match();
 
 /*
 {

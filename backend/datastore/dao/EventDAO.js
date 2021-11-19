@@ -19,6 +19,24 @@ class EventDao extends Dao {
   }
 
   /**
+   * Finds event document by event id
+   * @param {number} id unique event id
+   * @returns {Datastore.EventData|{error: Object}} found event document or error object
+   */
+  async findById(id) {
+    return this.find({id: id}, { findOne: true });
+  }
+
+  /**
+   * Finds event document by event name
+   * @param {string} name name of the event
+   * @returns {Datastore.EventData|{error: Object}} found event document or error object
+   */
+  async findByName(name) {
+    return this.find({name: name}, { findOne: true });
+  }
+
+  /**
    * Finds matches of a given user
    * TODO: move to separate class: MatchDao
    * @param {string} username unique user tag
@@ -26,18 +44,22 @@ class EventDao extends Dao {
    */
   async findMatchOf(username) {
     try {
-      const events = await this.collection.find(
-        {matches: { $elemMatch: {competitors: username}}}, 
+      console.log(
         {
-          projection: {_id: 0, matches: {$elemMatch: {competitors: username}}}
+        matches: {$elemMatch: {competitors: username}}
+        });
+      const events = await this.collection.find(
+        {matches: { $elemMatch: {competitors: username } }}, 
+        {
+          projection: {_id: 0, id: 1, matches: {$elemMatch: {competitors: username}}}
         }
-      ).toArray();
+      );
 
       let result = [];
 
-      events.forEach(doc => {
+      await events.forEach(doc => {
         doc.matches.forEach(match => {
-          result.push(match);
+          result.push({eventId: doc.id, ...match});
         });
       });
 
@@ -84,7 +106,7 @@ module.exports = new EventDao();
  * @param {Datastore.EventSelector} selector target document selector
  * @param {Object} [options] regulates format of returned document
  * @param {boolean} [options.findOne=true] returns first found document, array otherwise
- * @returns {Datastore.EventData[]|{error: Object}} found document or error object
+ * @returns {Datastore.EventData|Datastore.EventData[]|{error: Object}} found document or error object
  */
 
 /**
