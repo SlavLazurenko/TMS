@@ -1,9 +1,5 @@
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
-const AccountDao = require('./dao/AccountDAO');
-const EventDao = require('./dao/EventDAO');
-const TeamDao = require('./dao/TeamDAO');
-const UserDao = require('./dao/UserDAO');
 
 /**
  * Group of datastore classes
@@ -43,31 +39,35 @@ class Datastore {
       const db = this.client.db("tms");
       /**
        * Database access object (DAO) for users collection
-       * @type {UserDao}
+       * @type {Datastore.UserDao}
        * @public
        */
-      this.user = new UserDao(db);
+      this.user = require('./dao/UserDAO');
+      this.user.injectDB(db);
 
       /**
        * Database access object (DAO) for accounts collection
-       * @type {AccountDao}
+       * @type {Datastore.AccountDao}
        * @public
        */
-      this.account = new AccountDao(db);
+      this.account = require('./dao/AccountDAO');
+      this.account.injectDB(db);
 
       /**
        * Database access object (DAO) for events collection
-       * @type {EventDao}
+       * @type {Datastore.EventDao}
        * @public
        */
-      this.event = new EventDao(db);
+      this.event = require('./dao/EventDAO');
+      this.event.injectDB(db);
 
       /**
        * Database access object (DAO) for teams collection
-       * @type {TeamDao}
+       * @type {Datastore.TeamDao}
        * @public
        */
-      this.team = new TeamDao(db);
+      this.team = require('./dao/TeamDAO');
+      this.team.injectDB(db);
 
     } catch (e) {
       console.log('Connection to MongoDB failed', e);

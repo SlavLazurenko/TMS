@@ -1,28 +1,45 @@
 const Dao = require("./DAO");
 const UserDao = require("./UserDAO");
 
+/**
+ * Class for communicating with teams collection in MongoDB
+ * @extends Dao
+ * @memberof Datastore
+ */
 class TeamDao extends Dao {
-  constructor(db) {
-    super(db, "teams");
+  constructor() {
+    super();
   }
 
   /**
-   * Adds new team(s) documents to the database
-   * @param  {...Datastore.TeamData} docs team document(s) to be added
-   * @returns {Datastore.AddResult} add result
+   * Initializes connection with collection
+   * @param {Db} db MongoDB Db object
    */
-  async add(...docs) {
-    return super.add(...docs);
+  injectDB(db) {
+    super.injectDB(db, "teams");
   }
 
   /**
-   * Updates existing team document(s) that satisfy selector
-   * @param {Datastore.TeamSelector} selector target document selector
-   * @param {Object} data key value pairs which define modifications
+   * Adds user(s) to members array of team document
+   * @param {string} teamTag name of team
+   * @param  {...string} username user tag(s)
    * @returns {Datastore.UpdateResult} update operation result
    */
-  async update(selector, data) {
-    return super.update(selector, data);
+  async addMember(teamTag, ...username) {
+    try {
+      const result = await this.collection.updateOne(
+        { 
+          tag: teamTag 
+        }, 
+        {
+          $addToSet: { members: { $each: username } }
+        }
+      );
+
+      return { count: result.modifiedCount };
+    } catch (e) {
+      return { error: e, count: 0 };
+    }
   }
 
   /**
@@ -33,20 +50,32 @@ class TeamDao extends Dao {
    * @param {boolean} [options.memberDetails=true] more information in members array
    * @returns {Datastore.TeamData[]|{error: Object}} found documents or error object
    */
-  async find(selector, options = { findOne: true, memberDetails: true }) {
+  async find(selector={}, { findOne = true, memberDetails = true }={}) {
     try {
+      //TODO: call super.find()
       let result;
-      if (options.findOne) {
+      if (findOne) {
         result = await this.collection.findOne(selector);
-        if (options.memberDetails)
-          result.members = await this.resolveUsers(result.members);
+
+        if (memberDetails) {
+          const memberDocs = await this.resolveUsers(...result.members);
+          if (!memberDocs.error) {
+            result.members = memberDocs;
+          }
+        }
+
       } else {
         result = await this.collection.find(selector).toArray();
-        if (options.memberDetails) {
+
+        if (memberDetails) {
           result.forEach(async (team) => {
-            team.members = await this.resolveUsers(team.members);
+            const memberDocs = await this.resolveUsers(...team.members);
+            if (!memberDocs.error) {
+              team.members = memberDocs;
+            }
           });
         }
+        
       }
 
       return result;
@@ -62,7 +91,7 @@ class TeamDao extends Dao {
    * @returns {UserData[]} list of users found
    */
   async resolveUsers(...tags) {
-    return UserDao.find({ tag: {$in: tags} }, { findOne: false }).toArray();
+    return UserDao.find({ tag: {$in: tags} }, { findOne: false });
   }
 
   /**
@@ -72,21 +101,51 @@ class TeamDao extends Dao {
    * @param {boolean} [options.memberDetails=true] more information in members array
    * @returns @returns {Datastore.TeamData|{error: Object}} found document or error object
    */
-  async findByTag(tag, options = { memberDetails: true }) {
-    return this.find({tag: tag}, options);
-  }
-
-  /**
-   * Removes team document which satisfies the selector
-   * @param {Datastore.TeamSelector} selector target document selector
-   * @returns {Datastore.RemoveResult} remove result
-   */
-  async remove(selector) {
-    return super.remove(selector);
+  async findByTag(tag, { memberDetails = true }={}) {
+    return this.find({tag: tag}, {memberDetails: memberDetails});
   }
 }
 
-module.exports = TeamDao;
+module.exports = new TeamDao();
+
+/**********************************************/
+/************* INHERITED METHODS **************/
+/**********************************************/
+
+/**
+ * Adds new team(s) documents to the database
+ * @name Datastore.TeamDao#add
+ * @function
+ * @async
+ * @override
+ * @param  {...Datastore.TeamData} docs team document(s) to be added
+ * @returns {Datastore.AddResult} add result
+ */
+
+/**
+ * Updates existing team document(s) that satisfy selector
+ * @name Datastore.TeamDao#update
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.TeamSelector} selector target document selector
+ * @param {Object} data key value pairs which define modifications
+ * @returns {Datastore.UpdateResult} update operation result
+ */
+
+/**
+ * Removes team document which satisfies the selector
+ * @name Datastore.TeamDao#remove
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.TeamSelector} selector target document selector
+ * @returns {Datastore.RemoveResult} remove result
+ */
+
+/**********************************************/
+/************** DATA STRUCTURES ***************/
+/**********************************************/
 
 /**
  * Used to specify target document in teams collection to execute different operations against
