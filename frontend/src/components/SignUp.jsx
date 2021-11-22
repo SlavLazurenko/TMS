@@ -23,12 +23,16 @@ const SignUp = props => {
 
     }
 
-    const signup = () => {
-
-        axios.post('/registerUser', user)
-        .then(res => {console.log(res.data)})
-        // props.signup(user)
-        // props.history.push('/')
+    const signup = (e) => {
+        e.preventDefault();
+        axios.post("http://localhost:3001/registerUser", {message: "Hello"})
+          .then(res => {
+            console.log(`${res.status} ${res.statusText}: ${res.data}`);
+          })
+          .catch(err => {
+            console.log("ERROR");
+            console.log(err);
+          });
         
     }
 
