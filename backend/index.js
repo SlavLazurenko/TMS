@@ -1,24 +1,16 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
+const app = require("./server")
+const Datastore = require('./datastore');
 const port = 3001;
 
-const Datastore = require('../backend/datastore');
+Datastore.init()
+.then(res => {
+    if (res) {
 
-app.use(express.json());
-app.use(cors());
-
-app.get('/get-message', (req, res) => {
-	let count = Math.floor(Math.random() * 100 + 1);
-  res.send(`${count} units`);
-});
-
-app.post("/registerUser", (req, res) => {
-  console.log(req.body);
-  res.send("Server Message");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+    app.listen(port, () => {
+        console.log(`Example app listening at http://localhost:${port}`);
+      });
+}
+    else{
+        console.log("Error: Backend not connected.");
+    }})
 

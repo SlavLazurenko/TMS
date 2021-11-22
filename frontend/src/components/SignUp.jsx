@@ -25,7 +25,9 @@ const SignUp = props => {
 
     const signup = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3001/registerUser", {message: "Hello"})
+
+        
+        axios.post("http://localhost:3001/registerUser", user)
           .then(res => {
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
           })

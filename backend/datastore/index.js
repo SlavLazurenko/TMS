@@ -60,9 +60,11 @@ class Datastore {
        * @public
        */
       this.event = new EventDao(db);
+      return true;
 
     } catch (e) {
       console.log('Connection to MongoDB failed', e);
+      return false;
     }
   }
 

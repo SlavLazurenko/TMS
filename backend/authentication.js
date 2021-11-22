@@ -15,7 +15,7 @@ class Authentication{
      * @param {Object} password 
      * @returns information of the user account
      */
-    storeCredentials(username, password){
+    async storeCredentials(username, password){
         try{
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
             const user = {name: req.body.name, password: hashedPassword}
@@ -33,7 +33,7 @@ class Authentication{
      * @param {Object} password 
      * @returns the user if found or send a message otherwise 
      */
-    validateCredentials(username,password){
+    async validateCredentials(username,password){
         const user = users.find(user => user.name = req.body.name)
         if(user == null) {
            return res.status(400).send('Cannot find user')

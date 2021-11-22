@@ -1,4 +1,5 @@
-
+const Datastore = require('../datastore/index')
+const authentication = require('../authentication')
 /**
  * Class for basic api interfacing with endpoints
  * @memberof Logic
@@ -55,7 +56,7 @@ class Api {
      * @returns {message} success or fail message
      */
     static async registerUser(userData){
-        console.log("Registering new user with userData.")
+        
         return
     }
 
