@@ -106,12 +106,57 @@ async function event() {
 
   // result = await Datastore.event.find({participants: "Testuser"}); //events where user participates in
   
-  // result = await Datastore.event.findMatchOf("NewUser#2"); //matches that user participated in
+  result = await Datastore.event.findMatchOf("NewUser#2"); //matches that user participated in
 
   console.log(result);
 }
 
-event();
+async function match() {
+  await Datastore.init();
+
+  let result;
+
+  result = await Datastore.match.find({competitors: "NewUser#3"});
+
+  console.log(result);
+}
+
+async function account() {
+  await Datastore.init();
+
+  let result;
+
+  // result = await Datastore.account.findByUsername("Eventski596");
+  // result = await Datastore.account.find();
+  // result = await Datastore.account.add({ username: "newuser", password: "coolpass"});
+  // result = await Datastore.account.update({ username: "newuser"}, {password: "newpass"});
+  // result = await Datastore.account.remove({username: "newuser"});
+
+
+
+  console.log(result);
+}
+
+async function team() {
+  await Datastore.init();
+
+  let result;
+
+  // result = await Datastore.team.add({
+  //   tag: "Power Rangers",
+  //   owner: "Eventski596",
+  //   logo: "/some/logo.png",
+  //   members: ["Eventski596"]
+  // });
+
+  result = await Datastore.team.find({});
+
+  // result = await Datastore.team.addMember("Power Rangers", "Testuser");
+
+  // console.log(result);
+}
+
+match();
 
 /*
 {
