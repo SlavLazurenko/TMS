@@ -2,70 +2,64 @@ const Dao = require("./DAO.js");
 
 /**
  * Class for communicating with events collection in MongoDB
- * @extends Dao
+ * @extends Datastore.Dao
  * @memberof Datastore
  */
 class EventDao extends Dao {
-  constructor(db) {
-    super(db, "events");
+  constructor() {
+    super();
   }
 
   /**
-   * Adds new event(s) documents to the database
-   * @param  {...Datastore.EventData} docs event document(s) to be added
-   * @returns {Datastore.AddResult} add result
+   * Initializes connection with collection
+   * @param {Db} db MongoDB Db object
    */
-  async add(...docs) {
-    return super.add(...docs);
+  injectDB(db) {
+    super.injectDB(db, "events");
   }
 
   /**
-   * Updates existing event document(s) that satisfy selector
-   * @param {Datastore.EventSelector} selector target document selector
-   * @param {Object} data key value pairs which define modifications
-   * @returns {Datastore.UpdateResult} update operation result
+   * Finds event document by event id
+   * @param {number} id unique event id
+   * @returns {Datastore.EventData|{error: Object}} found event document or error object
    */
-  async update(selector, data) {
-    return super.update(selector, data);
+  async findById(id) {
+    return this.find({id: id}, { findOne: true });
   }
 
   /**
-   * Finds event document which satisfies selector
-   * @param {Datastore.EventSelector} selector target document selector
-   * @returns {Datastore.EventData[]|{error: Object}} found document or error object
+   * Finds event document by event name
+   * @param {string} name name of the event
+   * @returns {Datastore.EventData|{error: Object}} found event document or error object
    */
-  async find(selector) {
-    try {
-      const result = await this.collection.find(selector).toArray();
-      return result;
-    } catch (e) {
-      return { error: e };
-    }
+  async findByName(name) {
+    return this.find({name: name}, { findOne: true });
   }
 
   /**
-   * Removes event document which satisfies the selector
-   * @param {Datastore.EventSelector} selector target document selector
-   * @returns {Datastore.RemoveResult} remove result
+   * Finds matches of a given user
+   * TODO: move to separate class: MatchDao
+   * @param {string} username unique user tag
+   * @returns {Object[]} list of matches
    */
-  async remove(selector) {
-    return super.remove(selector);
-  }
-
   async findMatchOf(username) {
     try {
-      const events = await this.collection.find(
-        {matches: { $elemMatch: {competitors: username}}}, 
+      console.log(
         {
-          projection: {_id: 0, matches: {$elemMatch: {competitors: username}}}
+        matches: {$elemMatch: {competitors: username}}
+        });
+      const events = await this.collection.find(
+        {matches: { $elemMatch: {competitors: username } }}, 
+        {
+          projection: {_id: 0, id: 1, matches: {$elemMatch: {competitors: username}}}
         }
-      ).toArray();
+      );
 
       let result = [];
 
-      events.forEach(doc => {
+      await events.forEach(doc => {
         doc.matches.forEach(match => {
-          result.push(match);
+          result.push({eventId: doc.id, ...match});
         });
       });
 
@@ -76,7 +70,58 @@ class EventDao extends Dao {
   }
 }
 
-module.exports = EventDao;
+module.exports = new EventDao();
+
+/**********************************************/
+/************* INHERITED METHODS **************/
+/**********************************************/
+
+/**
+ * Adds new event(s) documents to the database
+ * @name Datastore.EventDao#add
+ * @function
+ * @async
+ * @override
+ * @param  {...Datastore.EventData} docs event document(s) to be added
+ * @returns {Datastore.AddResult} add result
+ */
+
+/**
+ * Updates existing event document(s) that satisfy selector
+ * @name Datastore.EventDao#update
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.EventSelector} selector target document selector
+ * @param {Object} data key value pairs which define modifications
+ * @returns {Datastore.UpdateResult} update operation result
+ */
+
+/**
+ * Finds event document which satisfies selector
+ * @name Datastore.EventDao#find
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.EventSelector} selector target document selector
+ * @param {Object} [options] regulates format of returned document
+ * @param {boolean} [options.findOne=true] returns first found document, array otherwise
+ * @returns {Datastore.EventData|Datastore.EventData[]|{error: Object}} found document or error object
+ */
+
+/**
+ * Removes event document which satisfies the selector
+ * @name Datastore.EventDao#remove
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.EventSelector} selector target document selector
+ * @returns {Datastore.RemoveResult} remove result
+ */
+
+/**********************************************/
+/************** DATA STRUCTURES ***************/
+/**********************************************/
 
 /**
  * Used to specify target document in events collection to execute different operations against
