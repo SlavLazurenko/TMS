@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt')
 const datastore = require('./datastore')
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
 /**
  * @memberof DataStore 
  */
@@ -18,8 +20,8 @@ class Authentication{
      */
     async storeCredentials(username, password){
         try{
-            const hashedPassword = await bcrypt.hash(req.body.password, 10)
-            const user = {username: req.body.name, password: hashedPassword}
+            const hashedPassword = await bcrypt.hash(password, 10)
+            const user = {username: username, password: hashedPassword}
            await datastore.account.add(user)
            return true;
           }catch{
@@ -33,21 +35,21 @@ class Authentication{
      * @returns the user if found or send a message otherwise 
      */
     async validateCredentials(username,password){
-        const user = await datastore.account.find()
-        if(user == null) {
-           return 
-        }
         try{
-            if(await bcrypt.compare(req.body.password, user.password)){
-            res.send('Success')
-         }else{
-           res.send('Not Allowed')
+            const user = await datastore.account.findByUsername(username)
+            if(user != null) {
+               if(await bcrypt.compare(password, user.password)){
+                    return this.generateToken({
+                        username: username
+                      })
+               }     
+            }
+            return false;
+        } 
+         catch{
+           return false;
          }
-         }catch{
-            res.status(500).send()
-         }
-        console.log('Validation of user credentials')
-        return 
+       
     }
     /**
      * 
@@ -55,8 +57,7 @@ class Authentication{
      * @returns all the information
      */
     generateToken(userData){
-        console.log('Generaters the user token')
-        return 
+        return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
     }
     /**
      * 
@@ -64,10 +65,14 @@ class Authentication{
      * @returns the information 
      */
     validateToken(token){
-        console.log('Validates the user token')
-        return
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userData) => {
+            if (err) return false
+            return userData
+          })
     }
 }
+
+module.exports = new Authentication();
 
 
 
