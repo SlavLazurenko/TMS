@@ -65,10 +65,16 @@ class Authentication{
      * @returns the information 
      */
     validateToken(token){
+        let userName
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userData) => {
-            if (err) return false
-            return userData
+            if (err){
+                userName = false
+            }
+            else{
+                userName = userData
+            } 
           })
+          return userName;
     }
 }
 
