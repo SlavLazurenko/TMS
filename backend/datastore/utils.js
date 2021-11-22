@@ -20,7 +20,6 @@ module.exports.getInsertedIds = function(error) {
   }, {});
 
   return actualInsertedIds;
-  
 }
 
 // module.exports.sanitizeInsertDocs = function(docs, requiredFields) {

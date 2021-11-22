@@ -6,49 +6,78 @@ const Dao = require("./DAO.js");
  * @memberof Datastore
  */
 class AccountDao extends Dao {
-  constructor(db) {
-    super(db, "accounts");
+  constructor() {
+    super();
   }
-
+  
   /**
-   * Adds new account(s) documents to the database
-   * @param  {...Datastore.AccountData} docs account document(s) to be added
-   * @returns {Datastore.AddResult} add result
+   * Initializes connection with collection
+   * @param {Db} db MongoDB Db object
    */
-  async add(...docs) {
-    return super.add(...docs);
+  injectDB(db) {
+    super.injectDB(db, "accounts");
   }
 
   /**
-   * Updates existing account document(s) that satisfy selector
-   * @param {Datastore.AccountSelector} selector target document selector
-   * @param {Object} data key value pairs which define modifications
-   * @returns {Datastore.UpdateResult} update operation result
-   */
-  async update(selector, data) {
-    return super.update(selector, data);
-  }
-
-  /**
-   * Finds account document which satisfies selector
-   * @param {Datastore.AccountSelector} selector target document selector
+   * Finds account which satisfies username
+   * @param {string} username user tag used to search for account
    * @returns {Datastore.AccountData|{error: Object}} found document or error object
    */
-  async find(selector) {
-    return super.find(selector);
-  }
-
-  /**
-   * Removes account document which satisfies the selector
-   * @param {Datastore.AccountSelector} selector target document selector
-   * @returns {Datastore.RemoveResult} remove result
-   */
-  async remove(selector) {
-    return super.remove(selector);
+  async findByUsername(username) {
+    return this.find({username: username}, {findOne: true});
   }
 }
 
-module.exports = AccountDao;
+module.exports = new AccountDao();
+
+/**********************************************/
+/************* INHERITED METHODS **************/
+/**********************************************/
+
+/**
+ * Adds new account(s) documents to the database
+ * @name Datastore.AccountDao#add
+ * @function
+ * @async
+ * @override
+ * @param  {...Datastore.AccountData} docs account document(s) to be added
+ * @returns {Datastore.AddResult} add result
+ */
+
+/**
+ * Updates existing account document(s) that satisfy selector
+ * @name Datastore.AccountDao#update
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.AccountSelector} selector target document selector
+ * @param {Object} data key value pairs which define modifications
+ * @returns {Datastore.UpdateResult} update operation result
+ */
+
+/**
+ * Finds account document which satisfies selector
+ * @name Datastore.AccountDao#find
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.AccountSelector} selector target document selector
+ * @returns {Datastore.AccountData|{error: Object}} found document or error object
+ */
+
+/**
+ * Removes account document which satisfies the selector
+ * @name Datastore.AccountDao#remove
+ * @function
+ * @async
+ * @override
+ * @param {Datastore.AccountSelector} selector target document selector
+ * @returns {Datastore.RemoveResult} remove result
+ */
+
+/**********************************************/
+/************** DATA STRUCTURES ***************/
+/**********************************************/
 
 /**
  * Used to specify target document in accounts collection to execute different operations against
