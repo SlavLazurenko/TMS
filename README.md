@@ -15,6 +15,7 @@
 1. Create `backend/.env` file:
 ```
 MONGODB_URI=<your_mongodb_uri>
+ACCESS_TOKEN_SECRET=<your_server_token>
 ```
 2. Run the project: `npm run dev` (in project root)
 
