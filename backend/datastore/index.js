@@ -58,6 +58,7 @@ class Datastore {
        * @type {Datastore.EventDao}
        * @public
        */
+
       this.event = require('./dao/EventDAO');
       this.event.injectDB(db);
 
@@ -77,8 +78,11 @@ class Datastore {
       this.team = require('./dao/TeamDAO');
       this.team.injectDB(db);
 
+      return true;
+
     } catch (e) {
       console.log('Connection to MongoDB failed', e);
+      return false;
     }
   }
 

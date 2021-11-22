@@ -1,0 +1,195 @@
+body {
+    background-color: #4B4D51;
+}
+
+.events {
+    max-width: 1000px;
+    margin: 60px auto;
+}
+
+.events .header {
+    display: flex;
+}
+
+.events .header form {
+    display: flex;
+    width: 60%;
+}
+
+.events .header form > input#header-search {
+    border: none;
+
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+
+    font-size: 18px;
+    border-radius: 999px;
+    padding: 10px 0 10px 24px;
+    width: 100%;
+}
+
+.events .header form > button[type=submit] {
+    display: inline-block;
+    text-align: center;
+    border: none;
+
+    background-color: #C34D4D;
+    color: #FFFFFF;
+
+    width: 100px;
+    font-size: 16px;
+    border-radius: 999px;
+    padding: 10px 0;
+    margin-left: -100px;
+}
+
+.events .header form > button[type=submit]:hover {
+    background-color: #be6e6e;
+}
+
+.events .header form > button[type=submit]:focus {
+    outline: 0.16em solid #FFFFFF;
+}
+
+.events .header button.create-event {
+    margin-left: auto;
+    border: none;
+
+    background-color: #48A461;
+    color: #FFFFFF;
+
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 999px;
+}
+
+
+.events .header button.create-event:hover {
+    background-color: #438f57;
+    outline: 0.16em solid #3d814fCA;
+    
+}
+
+.events .header button.create-event:focus {
+    background-color: #48A461;
+    outline: 0.16em solid white;
+}
+
+.events .entries {
+    display: flex;
+    flex-wrap: wrap;
+
+    margin-top: 80px;
+    font-size: 16px;
+}
+
+.events .entries .event {
+    background-color: #CFCFCF;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: auto 100%;
+    width: 20em;
+    margin: 2em;
+    border-radius: 1em;
+    cursor: pointer;
+}
+
+.events .entries .event div.wrapper {
+    position: relative;
+    background-image: linear-gradient(to right, #CFCFCF 30%, transparent);
+    padding: 1.2em;
+    border-radius: inherit;
+    transition: color 0.2s;
+    color: #000000;
+    z-index: 1;
+}
+
+.events .entries .event div.wrapper::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    background-image: linear-gradient(to right, #C34D4D 40%, transparent);
+    z-index: -1;
+    transition: opacity 0.2s linear;
+    opacity: 0;
+}
+
+.events .entries .event:hover div.wrapper::before {
+    opacity: 1;
+}
+
+.events .entries .event:hover div.wrapper {
+    color: #FFFFFF;
+}
+
+.events .entries .event:active div.wrapper {
+    outline: 0.2em solid #FFFFFF;
+}
+
+
+.events .entries .event .name {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.events .entries .event ul.info {
+    padding: 0;
+    margin: 0;
+}
+
+.events .entries .event ul.info > li {
+    list-style:none;
+    display: flex;
+    align-items: center;
+
+    margin: 0.2em 0;
+}
+
+.events .entries .event ul.info > li svg {
+    width: 1.4em;
+}
+
+.events .entries .event ul.info > li.time svg,
+.events .entries .event ul.info > li.participants svg,
+.events .entries .event ul.info > li.duration svg,
+.events .entries .event ul.info > li.discipline svg {
+    fill: none;
+}
+
+.events .entries .event ul.info > li.time svg path {
+    stroke: #000000;
+    transition: stroke 0.2s;
+}
+
+.events .entries .event ul.info > li.participants svg path,
+.events .entries .event ul.info > li.duration svg path,
+.events .entries .event ul.info > li.discipline svg path {
+    fill: #000000;
+    transition: fill 0.2s;
+}
+
+.events .entries .event:hover ul.info > li.time svg path {
+    stroke: #FFFFFF;
+}
+
+.events .entries .event:hover ul.info > li.participants svg path,
+.events .entries .event:hover ul.info > li.duration svg path,
+.events .entries .event:hover ul.info > li.discipline svg path {
+    fill: #FFFFFF;
+}
+
+.events .entries .event ul.info > li.duration svg {
+    padding: 0.12em;
+}
+
+.events .entries .event ul.info > li span {
+    vertical-align: middle;
+
+    margin-left: 0.4em;
+}
+
