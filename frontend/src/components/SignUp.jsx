@@ -1,7 +1,10 @@
 import React, {useState} from "react"
 import "../css/SignUp.css";
+import axios from "axios";
 
 const SignUp = props => {
+
+    
 
     const initialUserState = {
 
@@ -22,8 +25,11 @@ const SignUp = props => {
 
     const signup = () => {
 
-        props.signup(user)
-        props.history.push("/");
+        axios.post('/registerUser', user)
+        .then(res => {console.log(res.data)})
+        // props.signup(user)
+        // props.history.push('/')
+        
     }
 
     return (
@@ -36,7 +42,7 @@ const SignUp = props => {
                     className="signup-input"  
                     placeholder="Email"
                     id= "email"
-                    require value= {user.email}
+                    value= {user.email}
                     onChange={handleInputChange}
                     name="email"></input>
 
@@ -44,7 +50,7 @@ const SignUp = props => {
                     className="signup-input"
                     placeholder="Username"
                     id= "username"
-                    require value= {user.username}
+                    value= {user.username}
                     onChange={handleInputChange}
                     name="username"></input>
 
@@ -53,7 +59,7 @@ const SignUp = props => {
                     type="password" 
                     placeholder="Password"
                     id= "password"
-                    require value= {user.password}
+                    value= {user.password}
                     onChange={handleInputChange}
                     name="password"></input>
 
@@ -62,7 +68,7 @@ const SignUp = props => {
                     type="password"  
                     placeholder="Confirm Password"
                     id= "confirmpassword"
-                    require value= {user.confirmpassword}
+                    value= {user.confirmpassword}
                     onChange={handleInputChange}
                     name="confirmpassword"></input>
 
