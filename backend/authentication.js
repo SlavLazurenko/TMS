@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const datastore = require('./datastore')
 /**
  * @memberof DataStore 
  */
@@ -18,14 +19,12 @@ class Authentication{
     async storeCredentials(username, password){
         try{
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
-            const user = {name: req.body.name, password: hashedPassword}
-           users.push(user)
-           res.status(201).send()
+            const user = {username: req.body.name, password: hashedPassword}
+           await datastore.account.add(user)
+           return true;
           }catch{
-            res.status(500).send()
+            return false;
           }
-        console.log('The user credentials')
-        return 
     }
     /**
      * 
@@ -34,9 +33,9 @@ class Authentication{
      * @returns the user if found or send a message otherwise 
      */
     async validateCredentials(username,password){
-        const user = users.find(user => user.name = req.body.name)
+        const user = await datastore.account.find()
         if(user == null) {
-           return res.status(400).send('Cannot find user')
+           return 
         }
         try{
             if(await bcrypt.compare(req.body.password, user.password)){
