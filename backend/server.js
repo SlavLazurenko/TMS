@@ -15,7 +15,8 @@ app.get('/get-message', (req, res) => {
 
 app.post("/registerUser", (req, res) => {
 
-  console.log(req.body);
+  api.registerUser(req.body)
+  // console.log(req.body);
   res.send("Server Message");
 });
 

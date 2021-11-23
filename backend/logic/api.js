@@ -57,7 +57,31 @@ class Api {
      */
     static async registerUser(userData){
         
-        return
+        // Removing confirm password until form validation is implemented
+        delete userData['confirmpassword']
+        
+        let username = {username: userData.username}
+
+        Datastore.account.find(username)
+        .then(value => {
+            if (value == null) {
+                
+                let userCollectionData = {tag: userData.username, email: userData.email, discordTag: ""}
+
+                authentication.storeCredentials(userData.username, userData.password)
+                Datastore.user.add(userCollectionData)
+                console.log("user added")
+
+            }
+            else{
+                console.log("Error: Username already taken.")
+                return false
+            }
+            
+        })
+        .catch(err => console.log(err))
+
+        return true
     }
 
     /**

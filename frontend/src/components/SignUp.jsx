@@ -23,10 +23,12 @@ const SignUp = props => {
 
     }
 
-    const signup = (e) => {
-        e.preventDefault();
 
-        
+    const signup = (e) => {
+
+        e.preventDefault()
+        // Implement Form validation 
+
         axios.post("http://localhost:3001/registerUser", user)
           .then(res => {
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
@@ -35,6 +37,8 @@ const SignUp = props => {
             console.log("ERROR");
             console.log(err);
           });
+        
+        
         
     }
 
