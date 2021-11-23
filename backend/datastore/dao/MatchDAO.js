@@ -59,28 +59,50 @@ class MatchDao extends Dao {
     }
   }
 
-  async find(selector, { eventSelector = {} }={}) {
+  /**
+   * Removes match from matches array of event document
+   * @param {number} eventId id of event where matches will be added
+   * @param {number} matchId id of match in this event
+   * @returns {Datastore.UpdateResult|{error: Object}} update result or error object
+   */
+  async remove(eventId, matchId) {
     try {
-      //TODO: change to aggregate
-      const events = await this.collection.find(
+      const result = await this.collection.updateOne(
         {
-          matches: { $elemMatch: selector }, 
-          ...eventSelector
-        }, 
+          id: eventId
+        },
         {
-          projection: {_id: 0, id: 1, matches: {$elemMatch: selector}}
+          $pull: { matches: { id: matchId } }
         }
       );
 
-      let result = [];
+      return { count: result.modifiedCount };
+    } catch (e) {
+      return { error: e, count: 0 };
+    }
+  }
 
-      await events.forEach(doc => {
-        doc.matches.forEach(match => {
-          result.push({eventId: doc.id, ...match});
-        });
-      });
+  /**
+   * Finds match record
+   * @param {number} eventId id of event where match is located
+   * @param {number} matchId id of match in this event
+   * @returns {Datastore.MatchData|{error: Object}|undefined} match document if found or error object
+   */
+  async find(eventId, matchId) {
+    try {
+      const result = await this.collection.findOne(
+        {
+          id: eventId
+        }, 
+        {
+          projection: { _id: 0, matches: { $elemMatch: { id: matchId } } }
+        }
+      );
 
-      return result;
+      if (result && result.matches && result.matches[0])
+        return result.matches[0];
+      else
+        return null;
     } catch (e) {
       return { error: e };
     }

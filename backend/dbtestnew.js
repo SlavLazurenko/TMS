@@ -118,16 +118,20 @@ async function match() {
 
   // result = await Datastore.match.find({competitors: "NewUser#3"});
 
-  result = await Datastore.match.add(2, 
-    {
-      competitors: ["NewUser#3", "NewUser#2"],
-      result: null
-    },
-    {
-      competitors: ["some1", "some2"],
-      result: [5, 5]
-    }
-  );
+  // result = await Datastore.match.add(2, 
+  //   {
+  //     competitors: ["NewUser#3", "NewUser#2"],
+  //     result: null
+  //   },
+  //   {
+  //     competitors: ["some1", "some2"],
+  //     result: [5, 5]
+  //   }
+  // );
+
+  // result = await Datastore.match.remove(2, 8);
+
+  result = await Datastore.match.find(4, 5);
 
   console.log(result);
 }
