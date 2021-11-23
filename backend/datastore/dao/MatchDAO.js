@@ -67,13 +67,17 @@ class MatchDao extends Dao {
    */
   async update(eventId, matchId, data) {
     try {
+      const setObj = {};
+      for (const field in data) {
+        setObj[`matches.$.${field}`] = data[field];
+      }
       const result = await this.collection.updateOne(
         {
           id: eventId,
           matches: { $elemMatch: { id: matchId } }
         },
         {
-          $set: { "matches.$": data }
+          $set: setObj
         }
       )
 
