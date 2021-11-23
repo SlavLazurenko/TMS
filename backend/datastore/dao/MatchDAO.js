@@ -60,21 +60,22 @@ class MatchDao extends Dao {
   }
 
   /**
-   * Removes match from matches array of event document
-   * @param {number} eventId id of event where matches will be added
-   * @param {number} matchId id of match in this event
-   * @returns {Datastore.UpdateResult|{error: Object}} update result or error object
+   * 
+   * @param {number} eventId 
+   * @param {number} matchId 
+   * @param {Datastore.MatchData} data 
    */
-  async remove(eventId, matchId) {
+  async update(eventId, matchId, data) {
     try {
       const result = await this.collection.updateOne(
         {
-          id: eventId
+          id: eventId,
+          matches: { $elemMatch: { id: matchId } }
         },
         {
-          $pull: { matches: { id: matchId } }
+          $set: { "matches.$": data }
         }
-      );
+      )
 
       return { count: result.modifiedCount };
     } catch (e) {
@@ -108,6 +109,28 @@ class MatchDao extends Dao {
     }
   }
 
+  /**
+   * Removes match from matches array of event document
+   * @param {number} eventId id of event where matches will be added
+   * @param {number} matchId id of match in this event
+   * @returns {Datastore.UpdateResult|{error: Object}} update result or error object
+   */
+   async remove(eventId, matchId) {
+    try {
+      const result = await this.collection.updateOne(
+        {
+          id: eventId
+        },
+        {
+          $pull: { matches: { id: matchId } }
+        }
+      );
+
+      return { count: result.modifiedCount };
+    } catch (e) {
+      return { error: e, count: 0 };
+    }
+  }
 
 }
 

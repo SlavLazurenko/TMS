@@ -131,7 +131,9 @@ async function match() {
 
   // result = await Datastore.match.remove(2, 8);
 
-  result = await Datastore.match.find(4, 5);
+  // result = await Datastore.match.find(4, 5);
+
+  result = await Datastore.match.update(2, 7, { result: [1,2] });
 
   console.log(result);
 }
