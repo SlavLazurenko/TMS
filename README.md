@@ -1,5 +1,7 @@
 # TMS
 
+Tournament Management System - web app for hosting and participating in online competitive events
+_Developent in Progress_
 
 ### Developers
 
