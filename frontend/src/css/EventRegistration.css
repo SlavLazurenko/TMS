@@ -236,7 +236,7 @@ input[type="datetime-local"].date-input:focus{
     transform: translate(-50%, -50%);
 }
 
-input[type="submit"].submit-create-event{
+input[type="button"].submit-create-event{
 
     width: 250px;
     height: 50px;
@@ -248,7 +248,7 @@ input[type="submit"].submit-create-event{
     margin: 30px 0;
 }
 
-input[type="submit"].submit-create-event:active{
+input[type="button"].submit-create-event:active{
 
     background-color: #C34D4D;
     box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);

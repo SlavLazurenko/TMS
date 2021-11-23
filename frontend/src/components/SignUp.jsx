@@ -27,20 +27,28 @@ const SignUp = props => {
     const signup = (e) => {
 
         e.preventDefault()
+        
         // Implement Form validation 
 
         axios.post("http://localhost:3001/registerUser", user)
           .then(res => {
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
+            props.history.push('/login')
+
           })
           .catch(err => {
-            console.log("ERROR");
+            
+            alert(err.response.data)
             console.log(err);
+
           });
-        
-        
+
+          
         
     }
+    
+    
+    
 
     return (
 
@@ -84,9 +92,10 @@ const SignUp = props => {
 
                     <input
                     className="signup-submit" 
-                    type="submit"
+                    type="button"
                     value="Signup"
-                    onClick={signup}/>
+                    onClick={signup}
+                    />
                 </form>
            
             </div>

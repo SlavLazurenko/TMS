@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const api = require('./logic/api')
+const api = require('./logic/api');
+const authentication = require('./authentication');
 
 
 
@@ -16,9 +17,35 @@ app.get('/get-message', (req, res) => {
 app.post("/registerUser", (req, res) => {
 
   api.registerUser(req.body)
-  // console.log(req.body);
-  res.send("Server Message");
+  .then(call => {
+      if (call) {
+    res.status(201)
+    res.send("Account Registered")}
+    else{
+
+    
+    res.status(401)
+    res.send("Username is already taken.")}
+  })
+
 });
+
+app.post('/userLogin', (req, res) => {
+
+  api.authenticateUser(req.body)
+  .then(token => {
+    if(token){
+      res.status(201)
+      res.send(token)
+    }
+    else{
+      res.status(401)
+      res.send("Incorrect Username/Password combination.")
+    }
+  })
+}); 
+
+
 
 
 module.exports = app;

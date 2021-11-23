@@ -79,7 +79,7 @@ input.login-input{
 
 }
 
-input[type="submit"].login-submit{
+input[type="button"].login-submit{
 
     background: #ec5990;
     border: 1px solid black;
@@ -94,7 +94,7 @@ input[type="submit"].login-submit{
 
 }
 
-input[type="submit"].login-submit:hover{
+input[type="button"].login-submit:hover{
 
     background-color: #b3436c;
 }

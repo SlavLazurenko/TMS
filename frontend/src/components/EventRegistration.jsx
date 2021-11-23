@@ -110,7 +110,7 @@ const EventRegistration = props => {
             value={eventData.accessibilityOption}
             onChange={handleInputChange}
             name="accessibilityOption">
-              <option selected value="Public" className="dropdown-option">Public</option>
+              <option defaultValue="Public" className="dropdown-option">Public</option>
               <option value="Private" className="dropdown-option">Private</option>
             </select>
             <select 
@@ -119,7 +119,7 @@ const EventRegistration = props => {
             value={eventData.bracketOption}
             onChange={handleInputChange}
             name="bracketOption">
-              <option selected value="SingleElimination" className="dropdown-option">Single Elimination</option>
+              <option defaultValue="SingleElimination" className="dropdown-option">Single Elimination</option>
               <option value="DoubleElimination" className="dropdown-option">Double Elimination</option>
               <option value="StraightRoundRobin" className="dropdown-option">Straight Round Robin</option>
               <option value="Multilevel" className="dropdown-option">Multilevel</option>
@@ -135,7 +135,7 @@ const EventRegistration = props => {
             max="128"
             ></input>
             <p className="limit-mems">Min: 4 - Max: 128</p>
-            <div classname="date-box">
+            <div className="date-box">
               <div className="date-box-left">
                 <p className="start-tag">Start Date</p>
                 <input 
@@ -156,7 +156,7 @@ const EventRegistration = props => {
               </div>
             </div>
             <input 
-            type="submit" 
+            type="button" 
             value="Create Event"
             className="submit-create-event"
             onClick={eventregistration}></input>

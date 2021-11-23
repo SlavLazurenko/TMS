@@ -1,5 +1,6 @@
 const Datastore = require('../datastore/index')
 const authentication = require('../authentication')
+
 /**
  * Class for basic api interfacing with endpoints
  * @memberof Logic
@@ -61,6 +62,7 @@ class Api {
         delete userData['confirmpassword']
         
         let username = {username: userData.username}
+        let status 
 
         Datastore.account.find(username)
         .then(value => {
@@ -70,18 +72,19 @@ class Api {
 
                 authentication.storeCredentials(userData.username, userData.password)
                 Datastore.user.add(userCollectionData)
-                console.log("user added")
+                status = true
+                console.log(`${userData.username} has been added to the database.`)
 
             }
             else{
                 console.log("Error: Username already taken.")
-                return false
+                status = false
             }
             
         })
         .catch(err => console.log(err))
 
-        return true
+        return status
     }
 
     /**
@@ -141,8 +144,10 @@ class Api {
      * @returns {message} success or fail 
      */
     static async authenticateUser(loginData){  
-        console.log("Verifying if user is authenticated.")
-        return
+    
+        const response = await authentication.validateCredentials(loginData.username, loginData.password)
+    
+        return response
     }
 }
 

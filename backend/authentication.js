@@ -6,10 +6,6 @@ require('dotenv').config();
  * @memberof DataStore 
  */
 class Authentication{
-
-    constructor(){
-        this.users = []
-    }
     
     
     /**
@@ -18,7 +14,7 @@ class Authentication{
      * @param {Object} password 
      * @returns information of the user account
      */
-    async storeCredentials(username, password){
+    static async storeCredentials(username, password){
         try{
             const hashedPassword = await bcrypt.hash(password, 10)
             const user = {username: username, password: hashedPassword}
@@ -34,19 +30,21 @@ class Authentication{
      * @param {Object} password 
      * @returns the user if found or send a message otherwise 
      */
-    async validateCredentials(username,password){
+    static async validateCredentials(username,password){
         try{
             const user = await datastore.account.findByUsername(username)
             if(user != null) {
-               if(await bcrypt.compare(password, user.password)){
-                    return this.generateToken({
+                let temp = await bcrypt.compare(password, user.password)
+               if(temp){
+                    return Authentication.generateToken({
                         username: username
                       })
                }     
             }
             return false;
         } 
-         catch{
+         catch(e){
+             
            return false;
          }
        
@@ -56,7 +54,7 @@ class Authentication{
      * @param {Object} userData the information of the user
      * @returns all the information
      */
-    generateToken(userData){
+    static generateToken(userData){
         return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
     }
     /**
@@ -64,7 +62,7 @@ class Authentication{
      * @param {Object} token the user object
      * @returns the information 
      */
-    validateToken(token){
+    static validateToken(token){
         let userName
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userData) => {
             if (err){
@@ -78,7 +76,7 @@ class Authentication{
     }
 }
 
-module.exports = new Authentication();
+module.exports = Authentication;
 
 
 
