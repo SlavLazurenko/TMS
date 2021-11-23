@@ -15,7 +15,20 @@ class Api {
      */
     static async getEvents(filter, maxNum){
         console.log("Getting maxNum of events using filters.")
-        return 
+
+
+
+        Datastore.event.find({}, findOne(false))
+        .then(value => {
+
+            if (value ==  ){
+
+            }
+            else if (value == null){
+                console.log("No valid matches found")
+            }
+
+        })
     }
 
     /**
