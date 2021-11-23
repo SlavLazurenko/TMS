@@ -12,8 +12,6 @@ Tournament Management System - web app for hosting and participating in online c
 - Carlos Fiallo Reyes
 - [Jorge Burgos](https://github.com/Jburg0304)
 
-- 
-
 ### Usage
 1. Create `backend/.env` file:
 ```
