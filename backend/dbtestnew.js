@@ -156,7 +156,7 @@ async function team() {
   // console.log(result);
 }
 
-match();
+team();
 
 /*
 {
