@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const api = require('./logic/api');
-const authentication = require('./authentication');
 
 
 
@@ -18,11 +17,10 @@ app.post("/registerUser", (req, res) => {
 
   api.registerUser(req.body)
   .then(call => {
-      if (call) {
+      if(call) {
     res.status(201)
     res.send("Account Registered")}
     else{
-
     
     res.status(401)
     res.send("Username is already taken.")}
@@ -44,7 +42,6 @@ app.post('/userLogin', (req, res) => {
     }
   })
 }); 
-
 
 
 

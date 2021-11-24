@@ -64,27 +64,25 @@ class Api {
         let username = {username: userData.username}
         let status 
 
-        Datastore.account.find(username)
-        .then(value => {
-            if (value == null) {
-                
+        const response = await Datastore.account.find(username)
+        if(response == null){
+
                 let userCollectionData = {tag: userData.username, email: userData.email, discordTag: ""}
 
                 authentication.storeCredentials(userData.username, userData.password)
                 Datastore.user.add(userCollectionData)
                 status = true
                 console.log(`${userData.username} has been added to the database.`)
-
-            }
-            else{
-                console.log("Error: Username already taken.")
-                status = false
-            }
-            
-        })
-        .catch(err => console.log(err))
-
+                
+        }
+        else{
+                    console.log("Error: Username already taken.")
+                    status = false
+                    
+                }
+                
         return status
+
     }
 
     /**

@@ -32,6 +32,7 @@ const SignUp = props => {
 
         axios.post("http://localhost:3001/registerUser", user)
           .then(res => {
+              
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
             props.history.push('/login')
 

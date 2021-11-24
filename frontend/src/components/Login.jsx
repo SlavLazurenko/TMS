@@ -5,9 +5,9 @@ import Cookies from 'universal-cookie'
 
 const cookies = new Cookies()
 
-const Login = props => {
+function Login(props) {
 
-
+    
     const initialUserState = {
 
         username: "",
@@ -29,6 +29,8 @@ const Login = props => {
         .then(res => {
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
             cookies.set('access_token', res.data)
+            let result = cookies.get('access_token')
+            props.setToken(result)
             props.history.push('/')
         })
         .catch(err => {
@@ -78,5 +80,7 @@ const Login = props => {
          </div>
     )
 }
+
+
 
 export default Login;
