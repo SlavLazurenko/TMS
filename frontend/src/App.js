@@ -34,7 +34,7 @@ function App() {
               setUsername={setUsername}
             />
           )}/> 
-          <Route path="/event-registration" exact component={() => <EventRegistration />} />
+          <Route path="/event-registration" render={(props) => <EventRegistration {...props}/>} />
           <Route path="/signup" render={(props) => (<SignUp {...props} />)}/>
           <Route path="/logout" render={(props) => (<Logout {...props} unsetAccount={unsetAccount}  />)}/>
         </Switch>

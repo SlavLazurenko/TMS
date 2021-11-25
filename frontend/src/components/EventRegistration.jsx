@@ -52,9 +52,9 @@ const EventRegistration = props => {
 
     eventName: "",
     description: "",
-    accessibilityOption: null,
-    bracketOption: null,
-    numOfParticipants: null,
+    accessibilityOption: "Public",
+    bracketOption: "SingleElimination",
+    numOfParticipants: "",
     startDate: "",
     endDate: ""
 
@@ -71,7 +71,6 @@ const EventRegistration = props => {
 
   const eventregistration = () => {
 
-    props.eventregistration(eventData);
     props.history.push("/");
     
   }
@@ -106,20 +105,18 @@ const EventRegistration = props => {
           <div className="event-right">
             <select 
             className="dropdown"
-            defaultValue=""
             value={eventData.accessibilityOption}
             onChange={handleInputChange}
             name="accessibilityOption">
-              <option defaultValue="Public" className="dropdown-option">Public</option>
+              <option value="Public" className="dropdown-option">Public</option>
               <option value="Private" className="dropdown-option">Private</option>
             </select>
             <select 
             className="dropdown"
-            defaultValue=""
             value={eventData.bracketOption}
             onChange={handleInputChange}
             name="bracketOption">
-              <option defaultValue="SingleElimination" className="dropdown-option">Single Elimination</option>
+              <option value="SingleElimination" className="dropdown-option">Single Elimination</option>
               <option value="DoubleElimination" className="dropdown-option">Double Elimination</option>
               <option value="StraightRoundRobin" className="dropdown-option">Straight Round Robin</option>
               <option value="Multilevel" className="dropdown-option">Multilevel</option>
