@@ -1,0 +1,106 @@
+
+.profile{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  max-width: 1000px;
+  margin: 40px auto;
+}
+
+.profile > .info-block {
+  margin: 20px 30px;
+}
+
+.profile > .info-block.account {
+  
+}
+
+.profile > .info-block > .block-name {
+  font-size: 16px;
+  margin-left: 10px;
+  margin-bottom: 4px;
+  font-weight: 600;
+
+  color: #CFCFCF;
+}
+
+.profile > .info-block > .block {
+  padding: 20px;
+  border-radius: 10px;
+
+  background-color: #CFCFCF;
+  color: #1A1A1A;
+}
+
+.profile > .info-block.account > .block {
+  /* background-color: #C34D4D; */
+}
+
+.profile > .info-block > .block .main {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile > .info-block.account > .block .main img.avatar {
+  height: 80px;
+}
+
+.profile > .info-block.account > .block .main .username {
+  margin: 0 0 0 10px;
+  font-size: 30px;
+  color: #C34D4D;
+}
+
+.profile > .info-block.account > .block table.info td.field {
+  font-size: 16px;
+  font-weight: bold;
+  padding-right: 16px;
+
+  
+}
+
+.profile > .info-block.account > .block table.info td.value {
+  font-size: 16px;
+  color: #6e6e6e;
+  /* font-style: italic; */
+}
+
+.profile > .info-block.team > .block ul.team-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.profile > .info-block.team > .block .team-entry {
+  display: flex;
+  padding: 10px 0;
+}
+
+.profile > .info-block.team > .block .team-entry:not(:last-child) {
+  border-bottom: 1px solid #999999;
+}
+
+.profile > .info-block.team > .block .team-entry img.logo {
+  width: 50px;
+}
+
+.profile > .info-block.team > .block .team-entry .info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+}
+
+.profile > .info-block.team > .block .team-entry .name {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.profile > .info-block.team > .block .team-entry .role {
+  font-weight: 200;
+  font-style: italic;
+
+  color: #6e6e6e;
+}
+
