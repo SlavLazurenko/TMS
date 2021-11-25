@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 
 function Home(props) {
 
@@ -31,6 +31,17 @@ function Home(props) {
         console.log(props.cookies);
       }}>
         See Cookie
+      </button>
+      <button onClick={() => {
+        axios.post("http://localhost:3001/test")
+        .then(res => {
+          console.log(res.status, res.data);
+        })
+        .catch(err => {
+          console.log(err.response.status, err.response.data);
+        });
+      }}>
+        Auth request
       </button>
     </div>
   );
