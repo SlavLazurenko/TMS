@@ -75,11 +75,12 @@
 
 .profile > .info-block.team > .block .team-entry {
   display: flex;
-  padding: 10px 0;
+  padding-top: 10px;
 }
 
 .profile > .info-block.team > .block .team-entry:not(:last-child) {
   border-bottom: 1px solid #999999;
+  padding-bottom: 10px;
 }
 
 .profile > .info-block.team > .block .team-entry img.logo {

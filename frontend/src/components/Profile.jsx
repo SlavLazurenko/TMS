@@ -38,15 +38,15 @@ function Profile() {
             <li className="team-entry">
               <img className="logo" src="/img/team-logo/default-team.png" alt="default team logo" />
               <div className="info">
-                <span className="name">Power Rangers</span>
-                <span className="role">Owner</span>
+                <span className="name">Black Eagle</span>
+                <span className="role">Member</span>
               </div>
             </li>
             <li className="team-entry">
               <img className="logo" src="/img/team-logo/default-team.png" alt="default team logo" />
               <div className="info">
-                <span className="name">Power Rangers</span>
-                <span className="role">Owner</span>
+                <span className="name">Good boys</span>
+                <span className="role">Member</span>
               </div>
             </li>
           </ul>
