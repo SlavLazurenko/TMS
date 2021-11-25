@@ -35,9 +35,18 @@ class Api {
      * @returns {Object} user object
      */
     static async getUser(tag){
-        console.log("Getting user by tag.")
-        return
-        
+        const result = await Datastore.user.findByTag(tag);
+
+        if (result) {
+            delete result._id;
+        }
+        return result;
+    }
+
+    static async getUserTeam(tag) {
+        const result = await Datastore.team.findTeamOf(tag);
+
+        return result.map(({_id, ...other}) => other);
     }
 
     /**

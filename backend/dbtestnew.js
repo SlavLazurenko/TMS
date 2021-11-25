@@ -149,14 +149,16 @@ async function team() {
   //   members: ["Eventski596"]
   // });
 
-  result = await Datastore.team.find({});
+  // result = await Datastore.team.find({});
+
+  result = await Datastore.team.findTeamOf("slav");
 
   // result = await Datastore.team.addMember("Power Rangers", "Testuser");
 
-  // console.log(result);
+  console.log(result);
 }
 
-match();
+team();
 
 /*
 {
