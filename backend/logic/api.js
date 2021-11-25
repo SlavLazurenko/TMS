@@ -36,8 +36,10 @@ class Api {
      */
     static async getUser(tag){
         const result = await Datastore.user.findByTag(tag);
-        delete result._id;
 
+        if (result) {
+            delete result._id;
+        }
         return result;
     }
 

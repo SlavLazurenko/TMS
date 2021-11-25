@@ -50,14 +50,16 @@ function Profile(props) {
             <h3 className="username">{accData.tag}</h3>
           </div>
           <table className="info">
-            <tr>
-              <td className="field">Email:</td>
-              <td className="value">{accData.email || "-"}</td>
-            </tr>
-            <tr>
-              <td className="field">Discord tag:</td>
-              <td className="value">{accData.discordTag || "-"}</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="field">Email:</td>
+                <td className="value">{accData.email || "-"}</td>
+              </tr>
+              <tr>
+                <td className="field">Discord tag:</td>
+                <td className="value">{accData.discordTag || "-"}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

@@ -101,6 +101,7 @@
 .profile > .info-block.team > .block .team-entry .role {
   font-weight: 200;
   font-style: italic;
+  text-transform: capitalize;
 
   color: #6e6e6e;
 }

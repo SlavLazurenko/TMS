@@ -3,10 +3,11 @@ const cors = require('cors');
 const app = express();
 const api = require('./logic/api');
 const auth = require('./authentication.js');
+const cookiesMiddleware = require('universal-cookie-express');
 
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 app.get('/get-message', (req, res) => {
 	let count = Math.floor(Math.random() * 100 + 1);
@@ -17,13 +18,14 @@ app.post("/registerUser", (req, res) => {
 
   api.registerUser(req.body)
   .then(call => {
-      if(call) {
-    res.status(201)
-    res.send("Account Registered")}
-    else{
-    
-    res.status(401)
-    res.send("Username is already taken.")}
+    if(call) {
+      res.status(201)
+      res.send("Account Registered")
+    }
+    else {
+      res.status(401)
+      res.send("Username is already taken.")
+    }
   })
 
 });
@@ -44,8 +46,10 @@ app.post('/userLogin', (req, res) => {
   })
 });
 
+app.use(cookiesMiddleware());
+
 app.use((req, res, next) => {
-  const authToken = req.get("authorization");
+  const authToken = req.universalCookies.get("authToken");
   if (authToken) {
     const userData = auth.validateToken(authToken);
     if (userData) {
@@ -85,6 +89,7 @@ app.get('/get-user/:tag', (req, res) => {
     }
   })
   .catch(err => {
+    console.log(err)
     res.status(500).json({error: "Unknown server error"});
   })
 });
