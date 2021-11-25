@@ -1,9 +1,6 @@
 import React, { useState } from "react"
 import "../css/Login.css";
-import axios from 'axios'
-import Cookies from 'universal-cookie'
-
-const cookies = new Cookies()
+import axios from 'axios';
 
 function Login(props) {
 
@@ -28,9 +25,9 @@ function Login(props) {
         axios.post("http://localhost:3001/userLogin", user)
         .then(res => {
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
-            cookies.set('access_token', res.data)
-            let result = cookies.get('access_token')
-            props.setToken(result)
+            console.log(res.data);
+            props.setAuthToken(res.data.token);
+            props.setUsername(res.data.username);
             props.history.push('/')
         })
         .catch(err => {

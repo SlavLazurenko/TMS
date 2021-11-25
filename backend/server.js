@@ -31,10 +31,11 @@ app.post("/registerUser", (req, res) => {
 app.post('/userLogin', (req, res) => {
 
   api.authenticateUser(req.body)
-  .then(token => {
-    if(token){
+  .then(result => {
+    if(result){
+      console.log(result);
       res.status(201)
-      res.send(token)
+      res.json(result)
     }
     else{
       res.status(401)

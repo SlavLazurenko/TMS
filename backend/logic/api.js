@@ -143,9 +143,12 @@ class Api {
      */
     static async authenticateUser(loginData){  
     
-        const response = await authentication.validateCredentials(loginData.username, loginData.password)
-    
-        return response
+        const response = await authentication.validateCredentials(loginData.username, loginData.password);
+        
+        if (response) {
+            return { username: loginData.username, token: response };
+        }
+        return false;
     }
 }
 
