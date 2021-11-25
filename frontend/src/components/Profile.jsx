@@ -6,11 +6,15 @@ function Profile(props) {
 
   const username = props.match.params.username;
 
+  const status = {
+    
+  }
+
   const [accData, setAccData] = useState({
-    tag: "Slav",
-    email: "vlaaurenko22@gmail.com",
-    discordTag: "I_SlavKing_I#7837",
-    avatar: "/img/avatar/default-user-red.png"
+    // tag: "Slav",
+    // email: "vlaaurenko22@gmail.com",
+    // discordTag: "I_SlavKing_I#7837",
+    // avatar: "/img/avatar/default-user-red.png"
   });
   const [teams, setTeams] = useState([
     {
@@ -27,41 +31,24 @@ function Profile(props) {
     }
   ]);
 
-  useEffect(() => {
-    axios.get(`http://localhost:3001/get-user/${username}`)
-    .then(res => {
-      console.log("Hello", res.status, res.data);
-      setAccData(res.data.account);
-      setTeams(res.data.teams);
-    })
-    .catch(err => {
-      console.log(err);
-      console.log(err.response.status, err.response.data);
-    });
-  }, [username]);
+  // useEffect(() => {
+  //   axios.get(`http://localhost:3001/get-user/${username}`)
+  //   .then(res => {
+  //     console.log("Hello", res.status, res.data);
+  //     setAccData(res.data.account);
+  //     setTeams(res.data.teams);
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //     console.log(err.response.status, err.response.data);
+  //   });
+  // }, [username]);
 
   return (
     <div className="profile">
       <div className="info-block account">
         <h2 className="block-name">Account Information</h2>
-        <div className="block">
-          <div className="main">
-            <img className="avatar" src={accData.avatar || "/img/avatar/default-user-red.png"} alt="user avatar" />
-            <h3 className="username">{accData.tag}</h3>
-          </div>
-          <table className="info">
-            <tbody>
-              <tr>
-                <td className="field">Email:</td>
-                <td className="value">{accData.email || "-"}</td>
-              </tr>
-              <tr>
-                <td className="field">Discord tag:</td>
-                <td className="value">{accData.discordTag || "-"}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <AccountBlock accountData={accData} />
       </div>
       <div className="info-block team">
         <h2 className="block-name">Teams</h2>
@@ -83,6 +70,41 @@ function Profile(props) {
       </div>
     </div>
   );
+}
+
+const AccountBlock = (props) => {
+  const {accountData} = props;
+  if (accountData && accountData.tag) {
+    return (
+      <div className="block">
+        <div className="main">
+          <img className="avatar" src={accountData.avatar || "/img/avatar/default-user-red.png"} alt="user avatar" />
+          <h3 className="username">{accountData.tag}</h3>
+        </div>
+        <table className="info">
+          <tbody>
+            <tr>
+              <td className="field">Email:</td>
+              <td className="value">{accountData.email || "-"}</td>
+            </tr>
+            <tr>
+              <td className="field">Discord tag:</td>
+              <td className="value">{accountData.discordTag || "-"}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+  else {
+    return (
+      <div className="block">
+        <div className="loading">
+          Loading...
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Profile;
