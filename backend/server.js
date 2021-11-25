@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const api = require('./logic/api');
-
+const auth = require('./authentication.js');
 
 
 app.use(express.json());
@@ -42,7 +42,27 @@ app.post('/userLogin', (req, res) => {
       res.send("Incorrect Username/Password combination.")
     }
   })
-}); 
+});
+
+app.use((req, res, next) => {
+  const authToken = req.get("authorization");
+  if (authToken) {
+    const userData = auth.validateToken(authToken);
+    if (userData) {
+      if (userData.username) {
+        req.body.username = userData.username;
+        return next();
+      }
+      return res.status(403).json({ error: 'Invalid data in token!' });
+    }
+    return res.status(403).json({ error: 'Invalid token!' });
+  }
+  return res.status(403).json({ error: 'No credentials sent!' });
+})
+
+app.post('/test', (req, res) => {
+  res.status(200).json({ message: 'Success!', user: req.body.username });
+});
 
 
 

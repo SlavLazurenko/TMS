@@ -17,11 +17,14 @@ function Navigation(props) {
               <span>Events</span>
             </Link>
           </li>
+
+          { props.username &&   //LOGGED IN
           <li className={`link ${ props.location.pathname === "/profile" ? "active" : "" }`}>
             <Link to="/profile">
               <span>Profile</span>
             </Link>
           </li>
+          }
 
           { !props.username &&  //NOT LOGGED IN
           <li className={`link ${ props.location.pathname === "/login" ? "active" : "" }`}>
