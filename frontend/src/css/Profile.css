@@ -40,7 +40,6 @@
 .profile > .info-block > .block .main {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .profile > .info-block.account > .block .main img.avatar {
@@ -52,6 +51,11 @@
   font-size: 30px;
   color: #C34D4D;
 }
+
+.profile > .info-block.account > .block table.info {
+  margin-top: 20px;
+}
+
 
 .profile > .info-block.account > .block table.info td.field {
   font-size: 16px;

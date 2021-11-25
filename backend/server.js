@@ -48,25 +48,18 @@ app.post('/userLogin', (req, res) => {
 
 app.use(cookiesMiddleware());
 
-app.use((req, res, next) => {
+app.use((req, res, next) => {   //AUTHENTICATE USER
   const authToken = req.universalCookies.get("authToken");
   if (authToken) {
     const userData = auth.validateToken(authToken);
     if (userData) {
       if (userData.username) {
         req.body.username = userData.username;
-        return next();
       }
-      return res.status(403).json({ error: 'Invalid data in token!' });
     }
-    return res.status(403).json({ error: 'Invalid token!' });
   }
-  return res.status(401).json({ error: 'No credentials sent!' });
+  next();
 })
-
-app.post('/test', (req, res) => {
-  res.status(200).json({ message: 'Success!', user: req.body.username });
-});
 
 app.get('/get-user/:tag', (req, res) => {
   Promise.all([
@@ -82,6 +75,9 @@ app.get('/get-user/:tag', (req, res) => {
           return {...team, role: (team.owner == req.params.tag) ? "owner" : "member"}
         });
       }
+      if (userData.account.tag != req.body.username) {
+        delete userData.account.email;  //HIDE EMAIL
+      }
       res.status(200).json(userData);
     }
     else {
@@ -94,6 +90,15 @@ app.get('/get-user/:tag', (req, res) => {
   })
 });
 
+app.use((req, res, next) => {   //ENFORCE AUTHENTICATION
+  if (!req.body.username) {
+    res.status(401).json({error: "Not authenticated"});
+  }
+  next();
+})
 
+app.post('/test', (req, res) => {
+  res.status(200).json({ message: 'Success!', user: req.body.username });
+});
 
 module.exports = app;
