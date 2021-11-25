@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navigation, Home, Events, Profile, Login, SignUp, EventRegistration, Logout } from "./components";
 import { useCookies } from 'react-cookie';
@@ -22,6 +22,11 @@ function App() {
     delete axios.defaults.headers.common['Authorization'];
   }
 
+  useEffect(() => {
+    if (cookies.authToken)
+      axios.defaults.headers.common['Authorization'] = cookies.authToken;
+  });
+
   return (
     <div className="App">
         <Router>
@@ -29,7 +34,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={() => <Home cookies={cookies} setCookie={setCookie} />} />
           <Route path="/events" exact component={() => <Events />} />
-          <Route path="/profile" exact component={() => <Profile />} />
+          <Route path="/profile/:username" render={(props) => (<Profile {...props} />)}/>
           <Route path="/login" render={(props) => (
             <Login {...props} 
               setAuthToken={setAuthToken} 

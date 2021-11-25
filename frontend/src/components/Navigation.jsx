@@ -19,8 +19,8 @@ function Navigation(props) {
           </li>
 
           { props.username &&   //LOGGED IN
-          <li className={`link ${ props.location.pathname === "/profile" ? "active" : "" }`}>
-            <Link to="/profile">
+          <li className={`link ${ props.location.pathname.includes("/profile") ? "active" : "" }`}>
+            <Link to={`/profile/${props.username}`}>
               <span>Profile</span>
             </Link>
           </li>

@@ -1,7 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "../axiosConfig.js";
 import "../css/Profile.css";
 
-function Profile() {
+function Profile(props) {
+
+  const username = props.match.params.username;
+
+  const [accData, setAccData] = useState({
+    tag: "Slav",
+    email: "vlaaurenko22@gmail.com",
+    discordTag: "I_SlavKing_I#7837",
+    avatar: "/img/avatar/default-user-red.png"
+  });
+  const [teams, setTeams] = useState([
+    {
+      tag: "Power Rangers",
+      role: "owner"
+    },
+    {
+      tag: "Black Eagle",
+      role: "member"
+    },
+    {
+      tag: "Good boys",
+      role: "member"
+    }
+  ]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/get-user/${username}`)
+    .then(res => {
+      console.log("Hello", res.status, res.data);
+      setAccData(res.data.account);
+      setTeams(res.data.teams);
+    })
+    .catch(err => {
+      console.log(err);
+      console.log(err.response.status, err.response.data);
+    });
+  }, [username]);
 
   return (
     <div className="profile">
@@ -9,17 +46,17 @@ function Profile() {
         <h2 className="block-name">Account Information</h2>
         <div className="block">
           <div className="main">
-            <img className="avatar" src="/img/avatar/default-user-red.png" alt="default user avatar" />
-            <h3 className="username">Slav</h3>
+            <img className="avatar" src={accData.avatar || "/img/avatar/default-user-red.png"} alt="user avatar" />
+            <h3 className="username">{accData.tag}</h3>
           </div>
           <table className="info">
             <tr>
               <td className="field">Email:</td>
-              <td className="value">vlazurenko22@gmail.com</td>
+              <td className="value">{accData.email || "-"}</td>
             </tr>
             <tr>
               <td className="field">Discord tag:</td>
-              <td className="value">I_SlavKing_I#7837</td>
+              <td className="value">{accData.discordTag || "-"}</td>
             </tr>
           </table>
         </div>
@@ -28,27 +65,17 @@ function Profile() {
         <h2 className="block-name">Teams</h2>
         <div className="block">
           <ul className="team-list">
-            <li className="team-entry">
-              <img className="logo" src="/img/team-logo/default-team.png" alt="default team logo" />
-              <div className="info">
-                <span className="name">Power Rangers</span>
-                <span className="role">Owner</span>
-              </div>
-            </li>
-            <li className="team-entry">
-              <img className="logo" src="/img/team-logo/default-team.png" alt="default team logo" />
-              <div className="info">
-                <span className="name">Black Eagle</span>
-                <span className="role">Member</span>
-              </div>
-            </li>
-            <li className="team-entry">
-              <img className="logo" src="/img/team-logo/default-team.png" alt="default team logo" />
-              <div className="info">
-                <span className="name">Good boys</span>
-                <span className="role">Member</span>
-              </div>
-            </li>
+            {teams.map((team, index) => {
+              return (
+                <li className="team-entry" key={index}>
+                  <img className="logo" src={team.logo || "/img/team-logo/default-team.png"} alt="team logo" />
+                  <div className="info">
+                    <span className="name">{team.tag}</span>
+                    <span className="role">{team.role}</span>
+                  </div>
+               </li>
+              )
+            })}
           </ul>
         </div>
       </div>

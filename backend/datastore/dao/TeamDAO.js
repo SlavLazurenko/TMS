@@ -96,6 +96,15 @@ class TeamDao extends Dao {
   async findByTag(tag, { memberDetails = true }={}) {
     return this.find({tag: tag}, { memberDetails });
   }
+
+  /**
+   * Finds teams where user is a member
+   * @param {string} username uniques tag of a team member
+   * @returns {Datastore.TeamData[]|{error: Object}} found document or error object
+   */
+  async findTeamOf(username) {
+    return this.find({members: username}, { findOne: false, memberDetails: false });
+  }
 }
 
 module.exports = new TeamDao();

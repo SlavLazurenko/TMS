@@ -57,11 +57,36 @@ app.use((req, res, next) => {
     }
     return res.status(403).json({ error: 'Invalid token!' });
   }
-  return res.status(403).json({ error: 'No credentials sent!' });
+  return res.status(401).json({ error: 'No credentials sent!' });
 })
 
 app.post('/test', (req, res) => {
   res.status(200).json({ message: 'Success!', user: req.body.username });
+});
+
+app.get('/get-user/:tag', (req, res) => {
+  Promise.all([
+    api.getUser(req.params.tag),
+    api.getUserTeam(req.params.tag)
+  ])
+  .then(data => {
+    if (data[0]) {
+      const userData = {};
+      userData.account = data[0];
+      if (data[1]) {
+        userData.teams = data[1].map(team => {
+          return {...team, role: (team.owner == req.params.tag) ? "owner" : "member"}
+        });
+      }
+      res.status(200).json(userData);
+    }
+    else {
+      res.status(404).json({error: `User ${req.params.tag} not found`});
+    }
+  })
+  .catch(err => {
+    res.status(500).json({error: "Unknown server error"});
+  })
 });
 
 
