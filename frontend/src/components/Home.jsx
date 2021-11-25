@@ -28,7 +28,7 @@ function Home(props) {
         Set Cookie
       </button>
       <button onClick={() => {
-        console.log(props.cookies.authToken);
+        console.log(props.cookies);
       }}>
         See Cookie
       </button>
