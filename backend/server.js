@@ -92,7 +92,7 @@ app.get('/get-user/:tag', (req, res) => {
 
 app.use((req, res, next) => {   //ENFORCE AUTHENTICATION
   if (!req.body.username) {
-    res.status(401).json({error: "Not authenticated"});
+    return res.status(401).json({error: "Not authenticated"});
   }
   next();
 })
