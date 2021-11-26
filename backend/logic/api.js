@@ -1,3 +1,5 @@
+const Datastore = require('../datastore/index')
+const authentication = require('../authentication')
 
 /**
  * Class for basic api interfacing with endpoints
@@ -33,9 +35,18 @@ class Api {
      * @returns {Object} user object
      */
     static async getUser(tag){
-        console.log("Getting user by tag.")
-        return
-        
+        const result = await Datastore.user.findByTag(tag);
+
+        if (result) {
+            delete result._id;
+        }
+        return result;
+    }
+
+    static async getUserTeam(tag) {
+        const result = await Datastore.team.findTeamOf(tag);
+
+        return result.map(({_id, ...other}) => other);
     }
 
     /**
@@ -55,8 +66,32 @@ class Api {
      * @returns {message} success or fail message
      */
     static async registerUser(userData){
-        console.log("Registering new user with userData.")
-        return
+        
+        // Removing confirm password until form validation is implemented
+        delete userData['confirmpassword']
+        
+        let username = {username: userData.username}
+        let status 
+
+        const response = await Datastore.account.find(username)
+        if(response == null){
+
+                let userCollectionData = {tag: userData.username, email: userData.email, discordTag: ""}
+
+                authentication.storeCredentials(userData.username, userData.password)
+                Datastore.user.add(userCollectionData)
+                status = true
+                console.log(`${userData.username} has been added to the database.`)
+                
+        }
+        else{
+                    console.log("Error: Username already taken.")
+                    status = false
+                    
+                }
+                
+        return status
+
     }
 
     /**
@@ -108,8 +143,13 @@ class Api {
      * @returns {message} success or fail 
      */
     static async authenticateUser(loginData){  
-        console.log("Verifying if user is authenticated.")
-        return
+    
+        const response = await authentication.validateCredentials(loginData.username, loginData.password);
+        
+        if (response) {
+            return { username: loginData.username, token: response };
+        }
+        return false;
     }
 }
 

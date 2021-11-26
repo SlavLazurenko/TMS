@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 
-function Home() {
+function Home(props) {
 
   const [message, setMessage] = useState("Click to get a random number");
 
@@ -21,6 +21,27 @@ function Home() {
           });
       }}>
         Send Request
+      </button>
+      <button onClick={() => {
+        props.setCookie("authToken", "Hello");
+      }}>
+        Set Cookie
+      </button>
+      <button onClick={() => {
+        console.log(props.cookies);
+      }}>
+        See Cookie
+      </button>
+      <button onClick={() => {
+        axios.post("http://localhost:3001/test")
+        .then(res => {
+          console.log(res.status, res.data);
+        })
+        .catch(err => {
+          console.log(err.response.status, err.response.data);
+        });
+      }}>
+        Auth request
       </button>
     </div>
   );

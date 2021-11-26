@@ -1,19 +1,13 @@
 const bcrypt = require('bcrypt')
-
-/**
- * Classes related to security
- * @namespace Security
- */
+const datastore = require('./datastore')
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
 
 /**
  * Class used by Logic classes to authenticate incoming requests
  * @memberof Security 
  */
 class Authentication{
-
-    constructor() {
-        this.users = []
-    }
     
     /**
      * Save user account data
@@ -21,17 +15,15 @@ class Authentication{
      * @param {Object} password password used to login into account
      * @returns {string} unique user token
      */
-    async storeCredentials(username, password){
+    static async storeCredentials(username, password){
         try{
-            const hashedPassword = await bcrypt.hash(req.body.password, 10)
-            const user = {name: req.body.name, password: hashedPassword}
-            users.push(user)
-            res.status(201).send()
-        } catch {
-            res.status(500).send()
-        }
-        console.log('The user credentials')
-        return 
+            const hashedPassword = await bcrypt.hash(password, 10)
+            const user = {username: username, password: hashedPassword}
+           await datastore.account.add(user)
+           return true;
+          }catch{
+            return false;
+          }
     }
 
     /**
@@ -40,22 +32,25 @@ class Authentication{
      * @param {Object} password password provided by the user
      * @returns {string|undefined} unique user token if credentials are valid, null otherwise
      */
-    async validateCredentials(username,password){
-        const user = users.find(user => user.name = req.body.name)
-        if(user == null) {
-           return res.status(400).send('Cannot find user')
-        }
+
+    static async validateCredentials(username,password){
         try{
-            if(await bcrypt.compare(req.body.password, user.password)){
-            res.send('Success')
-         }else{
-           res.send('Not Allowed')
+            const user = await datastore.account.findByUsername(username)
+            if(user != null) {
+                let temp = await bcrypt.compare(password, user.password)
+               if(temp){
+                    return Authentication.generateToken({
+                        username: username
+                      })
+               }     
+            }
+            return false;
+        } 
+         catch(e){
+             
+           return false;
          }
-         }catch{
-            res.status(500).send()
-         }
-        console.log('Validation of user credentials')
-        return 
+       
     }
 
     /**
@@ -64,9 +59,8 @@ class Authentication{
      * @param {Object} userData data about the user that will be stored inside token
      * @returns {string} unique token which can be used to quickly authenticate
      */
-    generateToken(userData) {
-        console.log('Generates the user token')
-        return 
+    static generateToken(userData){
+        return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
     }
 
     /**
@@ -74,10 +68,18 @@ class Authentication{
      * @param {Object} token token provided by the user
      * @returns {Object|undefined} user data if token is valid, null otherwise
      */
-    validateToken(token) {
-        console.log('Validates the user token')
-        return
+    static validateToken(token){
+        let userName
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userData) => {
+            if (err){
+                userName = false
+            }
+            else{
+                userName = userData
+            } 
+          })
+          return userName;
     }
 }
 
-module.exports= Authentication;
+module.exports = Authentication;
