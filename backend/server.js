@@ -100,34 +100,37 @@ app.get('/get-user/:tag', (req, res) => {
 
 app.post('/eventRegistration', (req, res) => {
 
-  try {                                       
-      if(!req.files) {
-          res.status(401)
-          res.send("No Image was selected");
-      } 
-      else{
 
-          let avatar = req.files.file;
-          avatar.mv('../frontend/public/uploads/' + avatar.name);
+  try {                                             // check if req.body has file before making api req
+    if(!req.files) {
 
-          res.status(200)
-          res.send('Image successfully uploaded');
-      }
+        res.status(401)
+        res.send("Image is required.")
+    } 
+    else{
+
+      
+        let avatar = req.files.file;
+        avatar.mv('../frontend/public/uploads/' + avatar.name);
+
+        api.registerEvent(req.body, req.files)
+        .then(call => {
+          if(call) {
+            res.status(201)
+            res.send("Event Created")
+          }
+          else {
+            res.status(401)
+            res.send("Error: Event Not Created")
+          }
+        })
+    }
   } catch (err) {
-      res.status(500).send(err);
+    res.status(500)
   }
 
-  api.registerEvent(req.body, req.files)
-  .then(call => {
-    if(call) {
-      res.status(201)
-      res.send("Event Created")
-    }
-    else {
-      res.status(401)
-      res.send("Error: Event Not Created")
-    }
-  })
+  
+
 })
 
 

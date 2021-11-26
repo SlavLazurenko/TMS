@@ -101,9 +101,6 @@ class Api {
      */
     static async registerEvent(eventData, fileData){
 
-        // add array fields {array} -> adding participants/matches to state with "[]" was storing as string in db
-        // add route to file : {logo} -> where will we be calling the picture from?
-        
         let count
         await Datastore.event.getCountDocuments()
         .then(res => {count = res})
