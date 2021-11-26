@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import "../css/SignUp.css";
-import axios from "axios";
+import axios from '../axiosConfig.js';
 
 const SignUp = props => {
 
@@ -43,13 +43,9 @@ const SignUp = props => {
             console.log(err);
 
           });
-
-          
-        
+    
     }
-    
-    
-    
+        
 
     return (
 

@@ -108,8 +108,20 @@ class Dao {
       return { error: e, count: 0 };
     }
   }
+
+  async getCountDocuments() {
+    
+    try{
+      const count = await this.collection.count()
+      return count
+    }
+    catch(e){
+      return e
+    }
+
 }
 
+}
 module.exports = Dao;
 
 /**

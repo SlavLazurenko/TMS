@@ -99,9 +99,44 @@ class Api {
      * @param {Object} eventData fields used to register new event
      * @returns {message} success or fail message 
      */
-    static async registerEvent(eventData){
-        console.log("Registering new event with eventData.")
-        return
+    static async registerEvent(eventData, fileData){
+
+        // add array fields {array} -> adding participants/matches to state with "[]" was storing as string in db
+        // add route to file : {logo} -> where will we be calling the picture from?
+        
+        let count
+        await Datastore.event.getCountDocuments()
+        .then(res => {count = res})
+        .catch(err => {console.log(err)})
+
+        count = count + 1
+
+        let form = {
+            id: count,
+            admin: eventData.username,
+            eventName: eventData.eventName,
+            description: eventData.description,
+            accessibilityOption: eventData.accessibilityOption,
+            bracketOption: eventData.bracketOption,
+            numOfParticipants: eventData.numOfParticipants,
+            startDate: eventData.startDate,
+            endDate: eventData.endDate,
+            participants: [],
+            matches: [],
+            logo: "../frontend/public/uploads/"+ fileData.file.name
+            
+        }
+        
+        let status
+
+        const response = await Datastore.event.add(form)
+        if(response){
+            status = true
+        }
+        else{
+            status = false
+        }
+        return status
     } 
 
     /**

@@ -1,5 +1,7 @@
+import axios from "../axiosConfig.js";
 import React, { useState, useRef } from "react";
 import "../css/EventRegistration.css";
+
 
 const Image = ({onFileSelect}) =>{
 
@@ -12,7 +14,10 @@ const Image = ({onFileSelect}) =>{
     if(file){
       const reader = new FileReader();
       reader.addEventListener("load", () => {
+
         setImgData(reader.result);
+        // console.log(file)            // ??? file contents
+        // console.log(reader.result)   // raw data
       })
       reader.readAsDataURL(file);
     }
@@ -57,6 +62,8 @@ const EventRegistration = props => {
     numOfParticipants: "",
     startDate: "",
     endDate: ""
+    // participants: BsonArray,
+    // matches: {"bsonType": "Array"}
 
   }
 
@@ -64,15 +71,33 @@ const EventRegistration = props => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleInputChange = event => {
-
+  
     const{name, value} = event.target;
     setEventData({...eventData, [name]:value});
+  
   }
 
   const eventregistration = () => {
 
-    props.history.push("/");
+    const form = new FormData()
+
+    for(var key in eventData){
+      form.append(key, eventData[key])
+    }
+
+    form.append("file", selectedFile)
     
+    axios.post('http://localhost:3001/eventRegistration', form)
+    .then(res => {
+      console.log(`${res.status} ${res.statusText}: ${res.response}`)
+      props.history.push("/");
+    })
+    .catch(e => {
+      alert(e.response.data)
+      console.log(`${e} ${e.response.data}`)
+    
+    })
+
   }
 
     return (
