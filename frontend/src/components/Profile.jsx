@@ -15,26 +15,8 @@ function Profile(props) {
 
   const [status, setStatus] = useState(states.LOADING);
 
-  const [accData, setAccData] = useState({
-    // tag: "Slav",
-    // email: "vlaaurenko22@gmail.com",
-    // discordTag: "I_SlavKing_I#7837",
-    // avatar: "/img/avatar/default-user-red.png"
-  });
-  const [teams, setTeams] = useState([
-    {
-      tag: "Power Rangers",
-      role: "owner"
-    },
-    {
-      tag: "Black Eagle",
-      role: "member"
-    },
-    {
-      tag: "Good boys",
-      role: "member"
-    }
-  ]);
+  const [accData, setAccData] = useState({});
+  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/get-user/${username}`)

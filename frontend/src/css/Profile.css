@@ -12,10 +12,6 @@
   margin: 20px 30px;
 }
 
-.profile > .info-block.account {
-  
-}
-
 .profile > .info-block > .block-name {
   font-size: 16px;
   margin-left: 10px;
@@ -31,10 +27,6 @@
 
   background-color: #CFCFCF;
   color: #1A1A1A;
-}
-
-.profile > .info-block.account > .block {
-  /* background-color: #C34D4D; */
 }
 
 .profile > .info-block > .block .main {
