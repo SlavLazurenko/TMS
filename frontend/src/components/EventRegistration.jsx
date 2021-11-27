@@ -62,8 +62,6 @@ const EventRegistration = props => {
     numOfParticipants: "",
     startDate: "",
     endDate: ""
-    // participants: BsonArray,
-    // matches: {"bsonType": "Array"}
 
   }
 

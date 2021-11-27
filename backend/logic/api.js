@@ -101,6 +101,7 @@ class Api {
      */
     static async registerEvent(eventData, fileData){
 
+
         let count
         await Datastore.event.getCountDocuments()
         .then(res => {count = res})
@@ -120,7 +121,7 @@ class Api {
             endDate: eventData.endDate,
             participants: [],
             matches: [],
-            logo: "../frontend/public/uploads/"+ fileData.file.name
+            logo: "../frontend/public/img/event-images/"+ fileData.file.name
             
         }
         

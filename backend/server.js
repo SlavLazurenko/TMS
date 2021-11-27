@@ -109,9 +109,17 @@ app.post('/eventRegistration', (req, res) => {
     } 
     else{
 
-      
         let avatar = req.files.file;
-        avatar.mv('../frontend/public/uploads/' + avatar.name);
+        let fileType
+        if(avatar.mimetype == "image/jpeg"){
+            fileType = ".jpg"
+        }
+        if(avatar.mimetype == "image/png"){
+          fileType = ".png"
+        }
+
+        avatar.name = (new Date()).getTime().toString(36) + Math.random().toString(36).slice(2) + fileType
+        avatar.mv('../frontend/public/img/event-images/' + avatar.name);
 
         api.registerEvent(req.body, req.files)
         .then(call => {
