@@ -12,10 +12,6 @@
   margin: 20px 30px;
 }
 
-.profile > .info-block.account {
-  
-}
-
 .profile > .info-block > .block-name {
   font-size: 16px;
   margin-left: 10px;
@@ -33,14 +29,9 @@
   color: #1A1A1A;
 }
 
-.profile > .info-block.account > .block {
-  /* background-color: #C34D4D; */
-}
-
 .profile > .info-block > .block .main {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .profile > .info-block.account > .block .main img.avatar {
@@ -52,6 +43,11 @@
   font-size: 30px;
   color: #C34D4D;
 }
+
+.profile > .info-block.account > .block table.info {
+  margin-top: 20px;
+}
+
 
 .profile > .info-block.account > .block table.info td.field {
   font-size: 16px;
