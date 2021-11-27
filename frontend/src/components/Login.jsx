@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import "../css/Login.css";
-import axios from 'axios';
+import axios from '../axiosConfig.js'
 
 function Login(props) {
 
@@ -35,7 +35,7 @@ function Login(props) {
             alert(err.response.data)
             console.log(err);
 
-          });
+        });
     }
 
     return (
