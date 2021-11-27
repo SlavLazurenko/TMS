@@ -116,6 +116,8 @@ class Api {
             description: eventData.description,
             accessibilityOption: eventData.accessibilityOption,
             bracketOption: eventData.bracketOption,
+            participantType: eventData.participantType,
+            discipline: eventData.discipline,
             numOfParticipants: eventData.numOfParticipants,
             startDate: eventData.startDate,
             endDate: eventData.endDate,

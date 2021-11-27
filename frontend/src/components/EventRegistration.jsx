@@ -59,6 +59,8 @@ const EventRegistration = props => {
     description: "",
     accessibilityOption: "Public",
     bracketOption: "SingleElimination",
+    participantType: "SinglePlay",
+    discipline: "",
     numOfParticipants: "",
     startDate: "",
     endDate: ""
@@ -144,6 +146,21 @@ const EventRegistration = props => {
               <option value="StraightRoundRobin" className="dropdown-option">Straight Round Robin</option>
               <option value="Multilevel" className="dropdown-option">Multilevel</option>
             </select>
+            <select 
+            className="dropdown"
+            value={eventData.participantType}
+            onChange={handleInputChange}
+            name="participantType">
+              <option value="SinglePlay" className="dropdown-option">Single Play</option>
+              <option value="TeamPlay" className="dropdown-option">Team Play</option>
+            </select>
+            <input 
+            type="text"
+            className="name-field registration-input"
+            placeholder="Name of Game"
+            value={eventData.discipline}
+            onChange={handleInputChange}
+            name="discipline"></input>
             <input 
             type="number"
             className="participant-field number-field" 
