@@ -130,7 +130,7 @@ class Api {
         let status
 
         const response = await Datastore.event.add(form)
-        if(response){
+        if(response.count > 0){
             status = true
         }
         else{
