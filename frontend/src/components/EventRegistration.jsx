@@ -27,24 +27,24 @@ const Image = ({onFileSelect}) =>{
 
   return (
          
-           <div 
-            className="img-holder bckg-img" 
-            onClick={() => {
-            document.getElementById("event-logo").click() && fileInput.current && fileInput.current.click()}}
-            >
-              <img  
-              src={imgData} 
-              alt="" 
-              id="img" 
-              className="img" />
-              <input  
-              className="fileUploader fileNone" 
-              type="file" 
-              name="image-upload" 
-              id="event-logo" 
-              accept="image/*" 
-              onChange={onChangePic}/> 
-            </div>
+    <div 
+    className="img-holder bckg-img" 
+    onClick={() => {
+    document.getElementById("event-logo").click() && fileInput.current && fileInput.current.click()}}
+    >
+      <img  
+      src={imgData} 
+      alt="" 
+      id="img" 
+      className="img" />
+      <input  
+      className="fileUploader fileNone" 
+      type="file" 
+      name="image-upload" 
+      id="event-logo" 
+      accept="image/*" 
+      onChange={onChangePic}/> 
+    </div>
         
   )
 }
@@ -55,15 +55,15 @@ const EventRegistration = props => {
 
   const initialEventState = {
 
-    eventName: "",
+    name: "",
     description: "",
-    accessibilityOption: "Public",
-    bracketOption: "SingleElimination",
-    participantType: "SinglePlay",
+    accessibility: "Public",
+    type: "SingleElimination",
+    participant: "SinglePlay",
     discipline: "",
-    numOfParticipants: "",
-    startDate: "",
-    endDate: ""
+    maxParticipants: "",
+    start: "",
+    end: ""
 
   }
 
@@ -90,7 +90,7 @@ const EventRegistration = props => {
     axios.post('http://localhost:3001/eventRegistration', form)
     .then(res => {
       console.log(`${res.status} ${res.statusText}: ${res.response}`)
-      props.history.push("/");
+      props.history.push("/search-event");
     })
     .catch(e => {
       alert(e.response.data)
@@ -111,9 +111,9 @@ const EventRegistration = props => {
             type="text"
             className="name-field registration-input"
             placeholder="Event Name"
-            value={eventData.eventName}
+            value={eventData.name}
             onChange={handleInputChange}
-            name="eventName"></input>
+            name="name"></input>
             <Image
             onFileSelect={(file) => setSelectedFile(file)}
             value={selectedFile}  // this line is here to prevent warning until axios is implemented
@@ -130,17 +130,17 @@ const EventRegistration = props => {
           <div className="event-right">
             <select 
             className="dropdown"
-            value={eventData.accessibilityOption}
+            value={eventData.accessibility}
             onChange={handleInputChange}
-            name="accessibilityOption">
+            name="accessibility">
               <option value="Public" className="dropdown-option">Public</option>
               <option value="Private" className="dropdown-option">Private</option>
             </select>
             <select 
             className="dropdown"
-            value={eventData.bracketOption}
+            value={eventData.type}
             onChange={handleInputChange}
-            name="bracketOption">
+            name="type">
               <option value="SingleElimination" className="dropdown-option">Single Elimination</option>
               <option value="DoubleElimination" className="dropdown-option">Double Elimination</option>
               <option value="StraightRoundRobin" className="dropdown-option">Straight Round Robin</option>
@@ -148,9 +148,9 @@ const EventRegistration = props => {
             </select>
             <select 
             className="dropdown"
-            value={eventData.participantType}
+            value={eventData.participant}
             onChange={handleInputChange}
-            name="participantType">
+            name="participant">
               <option value="SinglePlay" className="dropdown-option">Single Play</option>
               <option value="TeamPlay" className="dropdown-option">Team Play</option>
             </select>
@@ -165,9 +165,9 @@ const EventRegistration = props => {
             type="number"
             className="participant-field number-field" 
             placeholder="Number of Participants"
-            value={eventData.numOfParticipants}
+            value={eventData.maxParticipants}
             onChange={handleInputChange}
-            name="numOfParticipants"
+            name="maxParticipants"
             min="4"
             max="128"
             ></input>
@@ -179,17 +179,17 @@ const EventRegistration = props => {
                 type="datetime-local"
                 className="date-field date-input"
                 placeholder="Start Date"
-                value={eventData.startDate}
+                value={eventData.start}
                 onChange={handleInputChange}
-                name="startDate"></input>
+                name="start"></input>
                 <p className="start-tag">End Date</p>
                 <input
                 type="datetime-local"
                 className="date-field date-input"
                 placeholder="End Date"
-                value={eventData.endDate}
+                value={eventData.end}
                 onChange={handleInputChange}
-                name="endDate"></input>
+                name="end"></input>
               </div>
             </div>
             <input 
