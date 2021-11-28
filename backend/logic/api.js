@@ -14,9 +14,19 @@ class Api {
      * @param {number} maxNum of events
      * @returns {Object} list of event objects
      */
-    static async getEvents(filter, maxNum){
+    static async getEvents(filter, maxNum) {
         console.log("Getting maxNum of events using filters.")
-        return 
+
+        //TEST FILE: backend/apiTest.js
+
+        const eventList = await Datastore.event.find({}, {findOne: false});
+
+        const result = eventList.map(event => {
+            //TODO: return event, but without participants and matches
+            return event;
+        });
+
+        return result;
     }
 
     /**
