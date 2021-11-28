@@ -78,7 +78,7 @@ input.signup-input{
 
 }
 
-input[type="submit"].signup-submit, .button{
+input[type="button"].signup-submit, .button{
 
     background: #ec5990;
     border: 1px solid black;
@@ -93,7 +93,7 @@ input[type="submit"].signup-submit, .button{
 
 }
 
-input[type="submit"].signup-submit:hover{
+input[type="button"].signup-submit:hover{
 
     background-color: #b3436c;
 }

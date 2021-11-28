@@ -1,7 +1,10 @@
 import React, {useState} from "react"
 import "../css/SignUp.css";
+import axios from '../axiosConfig.js';
 
 const SignUp = props => {
+
+    
 
     const initialUserState = {
 
@@ -20,11 +23,29 @@ const SignUp = props => {
 
     }
 
-    const signup = () => {
 
-        props.signup(user)
-        props.history.push("/");
+    const signup = (e) => {
+
+        e.preventDefault()
+        
+        // Implement Form validation 
+
+        axios.post("http://localhost:3001/registerUser", user)
+          .then(res => {
+              
+            console.log(`${res.status} ${res.statusText}: ${res.data}`);
+            props.history.push('/login')
+
+          })
+          .catch(err => {
+            
+            alert(err.response.data)
+            console.log(err);
+
+          });
+    
     }
+        
 
     return (
 
@@ -36,7 +57,7 @@ const SignUp = props => {
                     className="signup-input"  
                     placeholder="Email"
                     id= "email"
-                    require value= {user.email}
+                    value= {user.email}
                     onChange={handleInputChange}
                     name="email"></input>
 
@@ -44,7 +65,7 @@ const SignUp = props => {
                     className="signup-input"
                     placeholder="Username"
                     id= "username"
-                    require value= {user.username}
+                    value= {user.username}
                     onChange={handleInputChange}
                     name="username"></input>
 
@@ -53,7 +74,7 @@ const SignUp = props => {
                     type="password" 
                     placeholder="Password"
                     id= "password"
-                    require value= {user.password}
+                    value= {user.password}
                     onChange={handleInputChange}
                     name="password"></input>
 
@@ -62,15 +83,16 @@ const SignUp = props => {
                     type="password"  
                     placeholder="Confirm Password"
                     id= "confirmpassword"
-                    require value= {user.confirmpassword}
+                    value= {user.confirmpassword}
                     onChange={handleInputChange}
                     name="confirmpassword"></input>
 
                     <input
                     className="signup-submit" 
-                    type="submit"
+                    type="button"
                     value="Signup"
-                    onClick={signup}/>
+                    onClick={signup}
+                    />
                 </form>
            
             </div>

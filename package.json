@@ -19,5 +19,8 @@
   "homepage": "https://github.com/SlavLazurenko/TMS#readme",
   "devDependencies": {
     "concurrently": "^6.3.0"
+  },
+  "dependencies": {
+    "universal-cookie": "^4.0.4"
   }
 }

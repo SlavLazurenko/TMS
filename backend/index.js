@@ -1,13 +1,16 @@
-const express = require('express');
-const app = express();
+const app = require("./server")
+const Datastore = require('./datastore');
 const port = 3001;
 
-app.get('/get-message', (req, res) => {
-	res.header("Access-Control-Allow-Origin", "*");
-	let count = Math.floor(Math.random() * 100 + 1);
-  res.send(`${count} units`);
-});
+Datastore.init()
+.then(res => {
+    if (res) {
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+    app.listen(port, () => {
+        console.log(`Example app listening at http://localhost:${port}`);
+      });
+}
+    else{
+        console.log("Error: Backend not connected.");
+    }})
+

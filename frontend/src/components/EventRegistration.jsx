@@ -1,5 +1,7 @@
+import axios from "../axiosConfig.js";
 import React, { useState, useRef } from "react";
 import "../css/EventRegistration.css";
+
 
 const Image = ({onFileSelect}) =>{
 
@@ -12,7 +14,10 @@ const Image = ({onFileSelect}) =>{
     if(file){
       const reader = new FileReader();
       reader.addEventListener("load", () => {
+
         setImgData(reader.result);
+        // console.log(file)            // ??? file contents
+        // console.log(reader.result)   // raw data
       })
       reader.readAsDataURL(file);
     }
@@ -52,9 +57,11 @@ const EventRegistration = props => {
 
     eventName: "",
     description: "",
-    accessibilityOption: null,
-    bracketOption: null,
-    numOfParticipants: null,
+    accessibilityOption: "Public",
+    bracketOption: "SingleElimination",
+    participantType: "SinglePlay",
+    discipline: "",
+    numOfParticipants: "",
     startDate: "",
     endDate: ""
 
@@ -64,16 +71,33 @@ const EventRegistration = props => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleInputChange = event => {
-
+  
     const{name, value} = event.target;
     setEventData({...eventData, [name]:value});
+  
   }
 
   const eventregistration = () => {
 
-    props.eventregistration(eventData);
-    props.history.push("/");
+    const form = new FormData()
+
+    for(var key in eventData){
+      form.append(key, eventData[key])
+    }
+
+    form.append("file", selectedFile)
     
+    axios.post('http://localhost:3001/eventRegistration', form)
+    .then(res => {
+      console.log(`${res.status} ${res.statusText}: ${res.response}`)
+      props.history.push("/");
+    })
+    .catch(e => {
+      alert(e.response.data)
+      console.log(`${e} ${e.response.data}`)
+    
+    })
+
   }
 
     return (
@@ -106,24 +130,37 @@ const EventRegistration = props => {
           <div className="event-right">
             <select 
             className="dropdown"
-            defaultValue=""
             value={eventData.accessibilityOption}
             onChange={handleInputChange}
             name="accessibilityOption">
-              <option selected value="Public" className="dropdown-option">Public</option>
+              <option value="Public" className="dropdown-option">Public</option>
               <option value="Private" className="dropdown-option">Private</option>
             </select>
             <select 
             className="dropdown"
-            defaultValue=""
             value={eventData.bracketOption}
             onChange={handleInputChange}
             name="bracketOption">
-              <option selected value="SingleElimination" className="dropdown-option">Single Elimination</option>
+              <option value="SingleElimination" className="dropdown-option">Single Elimination</option>
               <option value="DoubleElimination" className="dropdown-option">Double Elimination</option>
               <option value="StraightRoundRobin" className="dropdown-option">Straight Round Robin</option>
               <option value="Multilevel" className="dropdown-option">Multilevel</option>
             </select>
+            <select 
+            className="dropdown"
+            value={eventData.participantType}
+            onChange={handleInputChange}
+            name="participantType">
+              <option value="SinglePlay" className="dropdown-option">Single Play</option>
+              <option value="TeamPlay" className="dropdown-option">Team Play</option>
+            </select>
+            <input 
+            type="text"
+            className="name-field registration-input"
+            placeholder="Name of Game"
+            value={eventData.discipline}
+            onChange={handleInputChange}
+            name="discipline"></input>
             <input 
             type="number"
             className="participant-field number-field" 
@@ -135,7 +172,7 @@ const EventRegistration = props => {
             max="128"
             ></input>
             <p className="limit-mems">Min: 4 - Max: 128</p>
-            <div classname="date-box">
+            <div className="date-box">
               <div className="date-box-left">
                 <p className="start-tag">Start Date</p>
                 <input 
@@ -156,7 +193,7 @@ const EventRegistration = props => {
               </div>
             </div>
             <input 
-            type="submit" 
+            type="button" 
             value="Create Event"
             className="submit-create-event"
             onClick={eventregistration}></input>
