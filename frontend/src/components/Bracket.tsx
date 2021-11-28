@@ -7,7 +7,7 @@ const RenderSeed = ({ breakpoint, seed }: RenderSeedProps) => {
       <SeedItem style={{ width: '100%' }}>
         <div>
           <SeedTeam><span>{seed.teams?.[0].name || '-----------'}</span><span>{seed.teams?.[0]?.score || '-'}</span></SeedTeam>
-          <div style={{ height: 1, backgroundColor: '#707070' }}></div>
+          {/* <div style={{ height: 1, backgroundColor: '#707070' }}></div> */}
           <SeedTeam><span>{seed.teams?.[1]?.name || '-----------'}</span><span>{seed.teams?.[1]?.score || '-'}</span></SeedTeam>
         </div>
       </SeedItem>

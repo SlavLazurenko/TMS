@@ -6,7 +6,7 @@ const Datastore = require("./datastore");
 
   let event = await Event.fromId(1);
   await event.initMatches();
-  await event.getBrackets();
+  // await event.getBrackets();
 
-  // console.log(event);
+  console.log(event.matches);
 })();
