@@ -21,10 +21,7 @@ class Api {
 
         const eventList = await Datastore.event.find({}, {findOne: false});
 
-        const result = eventList.map(event => {
-            //TODO: return event, but without participants and matches
-            return event;
-        });
+        const result = eventList.map(({_id, participants, matches, ...event}) => event);
 
         return result;
     }
@@ -122,18 +119,18 @@ class Api {
         let form = {
             id: count,
             admin: eventData.username,
-            eventName: eventData.eventName,
+            name: eventData.name,
             description: eventData.description,
-            accessibilityOption: eventData.accessibilityOption,
-            bracketOption: eventData.bracketOption,
-            participantType: eventData.participantType,
+            accessibility: eventData.accessibility,
+            type: eventData.type,
+            participant: eventData.participant,
             discipline: eventData.discipline,
-            numOfParticipants: eventData.numOfParticipants,
-            startDate: eventData.startDate,
-            endDate: eventData.endDate,
+            maxParticipants: parseInt(eventData.maxParticipants),
+            start: eventData.start,
+            end: eventData.end,
             participants: [],
             matches: [],
-            logo: "../frontend/public/img/event-images/"+ fileData.file.name
+            logo: "/img/event-images/"+ fileData.file.name
             
         }
         
