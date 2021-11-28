@@ -44,6 +44,8 @@ function Event(props) {
 function generateBracket(event) {
   const numStartMatches = event.participants.length / 2;
   const minMatches = Math.pow(2, Math.ceil(Math.log(numStartMatches) / Math.log(2)));
+
+  console.log("matches", minMatches);
   
   let brackets = [];
 
@@ -75,8 +77,11 @@ function generateBracket(event) {
           { name: event.matches[currentIndex].competitors[1] },
         ]
       });
+      currentIndex++;
     }
+    console.log(`round ${i}`, round);
     brackets.push(round);
+    
   }
 
   return brackets;
