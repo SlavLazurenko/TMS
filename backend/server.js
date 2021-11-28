@@ -149,7 +149,7 @@ app.get('/createMatches', async (req, res) => {
   if(event){
     const matches = event.initMatches();
     if(matches){
-      res.send(event.matches)
+      res.json(event)
     }
     else{
       res.status(401);
