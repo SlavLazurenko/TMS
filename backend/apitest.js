@@ -1,20 +1,11 @@
-const { validateCredentials, storeCredentials } = require('./authentication')
-const Datastore = require('./datastore')
-const api = require('./logic/api.js')
+const api = require("./logic/api");
+const Datastore = require("./datastore");
 
-async function validate(){
+async function test() {
+  await Datastore.init();
 
-    await Datastore.init()
-
-    // test = {username: "sagepages", password: "123"}
-    // let result = await validateCredentials(test.username, test.password)
-    let result = await api.getUserTeam("slavi");
-
-    console.log(result)
-
-    // let result = await storeCredentials(test.username, test.password)
-    // console.log(result)
-
+  let result = await api.getEvents("", "");
+  console.log(result);
 }
 
-validate()
+test();
