@@ -1,6 +1,7 @@
 import React from "react";
 import SingleElimination from "./Bracket";
 
+
 function Event(props) {
 
   const eventData = {
@@ -36,8 +37,11 @@ function Event(props) {
 
 
 
+
   return (
-    <SingleElimination rounds={rounds} />
+    <div>
+      <SingleElimination/>
+    </div>
   );
 }
 
