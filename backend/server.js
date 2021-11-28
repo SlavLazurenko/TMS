@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 const api = require('./logic/api');
 const auth = require('./authentication.js');
-const eventAPI = require('./logic/Event');
+const Event = require('./logic/Event');
 const fileUpload = require('express-fileupload');
 const cookiesMiddleware = require('universal-cookie-express');
 
@@ -143,22 +143,24 @@ app.post('/test', (req, res) => {
   res.status(200).json({ message: 'Success!', user: req.body.username });
 });
 
-app.get('/createMatches', async (req, res) => {
-
-  const event = await eventAPI.fromId(1);
+app.get('/createMatches/:eventId', async (req, res) => {
+  const event = await Event.fromId(req.params.eventId);
+  console.log(typeof (req.params.eventId));
   if(event){
     const matches = event.initMatches();
     if(matches){
-      res.json(event)
+      console.log(event);
+      res.status(200).json(event);
     }
     else{
-      res.status(401);
+      res.status(404);
       res.send("Error")
     }
   }
   else{
-    res.status(401)
+    res.status(404)
     res.send("Error")
-  }})
+  }
+})
 
 module.exports = app;

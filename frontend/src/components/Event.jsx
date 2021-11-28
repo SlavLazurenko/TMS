@@ -1,46 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "../axiosConfig.js";
 import SingleElimination from "./Bracket";
+import { useParams } from "react-router-dom";
 
 
 function Event(props) {
 
-  const eventData = {
-    id: 1,
-    name: 'SUPER WOT',
-    admin: 'sagepages',
-    description: 'This event is for absolute savages.',
-    start: '2021-11-29T17:48',
-    end: '2021-12-09T17:48',
-    accessibility: 'Public',
-    type: 'SingleElimination',
-    participant: 'TeamPlay',
-    discipline: 'World of Tanks',
-    maxParticipants: 12,
-    logo: '/img/event-images/kwienhlls2f9i1ghl09.jpg',
-    participants: [ 'sagepages', 'slav', 'luffy', 'bigboy', 'dudu', '111' ],
-    matches: [
-      {
-        id: 1,
-        competitors: [ 'sagepages', 'bigboy' ],
-        result: [ null, null ]
-      },
-      { id: 2, competitors: [ 'dudu', 'slav' ], result: [ null, null ] },
-      { id: 3, competitors: [ '111' ], result: [ null, null ] },
-      { id: 4, competitors: [ 'luffy' ], result: [ null, null ] },
-      { id: 5, competitors: [], result: [ null, null ] },
-      { id: 6, competitors: [], result: [ null, null ] },
-      { id: 7, competitors: [], result: [ null, null ] }
-    ]
-  }
+  const { id } = useParams();
+  
+  const [eventData, setEventData] = useState({});
+  // {
+  //   id: 1,
+  //   name: 'SUPER WOT',
+  //   admin: 'sagepages',
+  //   description: 'This event is for absolute savages.',
+  //   start: '2021-11-29T17:48',
+  //   end: '2021-12-09T17:48',
+  //   accessibility: 'Public',
+  //   type: 'SingleElimination',
+  //   participant: 'TeamPlay',
+  //   discipline: 'World of Tanks',
+  //   maxParticipants: 12,
+  //   logo: '/img/event-images/kwienhlls2f9i1ghl09.jpg',
+  //   participants: [ 'sagepages', 'slav', 'luffy', 'bigboy', 'dudu', '111' ],
+  //   matches: [
+  //     {
+  //       id: 1,
+  //       competitors: [ 'sagepages', 'bigboy' ],
+  //       result: [ null, null ]
+  //     },
+  //     { id: 2, competitors: [ 'dudu', 'slav' ], result: [ null, null ] },
+  //     { id: 3, competitors: [ '111' ], result: [ null, null ] },
+  //     { id: 4, competitors: [ 'luffy' ], result: [ null, null ] },
+  //     { id: 5, competitors: [], result: [ null, null ] },
+  //     { id: 6, competitors: [], result: [ null, null ] },
+  //     { id: 7, competitors: [], result: [ null, null ] }
+  //   ]
+  // }
 
-  const rounds = generateBracket(eventData);
+  const [rounds, setRounds] = useState([]);
 
 
 
 
   return (
     <div>
-      <SingleElimination/>
+      <button onClick={() => {
+        axios.get(`http://localhost:3001/createMatches/${id}`)
+        .then(res => {
+          setEventData(res.data);
+          setRounds(generateBracket(eventData));
+        })
+        .catch(err => {
+          console.log(err)
+        });
+      }}>
+        Get Bracket
+      </button>
+      <SingleElimination rounds={rounds}/>
     </div>
   );
 }
@@ -48,8 +65,6 @@ function Event(props) {
 function generateBracket(event) {
   const numStartMatches = event.participants.length / 2;
   const minMatches = Math.pow(2, Math.ceil(Math.log(numStartMatches) / Math.log(2)));
-
-  console.log("matches", minMatches);
   
   let brackets = [];
 
@@ -83,7 +98,6 @@ function generateBracket(event) {
       });
       currentIndex++;
     }
-    console.log(`round ${i}`, round);
     brackets.push(round);
     
   }

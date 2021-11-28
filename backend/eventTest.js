@@ -4,7 +4,7 @@ const Datastore = require("./datastore");
 (async function() {
   await Datastore.init();
 
-  let event = await Event.fromId(1);
+  let event = await Event.fromId('1');
   await event.initMatches();
   // await event.getBrackets();
 
