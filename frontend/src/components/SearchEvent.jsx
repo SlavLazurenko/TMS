@@ -91,7 +91,7 @@ function DurationInfo(props) {
 
 function EventEntry(props) {
 
-  const { data, handleEventClick } = props;
+  const { data } = props;
   const history = useHistory();
 
   return (
@@ -135,56 +135,6 @@ function EventEntry(props) {
     </div>
   );
 }
-
-
-/*
-const tmpEvents = [
-  {
-    id: 1,
-    name: "Event #1",
-    start: new Date(2021, 9, 20, 18),
-    end: new Date(2021, 9, 22, 18),
-    type: "Double Elimination",
-    participantType: "player",
-    maxParticipants: 32,
-    discipline: "DOTA 2",
-    logo: "dota-2.jpg"
-  },
-  {
-    id: 2,
-    name: "Event #2",
-    start: new Date(2021, 9, 24, 14),
-    end: new Date(2021, 9, 24, 16),
-    type: "Single Elimination",
-    participantType: "team",
-    maxParticipants: 8,
-    discipline: "World of Tanks",
-    logo: "world-of-tanks.jpg"
-  },
-  {
-    id: 3,
-    name: "Event #3",
-    start: new Date(2021, 10, 5, 17),
-    end: new Date(2021, 10, 12, 17),
-    type: "Round Robin",
-    participantType: "team",
-    maxParticipants: 12,
-    discipline: "Soccer",
-    logo: "soccer.jpg"
-  },
-  {
-    id: 4,
-    name: "Event #4",
-    start: new Date(2021, 10, 12, 10),
-    end: new Date(2021, 10, 12, 18),
-    type: "Single Elimination",
-    participantType: "player",
-    maxParticipants: 24,
-    discipline: "Basketball",
-    logo: "basketball.jpg"
-  }
-];
-*/
 
 function Events(props) {
 
