@@ -1,20 +1,12 @@
-const api = require('./logic/api')
-const Datastore = require('./datastore')
 
-let data = {email: "sagep123", username: "luffy4", password: "123", confirmpassword: "123"}
+let date = "2021-11-29T17:48"
+var simple = new simpleDateFormat()
 
 
-async function runSignup(data){
-    
-    await Datastore.init();
-    const response = await api.registerUser(data)
-    if (response){
-        console.log(response)
-    }
-    else{
-        console.log(response)
-    }
-    
+function test(date) {
+
+    var simple = new simpleDateFormat(date)
+    console.log(simple)
 }
 
-runSignup(data)
+test(date)
