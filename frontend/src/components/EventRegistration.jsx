@@ -90,7 +90,7 @@ const EventRegistration = props => {
     axios.post('http://localhost:3001/eventRegistration', form)
     .then(res => {
       console.log(`${res.status} ${res.statusText}: ${res.response}`)
-      props.history.push("/");
+      props.history.push("/search-event");
     })
     .catch(e => {
       alert(e.response.data)

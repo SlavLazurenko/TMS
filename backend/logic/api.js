@@ -21,7 +21,11 @@ class Api {
 
         const eventList = await Datastore.event.find({}, {findOne: false});
 
-        const result = eventList.map(({_id, participants, matches, ...event}) => event);
+        const result = eventList.map(({_id, participants, matches, ...event}) => {
+            event.start = Date.parse(event.start);
+            event.end = Date.parse(event.end);
+            return event;
+        });
 
         return result;
     }
