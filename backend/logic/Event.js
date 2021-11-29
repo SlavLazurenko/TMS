@@ -48,7 +48,7 @@ class Event {
           status: "scheduled",      // statuses: scheduled, inProgress, conflict, completed
           competitors: [],
           result: [null, null],
-          submissions: []
+          submissions: {}
         });
       }
     }
@@ -87,11 +87,7 @@ class Event {
     const matchIndex = id - 1;
     console.log();
     if (this.matches[matchIndex].competitors.includes(username) || username == this.admin) {
-      let form = {
-        origin: username,
-        result: [res1, res2] 
-      }
-      this.matches[matchIndex].submissions.push(form);
+      this.matches[matchIndex].submissions[username] = [res1, res2];
   
       const result = await Datastore.match.update(this.id, id, this.matches[matchIndex]);
       if (result.count > 0) {

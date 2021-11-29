@@ -208,8 +208,15 @@ app.post('/submitResults', async (req, res) => {
   if(event){
 
     const result = await event.addResult(req.body.matchid, req.body.username, req.body.res1, req.body.res2);
-    res.status(200)
-    res.send(result)
+    if (result == "SUCCESS") {
+      res.status(200);
+      res.send(result);
+    }
+    else {
+      res.status(400);
+      res.send(result);
+    }
+
   }
   else{
     
