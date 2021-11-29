@@ -1,17 +1,12 @@
 const axios = require("axios")
-
-function tester(id){
+const Datastore = require("./datastore")
+async function tester(id){
  
-    axios.get('http://localhost:3001/createMatches', id)
-    .then(res => {
-        console.log(`${res.status} ${res.statusText}: ${res.response}`)
-        console.log(res.body)
-      })
-      .catch(e => {
-        console.log(e.response.data)
-        console.log(`${e} ${e.response.data}`)
-      
-      })
+    await Datastore.init();
+    await Datastore.event.update({id: 1}, {status: "temp"})
+    .then(call => {
+      console.log(call)
+    })
 
 }
 

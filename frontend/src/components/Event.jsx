@@ -35,8 +35,6 @@ function Event(props) {
   const { id } = useParams();
   
   const [eventData, setEventData] = useState(defaultEvent);
-
-
   const [rounds, setRounds] = useState(generateBracket(defaultEvent));
 
   return (
@@ -46,13 +44,29 @@ function Event(props) {
         .then(res => {
           setEventData(res.data);
           setRounds(generateBracket(res.data));
+          console.log(res.data)
+          alert("Match is now in progress.")
+          // setEventData(res.data);
         })
         .catch(err => {
+          // alert(err.respone.data)
           console.log(err)
         });
       }}>
-        Get Bracket
+        Create Bracket
       </button>
+      <button onClick={() => {
+        axios.get(`http://localhost:3001/getEvent/${id}`)
+        .then(res => {
+          setEventData(res.data);
+          setRounds(generateBracket(res.data))
+        })
+        .catch(err => {
+          // alert(err.response.data)
+          console.log(err)
+        })
+          
+      }}>Get Bracket</button>
       <MatchList matches={eventData.matches} />
       <SingleElimination rounds={rounds}/>
     </div>
@@ -85,7 +99,7 @@ function MatchList(props) {
 }
 
 function MatchEntry(props) {
-  const { id, status, competitors, result } = props;
+  const { status, competitors, result } = props;
 
   if (competitors.length > 0) {
     return (
