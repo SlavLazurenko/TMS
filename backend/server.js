@@ -54,7 +54,8 @@ app.post('/userLogin', (req, res) => {
 app.use(cookiesMiddleware());
 
 app.use((req, res, next) => {   //AUTHENTICATE USER
-  const authToken = req.universalCookies.get("authToken");
+  const authToken = req.universalCookies.get("authToken")
+  console.log(req.universalCookies);
   if (authToken) {
     const userData = auth.validateToken(authToken);
     if (userData) {
@@ -202,8 +203,6 @@ app.get('/getEvent/:eventId', async (req, res) => {
 app.post('/submitResults', async (req, res) => {
   
   const event = await Event.fromId(req.body.eventid);
-
-  console.log(event)
   
   if(event){
 

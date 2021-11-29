@@ -1,4 +1,4 @@
-const { event } = require('../datastore/');
+const { event, user } = require('../datastore/');
 const Datastore = require('../datastore/');
 
 class Event {
@@ -45,7 +45,7 @@ class Event {
       for (let j = 0; j < i; j++) {
         matches.push({
           id: ++matchId,
-          status: "scheduled",      // statuses: scheduled, inProgress, pending, conflict, completed
+          status: (i == minMatches) ? "inProgress" : "scheduled",      // statuses: scheduled, inProgress, pending, conflict, completed
           competitors: [],
           result: [null, null],
           submissions: {}
@@ -83,13 +83,13 @@ class Event {
 
   }
 
-  async addResult(id, username, res1, res2) {
-    const matchIndex = id - 1;
-    console.log();
-    if (this.matches[matchIndex].competitors.includes(username) || username == this.admin) {
-      this.matches[matchIndex].submissions[username] = [res1, res2];
-  
-      const result = await Datastore.match.update(this.id, id, this.matches[matchIndex]);
+  async addResult(matchId, username, res1, res2) {
+    const match = this.matches[matchId - 1];
+    if (match.competitors.includes(username) || username == this.admin) {
+      match.submissions[username] = [res1, res2];
+      this.updateResult(matchId);
+
+      const result = await Datastore.match.update(this.id, matchId, match);
       if (result.count > 0) {
         return "SUCCESS";
       }
@@ -100,8 +100,55 @@ class Event {
     else {
       return "NOT_AUTHORIZED";
     }
+  }
 
+  async updateResult(matchId) {
+    const match = this.matches[matchId - 1];
+    const sources = Object.keys(match.submissions);
+    const numSubmissions = sources.length;
     
+    if (numSubmissions < 1) {   // THERE ARE NO SUBMISSIONS
+      match.result = [null, null];
+      return;
+    }
+
+    const adminSubmission = match.submissions[this.admin];
+    if (adminSubmission) {      // ADMIN IS ALWAYS RIGHT
+      match.result = adminSubmission;
+      match.status = "completed";
+      return;
+    }
+
+    const bothSubmitted = (
+      sources.includes(match.competitors[0]) &&
+      sources.includes(match.competitors[1])
+    );
+
+    if (bothSubmitted) {    // BOTH SUBMITTED
+      const submitted = [
+        match.submissions[match.competitors[0]],
+        match.submissions[match.competitors[1]]
+      ];
+
+      const resultsEqual = (
+        submitted[0][0] == submitted[1][0] && 
+        submitted[0][1] == submitted[1][1]
+      );
+
+      if (resultsEqual) {     // SAME RESULTS 
+        match.result = submitted[0];
+        match.status = "completed";
+      }
+      else {                  // CONFLICT
+        match.result = [null, null];
+        match.status = "conflict";
+      }
+    }
+    else {      // ONLY ONE SUBMITTED
+      match.result = [null, null];
+      match.status = "pending";
+    }
+
   }
 
 }
