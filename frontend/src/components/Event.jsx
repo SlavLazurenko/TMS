@@ -34,8 +34,8 @@ function Event(props) {
 
   const { id } = useParams();
   
-  const [eventData, setEventData] = useState(defaultEvent);
-  const [rounds, setRounds] = useState(generateBracket(defaultEvent));
+  const [eventData, setEventData] = useState({});
+  const [rounds, setRounds] = useState([]);
 
   return (
     <div className="event">
@@ -67,9 +67,85 @@ function Event(props) {
         })
           
       }}>Get Bracket</button>
-      <MatchList matches={eventData.matches} />
-      <SingleElimination rounds={rounds}/>
+      <MatchResultForm eventId={id} />
+
+      { eventData && eventData.matches &&
+        <MatchList matches={eventData.matches} />
+      }
+      { rounds &&
+        <SingleElimination rounds={rounds}/>
+      }
+      
     </div>
+  );
+}
+
+function MatchResultForm(props) {
+
+  const {eventId} = props;
+
+  const initialForm = {
+    matchid: "1",
+    res1: "",
+    res2: ""
+  }
+
+  const [result, setResult] = useState(initialForm);
+
+  const handleInputChange = event => {
+    const {name, value} = event.target;
+    setResult({...result, [name]: value});
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {eventid: parseInt(eventId)};
+    for (const field in result) {
+      data[field] = parseInt(result[field]);
+    }
+    console.log(data);
+    axios.post('http://localhost:3001/submitResults', data)
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="matchid">Match ID</label>
+      <input
+        id="matchid"
+        name="matchid"
+        type="number"
+        value={result.matchid}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor="res1">Result 1 </label>
+      <input
+        id="res1"
+        name="res1"
+        type="number"
+        value={result.res1}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor="res2">Result 2 </label>
+      <input
+        id="res2"
+        name="res2"
+        type="number"
+        value={result.res2}
+        onChange={handleInputChange}
+      />
+      <input
+        type="submit"
+        value="Submit"
+      />
+    </form>
   );
 }
 

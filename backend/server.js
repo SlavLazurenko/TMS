@@ -201,13 +201,15 @@ app.get('/getEvent/:eventId', async (req, res) => {
 
 app.post('/submitResults', async (req, res) => {
   
-  const event = await Event.fromId(req.body.id);
+  const event = await Event.fromId(req.body.eventid);
+
+  console.log(event)
   
   if(event){
 
-    event.addResult(req.body.id, req.body.username, req.body.res1, req.body.res2)
+    const result = await event.addResult(req.body.matchid, req.body.username, req.body.res1, req.body.res2);
     res.status(200)
-    res.send("Success")
+    res.send(result)
   }
   else{
     

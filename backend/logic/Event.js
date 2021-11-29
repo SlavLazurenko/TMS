@@ -8,6 +8,7 @@ class Event {
 
   static async fromId(id) {
     let newEvent = new Event();
+
     const eventData = await Datastore.event.findById(id);
     if (eventData) {
       newEvent.id = eventData.id;
@@ -82,13 +83,27 @@ class Event {
 
   }
 
-  async addResult(id, username, res1, res2){
-
-    let form = {
-      origin: username,
-      result: [res1, res2] 
+  async addResult(id, username, res1, res2) {
+    const matchIndex = id - 1;
+    console.log();
+    if (this.matches[matchIndex].competitors.includes(username) || username == this.admin) {
+      let form = {
+        origin: username,
+        result: [res1, res2] 
+      }
+      this.matches[matchIndex].submissions.push(form);
+  
+      const result = await Datastore.match.update(this.id, id, this.matches[matchIndex]);
+      if (result.count > 0) {
+        return "SUCCESS";
+      }
+      else {
+        return "DB_FAIL";
+      }
     }
-      this.matches[id].submissions.push(form)
+    else {
+      return "NOT_AUTHORIZED";
+    }
 
     
   }
