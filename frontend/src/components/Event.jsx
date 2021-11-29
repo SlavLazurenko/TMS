@@ -8,39 +8,9 @@ function Event(props) {
 
   const { id } = useParams();
   
-  const [eventData, setEventData] = useState({});
-  // {
-  //   id: 1,
-  //   name: 'SUPER WOT',
-  //   admin: 'sagepages',
-  //   description: 'This event is for absolute savages.',
-  //   start: '2021-11-29T17:48',
-  //   end: '2021-12-09T17:48',
-  //   accessibility: 'Public',
-  //   type: 'SingleElimination',
-  //   participant: 'TeamPlay',
-  //   discipline: 'World of Tanks',
-  //   maxParticipants: 12,
-  //   logo: '/img/event-images/kwienhlls2f9i1ghl09.jpg',
-  //   participants: [ 'sagepages', 'slav', 'luffy', 'bigboy', 'dudu', '111' ],
-  //   matches: [
-  //     {
-  //       id: 1,
-  //       competitors: [ 'sagepages', 'bigboy' ],
-  //       result: [ null, null ]
-  //     },
-  //     { id: 2, competitors: [ 'dudu', 'slav' ], result: [ null, null ] },
-  //     { id: 3, competitors: [ '111' ], result: [ null, null ] },
-  //     { id: 4, competitors: [ 'luffy' ], result: [ null, null ] },
-  //     { id: 5, competitors: [], result: [ null, null ] },
-  //     { id: 6, competitors: [], result: [ null, null ] },
-  //     { id: 7, competitors: [], result: [ null, null ] }
-  //   ]
-  // }
+  // const [eventData, setEventData] = useState({});
 
   const [rounds, setRounds] = useState([]);
-
-
 
 
   return (
@@ -48,15 +18,28 @@ function Event(props) {
       <button onClick={() => {
         axios.get(`http://localhost:3001/createMatches/${id}`)
         .then(res => {
-          setEventData(res.data);
-          setRounds(generateBracket(eventData));
+          console.log(res.data)
+          alert("Match is now in progress.")
+          // setEventData(res.data);
         })
         .catch(err => {
+          // alert(err.respone.data)
           console.log(err)
         });
       }}>
-        Get Bracket
+        Create Bracket
       </button>
+      <button onClick={() => {
+        axios.get(`http://localhost:3001/getEvent/${id}`)
+        .then(res => {
+          setRounds(generateBracket(res.data))
+        })
+        .catch(err => {
+          // alert(err.response.data)
+          console.log(err)
+        })
+          
+      }}>Get Bracket</button>
       <SingleElimination rounds={rounds}/>
     </div>
   );

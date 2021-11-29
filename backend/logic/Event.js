@@ -1,4 +1,4 @@
-
+const { event } = require('../datastore/');
 const Datastore = require('../datastore/');
 
 class Event {
@@ -24,6 +24,7 @@ class Event {
       newEvent.logo = eventData.logo;
       newEvent.participants = eventData.participants;
       newEvent.matches = eventData.matches;
+      newEvent.status = eventData.status;
 
       return newEvent;
     }
@@ -43,8 +44,10 @@ class Event {
       for (let j = 0; j < i; j++) {
         matches.push({
           id: ++matchId,
+          status: "scheduled",      // statuses: scheduled, inProgress, conflict, completed
           competitors: [],
-          result: [null, null]
+          result: [null, null],
+          submissions: []
         });
       }
     }
@@ -58,6 +61,26 @@ class Event {
     });
 
     this.matches = matches;
+
+    await Datastore.match.add(this.id , ...this.matches)
+    .then(async call => {
+      if(call) {
+        const change = await Datastore.event.update('status', "inProgress")
+        if(change){
+          console.log("success")
+        }
+        else{
+          console.log("failure")
+        }
+        console.log("Matches added")
+      }
+      else {
+        
+        console.log("Error: Matches were")
+      }
+    })
+
+
   }
 
   async getBrackets() {

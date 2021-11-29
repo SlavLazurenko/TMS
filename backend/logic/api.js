@@ -133,7 +133,8 @@ class Api {
             endDate: eventData.endDate,
             participants: [],
             matches: [],
-            logo: "../frontend/public/img/event-images/"+ fileData.file.name
+            logo: "../frontend/public/img/event-images/"+ fileData.file.name,
+            status: "pending"                   // statuses: pending, inProgress, completed
             
         }
         
