@@ -4,30 +4,30 @@ import SingleElimination from "./Bracket";
 import { useParams } from "react-router-dom";
 import "../css/Event.css";
 
-const defaultEvent = {
-  id: 1,
-  name: 'SUPER WOT',
-  admin: 'sagepages',
-  description: 'This event is for absolute savages.',
-  start: '2021-11-29T17:48',
-  end: '2021-12-09T17:48',
-  accessibility: 'Public',
-  type: 'SingleElimination',
-  participant: 'TeamPlay',
-  discipline: 'World of Tanks',
-  maxParticipants: 12,
-  logo: '/img/event-images/kwienhlls2f9i1ghl09.jpg',
-  participants: [ 'sagepages', 'slav', 'luffy', 'bigboy', 'dudu', '111' ],
-  matches: [
-    { id: 1, status: "conflict", competitors: [ 'sagepages', 'bigboy' ], result: [ null, null ] },
-    { id: 2, status: "inProgress", competitors: [ 'dudu', 'slav' ], result: [ null, null ] },
-    { id: 3, status: "completed", competitors: [ '111' ], result: [ 3, 0 ] },
-    { id: 4, status: "completed", competitors: [ 'luffy' ], result: [ 3, 0 ] },
-    { id: 5, status: "scheduled", competitors: [], result: [ null, null ] },
-    { id: 6, status: "scheduled", competitors: [], result: [ null, null ] },
-    { id: 7, status: "scheduled", competitors: [], result: [ null, null ] }
-  ]
-};
+// const defaultEvent = {
+//   id: 1,
+//   name: 'SUPER WOT',
+//   admin: 'sagepages',
+//   description: 'This event is for absolute savages.',
+//   start: '2021-11-29T17:48',
+//   end: '2021-12-09T17:48',
+//   accessibility: 'Public',
+//   type: 'SingleElimination',
+//   participant: 'TeamPlay',
+//   discipline: 'World of Tanks',
+//   maxParticipants: 12,
+//   logo: '/img/event-images/kwienhlls2f9i1ghl09.jpg',
+//   participants: [ 'sagepages', 'slav', 'luffy', 'bigboy', 'dudu', '111' ],
+//   matches: [
+//     { id: 1, status: "conflict", competitors: [ 'sagepages', 'bigboy' ], result: [ null, null ] },
+//     { id: 2, status: "inProgress", competitors: [ 'dudu', 'slav' ], result: [ null, null ] },
+//     { id: 3, status: "completed", competitors: [ '111' ], result: [ 3, 0 ] },
+//     { id: 4, status: "completed", competitors: [ 'luffy' ], result: [ 3, 0 ] },
+//     { id: 5, status: "scheduled", competitors: [], result: [ null, null ] },
+//     { id: 6, status: "scheduled", competitors: [], result: [ null, null ] },
+//     { id: 7, status: "scheduled", competitors: [], result: [ null, null ] }
+//   ]
+// };
 
 
 function Event(props) {
@@ -207,10 +207,13 @@ function MatchEntry(props) {
           {(() => {
             // scheduled, inProgress, conflict, completed
             if (status === "scheduled") {
-              return <span className="box pending">Pending</span>
+              return <span className="box scheduled">Scheduled</span>
             }
             else if (status === "inProgress") {
               return <span className="box playing">Playing</span>
+            }
+            else if (status === "pending") {
+              return <span className="box pending">Pending</span>
             }
             else if (status === "conflict") {
               return <span className="box conflict">Conflict</span>

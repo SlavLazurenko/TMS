@@ -45,7 +45,7 @@ class Event {
       for (let j = 0; j < i; j++) {
         matches.push({
           id: ++matchId,
-          status: "scheduled",      // statuses: scheduled, inProgress, conflict, completed
+          status: "scheduled",      // statuses: scheduled, inProgress, pending, conflict, completed
           competitors: [],
           result: [null, null],
           submissions: {}

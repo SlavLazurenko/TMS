@@ -73,6 +73,10 @@ tr.match-entry > td.status .playing {
   color: gray;
 }
 
+tr.match-entry > td.status .scheduled {
+  color: blue;
+}
+
 tr.match-entry > td.status .pending {
   color: orange;
 }
