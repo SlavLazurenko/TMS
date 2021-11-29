@@ -1,0 +1,86 @@
+
+.match-list {
+  margin-left: 100px;
+  font-size: 20px;
+}
+
+.match-list table {
+  border-collapse:separate;
+  border-spacing:0 0.4em;
+  color: white;
+}
+
+.match-list thead tr > td {
+  text-align: center;
+  font-size: 0.8em;
+}
+
+tr.match-entry {
+  background-color: #1A1A1A;
+}
+
+tr.match-entry > td {
+  border: solid 1px #1A1A1A;
+  border-style: solid none;
+  padding: 0.6em 1em;
+}
+
+tr.match-entry > td:first-child {
+  padding-left: 1.2em;
+  border-left-style: solid;
+  border-top-left-radius: 0.6em; 
+  border-bottom-left-radius: 0.6em;
+}
+
+tr.match-entry > td:last-child {
+  padding-right: 1.2em;
+  border-right-style: solid;
+  border-bottom-right-radius: 0.6em; 
+  border-top-right-radius: 0.6em; 
+}
+
+tr.match-entry > td.match .versus {
+  color: #919191;
+  margin: 0 0.4em;
+  font-size: 0.8em;
+}
+
+tr.match-entry > td.match .competitor {
+  color: #ffffff;
+  font-size: 1em;
+}
+
+tr.match-entry > td.result {
+  text-align: center;
+}
+
+tr.match-entry > td.result .digit {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+tr.match-entry > td.result .colon {
+  font-size: 1em;
+  margin: 0 0.16em;
+}
+
+tr.match-entry > td.status {
+  text-align: center;
+  font-size: 0.8em;
+}
+
+tr.match-entry > td.status .playing {
+  color: gray;
+}
+
+tr.match-entry > td.status .pending {
+  color: orange;
+}
+
+tr.match-entry > td.status .conflict {
+  color: red;
+}
+
+tr.match-entry > td.status .completed {
+  color: green;
+}
