@@ -96,6 +96,7 @@ app.get('/get-user/:tag', (req, res) => {
 
 });
 
+
 app.use((req, res, next) => {   //ENFORCE AUTHENTICATION
   if (!req.body.username) {
     return res.status(401).json({error: "Not authenticated"});
@@ -196,6 +197,24 @@ app.get('/getEvent/:eventId', async (req, res) => {
       }
     })
 
+})
+
+app.post('/submitResults', async (req, res) => {
+  
+  const event = await Event.fromId(req.body.id);
+  
+  if(event){
+
+    event.addResult(req.body.id, req.body.username, req.body.res1, req.body.res2)
+    res.status(200)
+    res.send("Success")
+  }
+  else{
+    
+    res.status(400)
+    res.send("Error: app.post(/submitResults)")
+  }
+  
 })
 
 module.exports = app;

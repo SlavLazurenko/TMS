@@ -80,47 +80,19 @@ class Event {
       }
     })
 
-
   }
 
-  async getBrackets() {
-    const numStartMatches = this.participants.length / 2;
-    const minMatches = Math.pow(2, Math.ceil(Math.log(numStartMatches) / Math.log(2)));
-    
-    let brackets = [];
+  async addResult(id, username, res1, res2){
 
-    let currentIndex = 0;
-    for (let i = minMatches; i >= 1; i /= 2) {
-      let title = `Round of ${i}`;
-      switch (i) {
-        case 4:
-          title = "Quarterfinal";
-          break;
-        case 2:
-          title = "Semifinal";
-          break;
-        case 1:
-          title = "Final";
-          break;
-      }
-      const round = {
-        title: title,
-        seeds: []
-      }
-      for (let j = 0; j < i; j++) {
-        round.seeds.push({
-          id: this.matches[currentIndex].id,
-          teams: [
-            { name: this.matches[currentIndex].competitors[0] },
-            { name: this.matches[currentIndex].competitors[1] },
-          ]
-        });
-      }
-      brackets.push(round);
+    let form = {
+      origin: username,
+      result: [res1, res2] 
     }
+      this.matches[id].submissions.push(form)
+
     
-    console.log(brackets);
   }
+
 }
 
 module.exports = Event;
