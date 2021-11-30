@@ -1,4 +1,4 @@
-const Datastore = require("./datastore");
+const Datastore = require("../datastore");
 
 async function user() {
   await Datastore.init();

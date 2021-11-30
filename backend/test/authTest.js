@@ -1,5 +1,5 @@
-const auth = require('./authentication');
-const Datastore = require("./datastore");
+const auth = require('../authentication');
+const Datastore = require("../datastore");
 
 async function add() {
     await Datastore.init();

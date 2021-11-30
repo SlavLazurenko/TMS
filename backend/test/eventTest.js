@@ -1,5 +1,5 @@
-const Event = require("./logic/Event.js");
-const Datastore = require("./datastore");
+const Event = require("../logic/Event.js");
+const Datastore = require("../datastore");
 
 (async function() {
   await Datastore.init();

@@ -1,5 +1,5 @@
 const axios = require("axios")
-const Datastore = require("./datastore")
+const Datastore = require("../datastore")
 
 
 async function tester(id, res1, res2){
