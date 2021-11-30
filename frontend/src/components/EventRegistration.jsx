@@ -49,8 +49,6 @@ const Image = ({onFileSelect}) =>{
   )
 }
 
-
-
 const EventRegistration = props => {
 
   const initialEventState = {

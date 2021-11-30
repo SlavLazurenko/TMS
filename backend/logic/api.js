@@ -1,5 +1,6 @@
 const Datastore = require('../datastore/index')
-const authentication = require('../authentication')
+const authentication = require('../authentication');
+const datastore = require('../datastore/index');
 
 /**
  * Class for basic api interfacing with endpoints
@@ -36,7 +37,13 @@ class Api {
      * @returns {Object} event object
      */
     static async getEvent(eventID){
-        console.log("Getting event by ID.")
+        const response = datastore.event.findById(eventID)
+        if(response){
+            console.log(response)
+        }
+        else{
+            console.log("error getEvent")
+        }
         return
     }
 
@@ -134,7 +141,9 @@ class Api {
             end: eventData.end,
             participants: [],
             matches: [],
-            logo: "/img/event-images/"+ fileData.file.name
+            logo: "../frontend/public/img/event-images/"+ fileData.file.name,
+            status: "pending"                   // statuses: pending, inProgress, completed
+
             
         }
         

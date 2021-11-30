@@ -24,7 +24,7 @@ class EventDao extends Dao {
    * @returns {Datastore.EventData|{error: Object}} found event document or error object
    */
   async findById(id) {
-    return this.find({id: id}, { findOne: true });
+    return this.find({id: parseInt(id)}, { findOne: true });
   }
 
   /**

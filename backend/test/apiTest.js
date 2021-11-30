@@ -1,5 +1,5 @@
-const api = require("./logic/api");
-const Datastore = require("./datastore");
+const api = require("../logic/api");
+const Datastore = require("../datastore");
 
 async function test() {
   await Datastore.init();

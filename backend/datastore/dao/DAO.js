@@ -72,7 +72,7 @@ class Dao {
    * @param {boolean} [options.findOne=true] returns first found document, array otherwise
    * @returns {Object|Object[]|{error: Object}} found document or error object
    * @pre collection->size() > 0
-   * @pre collection->exists(doc|doc->includes(selector))
+   * @post collection->exists(doc|doc->includes(selector))
    */
   async find(selector, { findOne = true }={}) {
     try {

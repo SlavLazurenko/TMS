@@ -7,11 +7,11 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['authToken', 'username']);
 
   const setAuthToken = newToken => {
-    setCookie("authToken", newToken);
+    setCookie("authToken", newToken, {path: '/'});
   }
 
   const setUsername = newUsername => {
-    setCookie("username", newUsername);
+    setCookie("username", newUsername, {path: '/'});
   }
 
   const unsetAccount = () => {

@@ -3,8 +3,10 @@ const cors = require('cors');
 const app = express();
 const api = require('./logic/api');
 const auth = require('./authentication.js');
+const Event = require('./logic/Event');
 const fileUpload = require('express-fileupload');
 const cookiesMiddleware = require('universal-cookie-express');
+const datastore = require('./datastore');
 
 
 app.use(express.json());
@@ -62,7 +64,8 @@ app.post('/userLogin', (req, res) => {
 app.use(cookiesMiddleware());
 
 app.use((req, res, next) => {   //AUTHENTICATE USER
-  const authToken = req.universalCookies.get("authToken");
+  const authToken = req.universalCookies.get("authToken")
+  console.log(req.universalCookies);
   if (authToken) {
     const userData = auth.validateToken(authToken);
     if (userData) {
@@ -103,6 +106,7 @@ app.get('/get-user/:tag', (req, res) => {
   })
 
 });
+
 
 app.use((req, res, next) => {   //ENFORCE AUTHENTICATION
   if (!req.body.username) {
@@ -151,5 +155,84 @@ app.post('/eventRegistration', (req, res) => {
 app.post('/test', (req, res) => {
   res.status(200).json({ message: 'Success!', user: req.body.username });
 });
+
+app.get('/createMatches/:eventId', async (req, res) => {
+  const event = await Event.fromId(req.params.eventId);
+  if(event){
+
+    if(event.status == "pending"){
+      
+      const matches = event.initMatches();
+      if(matches){
+        const changeStatus = await datastore.event.update({id: parseInt(req.params.eventId)}, {status: "inProgress"})
+        if(changeStatus){
+
+          res.status(200).json(event);
+        }
+        else{
+          res.status(404);
+          res.send("Error")
+        }
+
+      }
+      else{
+        res.status(404);
+        res.send("Error")
+      }
+    }
+    else{
+      res.status(404)
+      res.send("Match is already in progress.")
+    }
+  }
+  else{
+    res.status(404)
+    res.send("Error")
+  }
+
+})
+
+app.get('/getEvent/:eventId', async (req, res) => {
+    await Event.fromId(req.params.eventId)
+    .then(event => {
+
+      if(event) {
+        res.status(200)
+        res.send(event)
+      }
+      else{
+        
+        res.status(401)
+        res.send("Admin must create bracket before you can retrieve it.")
+        
+      }
+    })
+
+})
+
+app.post('/submitResults', async (req, res) => {
+  
+  const event = await Event.fromId(req.body.eventid);
+  
+  if(event){
+
+    const result = await event.addResult(req.body.matchid, req.body.username, req.body.res1, req.body.res2);
+    if (result == "SUCCESS") {
+      res.status(200);
+      res.send(result);
+    }
+    else {
+      res.status(400);
+      res.send(result);
+    }
+
+  }
+  else{
+    
+    res.status(400)
+    res.send("Error: app.post(/submitResults)")
+  }
+  
+})
 
 module.exports = app;
