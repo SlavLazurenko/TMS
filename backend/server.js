@@ -19,6 +19,16 @@ app.get('/get-message', (req, res) => {
   res.send(`${count} units`);
 });
 
+app.get('/get-events', (req, res) => {
+  api.getEvents("", "")
+  .then(events => {
+    res.status(200).json(events);
+  })
+  .catch(err => {
+    res.status(500).json({error: "Server Error"});
+  })
+});
+
 app.post("/registerUser", (req, res) => {
 
   api.registerUser(req.body)

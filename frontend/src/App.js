@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navigation, Home, Events, Event, Profile, Login, SignUp, EventRegistration, Logout } from "./components";
+import { Navigation, Home, SearchEvent, Event, Profile, Login, SignUp, EventRegistration, Logout } from "./components";
 import { useCookies } from 'react-cookie';
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
         <Navigation username={cookies.username}/>
         <Switch>
           <Route path="/" exact component={() => <Home cookies={cookies} setCookie={setCookie} />} />
-          <Route path="/events" exact component={() => <Events />} />
+          <Route path="/search-event" render={(props) => (<SearchEvent {...props} />)}/>
           <Route path="/profile/:username" render={(props) => (<Profile {...props} />)}/>
           <Route path="/login" render={(props) => (
             <Login {...props} 
