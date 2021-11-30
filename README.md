@@ -9,7 +9,7 @@ Tournament Management System - web app for hosting and participating in online c
 - [Sage A Pages](https://github.com/sagepages) 
 - [Vyacheslav Lazurenko](https://github.com/SlavLazurenko)
 - [Bryant Rone](https://github.com/bryfry2)
-- [Carlos Fiallo] Reyes(https://github.com/carly96)
+- [Carlos Fiallo Reyes](https://github.com/carly96)
 - [Jorge Burgos](https://github.com/Jburg0304)
 
 ### Usage
