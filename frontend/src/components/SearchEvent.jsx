@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import "../css/Events.css";
+import React, { useState, useEffect } from "react";
+import "../css/SearchEvent.css";
 import {ReactComponent as EventDateIcon} from "../img/event-date.svg";
-import {useHistory} from "react-router-dom"
+import {useHistory} from "react-router-dom";
+import axios from "../axiosConfig.js"
 // import eventDateIcon from "../img/event-date.svg";
 import {ReactComponent as ParticipantsIcon} from "../img/participants-count.svg";
 import {ReactComponent as DurationIcon} from "../img/duration.svg";
@@ -41,7 +42,7 @@ function Search() {
 
 function Create() {
 
-  const history = useHistory()
+  const history = useHistory();
 
   const handleRoute = () => {
     
@@ -67,9 +68,9 @@ function ParticipantsInfo(props) {
   let quantifier = props.count; 
   let qualifier = "";
 
-  if (props.type === "player")
+  if (props.type === "SinglePlay")
     qualifier = "players";
-  else if (props.type === "team")
+  else if (props.type === "TeamPlay")
     qualifier = "teams";
   return (<span>{quantifier} {qualifier}</span>);
 }
@@ -91,19 +92,18 @@ function DurationInfo(props) {
 function EventEntry(props) {
 
   const { data } = props;
-
-  const goToEvent = () => {
-    console.log(`going to ${data.id} event page...`);
-  }
+  const history = useHistory();
 
   return (
     <div
       className="event" 
       id={data.id} 
       style={{ 
-        backgroundImage: `url(/img/event-icons/${data.logo})`
+        backgroundImage: `url(${data.logo})`
       }}
-      onClick={goToEvent}
+      onClick={() => {
+        history.push(`/event/${data.id}`);  //GO TO EVENT PAGE
+      }}
     >
       <div className="wrapper">
         <h3 className="name">{data.name}</h3>
@@ -116,7 +116,7 @@ function EventEntry(props) {
           <li className="participants">
             <ParticipantsIcon />
             <ParticipantsInfo
-              type={data.participantType}
+              type={data.participant}
               count={data.maxParticipants}
             />
           </li>
@@ -136,58 +136,21 @@ function EventEntry(props) {
   );
 }
 
+function Events(props) {
 
+  // const location = useLocation();
+  const [events, setEvents] = useState([]);
 
-const tmpEvents = [
-  {
-    id: 1,
-    name: "Event #1",
-    start: new Date(2021, 9, 20, 18),
-    end: new Date(2021, 9, 22, 18),
-    type: "Double Elimination",
-    participantType: "player",
-    maxParticipants: 32,
-    discipline: "DOTA 2",
-    logo: "dota-2.jpg"
-  },
-  {
-    id: 2,
-    name: "Event #2",
-    start: new Date(2021, 9, 24, 14),
-    end: new Date(2021, 9, 24, 16),
-    type: "Single Elimination",
-    participantType: "team",
-    maxParticipants: 8,
-    discipline: "World of Tanks",
-    logo: "world-of-tanks.jpg"
-  },
-  {
-    id: 3,
-    name: "Event #3",
-    start: new Date(2021, 10, 5, 17),
-    end: new Date(2021, 10, 12, 17),
-    type: "Round Robin",
-    participantType: "team",
-    maxParticipants: 12,
-    discipline: "Soccer",
-    logo: "soccer.jpg"
-  },
-  {
-    id: 4,
-    name: "Event #4",
-    start: new Date(2021, 10, 12, 10),
-    end: new Date(2021, 10, 12, 18),
-    type: "Single Elimination",
-    participantType: "player",
-    maxParticipants: 24,
-    discipline: "Basketball",
-    logo: "basketball.jpg"
-  }
-];
-
-function Events() {
-
-  const events = tmpEvents;
+  useEffect(() => {
+    // console.log('location', location.key);
+    axios.get(`http://localhost:3001/get-events`)
+    .then(res => {
+      setEvents(res.data);
+    })
+    .catch(err => {
+      console.log("Error", err);
+    });
+  }, []);
 
   return (
     <div className="events">

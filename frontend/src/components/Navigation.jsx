@@ -12,8 +12,8 @@ function Navigation(props) {
               <span>Home</span>
             </Link>
           </li>
-          <li className={`link ${ props.location.pathname === "/events" ? "active" : "" }`}>
-            <Link to="/events">
+          <li className={`link ${ props.location.pathname === "/search-event" ? "active" : "" }`}>
+            <Link to="/search-event">
               <span>Events</span>
             </Link>
           </li>
