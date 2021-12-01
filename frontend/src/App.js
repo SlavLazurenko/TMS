@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
         <Router>
-        <Navigation username={cookies.username}/>
+        <Navigation username={cookies.username} unsetAccount={unsetAccount}/>
         <Switch>
           <Route path="/" exact component={() => <Home cookies={cookies} setCookie={setCookie} />} />
           <Route path="/events" exact component={() => <Events />} />
