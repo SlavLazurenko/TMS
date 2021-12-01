@@ -44,8 +44,11 @@ function Navigation(props) {
           
           { props.username &&   //LOGGED IN
           <li className={`link ${ props.location.pathname === "/logout" ? "active" : "" }`}>
-          <Link to="/logout">
-            <span>Logout</span>
+          <Link to="/">
+            <span onClick={() => {
+              props.unsetAccount();
+              props.history.push("/");
+            }}>Logout</span>
           </Link>
           </li>
           }
