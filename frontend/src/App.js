@@ -16,8 +16,8 @@ function App() {
 
   const unsetAccount = () => {
     console.log("unset account");
-    removeCookie("authToken");
-    removeCookie("username");
+    removeCookie("authToken", {path: '/'});
+    removeCookie("username",  {path: "/"});
   }
 
   return (
