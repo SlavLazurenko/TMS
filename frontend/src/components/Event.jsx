@@ -67,14 +67,23 @@ function Event(props) {
         })
           
       }}>Get Bracket</button>
-      <MatchResultForm eventId={id} />
 
       { eventData && eventData.matches &&
+        <div className="match-container">
         <MatchList matches={eventData.matches} />
+        </div>
       }
       { rounds &&
-        <SingleElimination rounds={rounds}/>
-      }
+        <div className="bracket-container">
+          <SingleElimination rounds={rounds}/>
+        </div>
+      
+      } 
+      
+      
+      <MatchResultForm eventId={id} />
+      
+      
       
     </div>
   );
@@ -114,38 +123,56 @@ function MatchResultForm(props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="matchid">Match ID</label>
-      <input
-        id="matchid"
-        name="matchid"
-        type="number"
-        value={result.matchid}
-        onChange={handleInputChange}
-      />
-      <br />
-      <label htmlFor="res1">Result 1 </label>
-      <input
-        id="res1"
-        name="res1"
-        type="number"
-        value={result.res1}
-        onChange={handleInputChange}
-      />
-      <br />
-      <label htmlFor="res2">Result 2 </label>
-      <input
-        id="res2"
-        name="res2"
-        type="number"
-        value={result.res2}
-        onChange={handleInputChange}
-      />
-      <input
-        type="submit"
-        value="Submit"
-      />
-    </form>
+    <div className="event-container">
+      <div className="match-result-form">
+        <p className="match-result-form-title">Player 1 vs. Player 2</p>
+        <form onSubmit={handleSubmit}>
+          <div className="pad-match">
+            <label className="match-result-form-text" htmlFor="matchid">  Match ID  </label>
+            <input
+              className="match-result-form-result-field"
+              id="matchid"
+              name="matchid"
+              type="number"
+              value={result.matchid}
+              onChange={handleInputChange}
+            />
+          </div>
+          <br/>
+          <div className="player-container">
+            <div className="player1-container">
+              <label className="match-result-form-text" htmlFor="res1">Player 1 </label>
+              <input
+                className="match-result-form-result-field"
+                id="res1"
+                name="res1"
+                type="number"
+                value={result.res1}
+                onChange={handleInputChange}
+              />
+            </div>
+            <p className="match-result-form-title pad-text"> : </p>
+            <div className="player2-container">
+              <input
+                className="match-result-form-result-field"
+                id="res2"
+                name="res2"
+                type="number"
+                value={result.res2}
+                onChange={handleInputChange}
+              />
+              <label className="match-result-form-text" htmlFor="res2"> Player 2 </label>
+            </div>
+          </div>
+          <br/>
+          <input 
+            className="match-result-form-submit"
+            type="submit"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
   );
 }
 
