@@ -133,7 +133,7 @@ app.post('/eventRegistration', (req, res) => {
       }
 
       avatar.name = (new Date()).getTime().toString(36) + Math.random().toString(36).slice(2) + fileType
-      avatar.mv('../frontend/public/img/event-images/' + avatar.name);
+      avatar.mv('/img/event-images/' + avatar.name);
 
       api.registerEvent(req.body, req.files)
       .then(call => {
