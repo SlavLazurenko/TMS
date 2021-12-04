@@ -1,4 +1,4 @@
-const Datastore = require("../datastore");
+const Datastore = require("../datastore/index.js");
 
 async function user() {
   await Datastore.init();
@@ -118,18 +118,18 @@ async function match() {
 
   // result = await Datastore.match.find({competitors: "NewUser#3"});
 
-  result = await Datastore.match.add(2, 
-    {
-      competitors: ["NewUser#3", "NewUser#2"],
-      result: null
-    },
-    {
-      competitors: ["some1", "some2"],
-      result: [5, 5]
-    }
-  );
+  // result = await Datastore.match.add(2, 
+  //   {
+  //     competitors: ["NewUser#3", "NewUser#2"],
+  //     result: null
+  //   },
+  //   {
+  //     competitors: ["some1", "some2"],
+  //     result: [5, 5]
+  //   }
+  // );
 
-  // result = await Datastore.match.find(4, 5);
+  result = await Datastore.match.find(3, 1);
 
   // result = await Datastore.match.update(2, 2, { result: [3,9] });
 
@@ -176,26 +176,3 @@ async function team() {
 }
 
 team();
-
-/*
-{
-    "_id": {
-        "$oid": "617d7e6187a8f3c71a23eab1"
-    },
-    "EventName": "SoftEng-To-The-Death",
-    "ImageId": "icons-8-uploads.png",
-    "Description": "Last group standing wins",
-    "Accessibility": "Public",
-    "EventType": "SingleElimination",
-    "MaxParticipants": "30",
-    "TimeZone": "EST",
-    "StartYear": "2021",
-    "StartMonth": "10",
-    "StartDay": "30",
-    "StartTime": "13:00",
-    "EndYear": "2021",
-    "EndMonth": "11",
-    "EndDay": "5",
-    "EndTime": "00:00"
-}
-*/
