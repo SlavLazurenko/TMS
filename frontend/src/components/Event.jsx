@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../axiosConfig.js";
 import SingleElimination from "./Bracket";
 import { useParams } from "react-router-dom";
@@ -33,65 +33,88 @@ import "../css/Event.css";
 function Event(props) {
 
   const { id } = useParams();
+  const { username } = props;
   
   const [eventData, setEventData] = useState({});
   const [rounds, setRounds] = useState([]);
 
-  return (
-    <div className="event">
-      <button onClick={() => {
-        axios.get(`http://localhost:3001/createMatches/${id}`)
-        .then(res => {
-          setEventData(res.data);
-          setRounds(generateBracket(res.data));
-          console.log(res.data)
-          alert("Match is now in progress.")
-          // setEventData(res.data);
-        })
-        .catch(err => {
-          // alert(err.respone.data)
-          console.log(err)
-        });
-      }}>
-        Create Bracket
-      </button>
-      <button onClick={() => {
-        axios.get(`http://localhost:3001/getEvent/${id}`)
-        .then(res => {
-          setEventData(res.data);
-          setRounds(generateBracket(res.data))
-        })
-        .catch(err => {
-          // alert(err.response.data)
-          console.log(err)
-        })
-          
-      }}>Get Bracket</button>
+  const getBrackets = () => {
+    axios.get(`http://localhost:3001/getEvent/${id}`)
+    .then(res => {
+      setEventData(res.data);
+      setRounds(generateBracket(res.data))
+    })
+    .catch(err => {
+      // alert(err.response.data)
+      console.log(err)
+    })
+  }
 
-      { eventData && eventData.matches &&
-        <div className="match-container">
-        <MatchList matches={eventData.matches} />
-        </div>
-      }
-      { rounds &&
+  useEffect(getBrackets, [id]);
+
+  if (eventData && eventData.status === "pending") {
+    return (
+      <div className="event">
+        <h1 className="message">Event hasn't started yet</h1>
+        { username && username === eventData.admin &&
+        <button className="create" onClick={() => {
+          axios.get(`http://localhost:3001/createMatches/${id}`)
+          .then(res => {
+            setEventData(res.data);
+            setRounds(generateBracket(res.data));
+            console.log(res.data)
+            alert("Match is now in progress.")
+            getBrackets();
+            // setEventData(res.data);
+          })
+          .catch(err => {
+            // alert(err.respone.data)
+            console.log(err)
+          });
+        }}>
+          Start Event
+        </button>
+        }
+      </div>
+    );
+  }
+  else if (eventData && eventData.matches && eventData.matches.length > 0) {
+    return (
+      <div className="event">
+  
+        {/* <button onClick={getBrackets}>Refresh</button> */}
+
+        <h1 className="event-name">{eventData.name}</h1>
+
         <div className="bracket-container">
           <SingleElimination rounds={rounds}/>
         </div>
-      
-      } 
-      
-      
-      <MatchResultForm eventId={id} />
-      
-      
-      
-    </div>
-  );
+
+        { username && 
+          <MatchResultForm eventId={id} getBrackets={getBrackets} />
+        }
+
+        <div className="match-container">
+        <MatchList matches={eventData.matches} />
+        </div>
+
+      </div>
+    );
+  }
+  else {
+    return (
+      <div className="event">
+        <h1 className="message">Oops, something went wrong...</h1>
+      </div>
+    );
+  }
+
+  
 }
 
 function MatchResultForm(props) {
 
-  const {eventId} = props;
+  const {eventId, getBrackets} = props;
 
   const initialForm = {
     matchid: "1",
@@ -116,6 +139,7 @@ function MatchResultForm(props) {
     axios.post('http://localhost:3001/submitResults', data)
     .then(res => {
       console.log(res.data);
+      getBrackets();
     })
     .catch(err => {
       console.log(err);
@@ -292,7 +316,10 @@ function generateBracket(event) {
         teams: [
           { name: event.matches[currentIndex].competitors[0], score: event.matches[currentIndex].result[0] },
           { name: event.matches[currentIndex].competitors[1], score: event.matches[currentIndex].result[1] },
-        ]
+        ],
+        // date: `${currentIndex} -> (${(2 * (currentIndex) - event.matches.length)}, ${(2 * (currentIndex) - event.matches.length - 1)})`
+        // date: `${currentIndex + 1} -> (${(2 * (currentIndex + 1) - event.matches.length - 1)}, ${(2 * (currentIndex + 1) - event.matches.length - 2)})`
+        date: `${currentIndex + 1}`
       });
       currentIndex++;
     }
