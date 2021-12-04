@@ -102,6 +102,7 @@ class Event {
         return "SUCCESS";
       }
       else {
+        console.log(result);
         return "DB_FAIL";
       }
       return "SUCCESS";

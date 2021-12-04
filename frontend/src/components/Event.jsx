@@ -160,7 +160,8 @@ function MatchResultForm(props) {
       getBrackets();
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.response.data);
+      getBrackets();
     })
   }
 
