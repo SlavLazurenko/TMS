@@ -60,10 +60,12 @@ function Profile(props) {
           <h2 className="block-name">Account Information</h2>
           <AccountBlock status={status} accountData={accData} />
         </div>
+        { teams && teams.length > 0 &&
         <div className="info-block team">
           <h2 className="block-name">Teams</h2>
           <TeamBlock status={status} teams={teams} />
         </div>
+        }
       </div>
     );
   }

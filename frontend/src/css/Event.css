@@ -1,17 +1,20 @@
 
-.event {
+.event-page {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 10em auto;
 }
 
-.event h1.message {
+.event-page h1.message {
   color: #a8a8a8;
+  margin: 2em auto;
+  width: 100%;
+  text-align: center;
 }
 
-.event button.create {
+.event-page button.create {
   font-size: 1.4em;
   padding: 0.6em 0.8em;
   border-radius: 0.4em;
@@ -21,27 +24,27 @@
   background-color: #009414;
 }
 
-.event button.create:hover {
+.event-page button.create:hover {
   background-color: #00b618;
 }
 
-.event .event-name {
+.event-page .event-name {
   font-size: 2em;
   color: #ffffff;
   margin: 2em auto;
 }
 
-.event .bracket-container {
+.event-page .bracket-container {
   order: 1;
   margin-bottom: 3em;
 }
 
-.event .match-container {
+.event-page .match-container {
   order: 2;
-  margin: auto;
+  margin: 0 auto 0 2em;
 }
 
-.event .event-container {
+.event-page .event-container {
   order: 3;
   margin: 0 auto;
 }
@@ -137,6 +140,14 @@ tr.match-entry > td.status .completed {
 
 
 p.match-result-form-title{
+  color: #a0a0a0;
+  
+  font-size: 20px;
+  text-align: center;
+  
+}
+
+p.match-result-form-competitors{
   color: #ffffff;
   font-size: 20px;
   text-align: center;
@@ -155,7 +166,7 @@ div.pad-match{
 
 div.player-container{
   display: flex;
-  padding-left: 15px;
+  justify-content: center;
 }
 
 div.match-result-form{
@@ -165,8 +176,6 @@ div.match-result-form{
   background-color: #1A1A1A;
   border-radius: 0.6em;
   width: 350px;
-  height: 275px;
-  
 }
 
 div.player1-container{
