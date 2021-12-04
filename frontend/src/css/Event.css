@@ -1,6 +1,55 @@
 
+.event-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto 10em auto;
+}
+
+.event-page h1.message {
+  color: #a8a8a8;
+  margin: 2em auto;
+  width: 100%;
+  text-align: center;
+}
+
+.event-page button.create {
+  font-size: 1.4em;
+  padding: 0.6em 0.8em;
+  border-radius: 0.4em;
+  text-align: center;
+  margin: 1em auto;
+  border: none;
+  background-color: #009414;
+}
+
+.event-page button.create:hover {
+  background-color: #00b618;
+}
+
+.event-page .event-name {
+  font-size: 2em;
+  color: #ffffff;
+  margin: 2em auto;
+}
+
+.event-page .bracket-container {
+  order: 1;
+  margin-bottom: 3em;
+}
+
+.event-page .match-container {
+  order: 2;
+  margin: 0 auto 0 2em;
+}
+
+.event-page .event-container {
+  order: 3;
+  margin: 0 auto;
+}
+
 .match-list {
-  margin-left: 100px;
   font-size: 20px;
 }
 
@@ -91,6 +140,14 @@ tr.match-entry > td.status .completed {
 
 
 p.match-result-form-title{
+  color: #a0a0a0;
+  
+  font-size: 20px;
+  text-align: center;
+  
+}
+
+p.match-result-form-competitors{
   color: #ffffff;
   font-size: 20px;
   text-align: center;
@@ -102,24 +159,6 @@ p.pad-text{
   padding-right: 10px;
 }
 
-div.bracket-container{
-
-  padding-top: 15px;
-}
-
-div.event-container{
-
-  float: right;
-  padding-right: 75px;
-}
-
-div.match-container{
-  float: right;
-  padding-top: 35px;
-  padding-right: 75px;
-  
-}
-
 div.pad-match{
 
   padding-left: 14px;
@@ -127,7 +166,7 @@ div.pad-match{
 
 div.player-container{
   display: flex;
-  padding-left: 15px;
+  justify-content: center;
 }
 
 div.match-result-form{
@@ -137,8 +176,6 @@ div.match-result-form{
   background-color: #1A1A1A;
   border-radius: 0.6em;
   width: 350px;
-  height: 275px;
-  
 }
 
 div.player1-container{

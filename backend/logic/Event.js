@@ -63,7 +63,14 @@ class Event {
 
     this.matches = matches;
 
-    await Datastore.match.add(this.id , ...this.matches)
+    // TECHNICAL WIN FOR MATCHES WITH 1 PARTICIPANT
+    for (i = 0; i < minMatches; i++) {
+      if (checkTD(this.matches[i])) {
+        this.advanceNext(this.matches[i].id);
+      }
+    }
+
+    Datastore.match.add(this.id , ...this.matches)
     .then(async call => {
       if(call) {
         const change = await Datastore.event.update('status', "inProgress")
@@ -88,21 +95,24 @@ class Event {
     if (match.competitors.includes(username) || username == this.admin) {
       match.submissions[username] = [res1, res2];
       this.updateResult(matchId);
+      this.advanceNext(matchId);
 
       const result = await Datastore.match.update(this.id, matchId, match);
       if (result.count > 0) {
         return "SUCCESS";
       }
       else {
+        console.log(result);
         return "DB_FAIL";
       }
+      return "SUCCESS";
     }
     else {
       return "NOT_AUTHORIZED";
     }
   }
 
-  async updateResult(matchId) {
+  updateResult(matchId) {
     const match = this.matches[matchId - 1];
     const sources = Object.keys(match.submissions);
     const numSubmissions = sources.length;
@@ -151,9 +161,89 @@ class Event {
 
   }
 
+  async advanceNext(matchId) {
+    const nextMatchId = Math.ceil((matchId + 1 + this.matches.length) / 2);
+
+    if (nextMatchId > this.matches.length) {
+      // TODO: final complete
+    }
+    else {
+      await this.updateMatch(nextMatchId);
+    }
+  }
+
+  async updateMatch(matchId) {
+    const firstChildId = matchId - (this.matches.length - matchId) - 1;
+    const secondChildId = firstChildId - 1;
+
+    const thisMatch = this.matches[matchId - 1];
+    const firstChildIndex = firstChildId - 1;
+    const secondChildIndex = secondChildId - 1;
+    
+    if (secondChildId > 0 && thisMatch.status == "scheduled") {
+      await Promise.all([this.updateMatch(firstChildId), this.updateMatch(secondChildId)]);
+
+      const firstChild = this.matches[firstChildIndex];
+      const secondChild = this.matches[secondChildIndex];
+
+      if (firstChild.status == "completed") {
+        thisMatch.competitors[1] = getWinner(firstChild);
+      }
+      if (secondChild.status == "completed") {
+        thisMatch.competitors[0] = getWinner(secondChild);
+      }
+
+      if (firstChild.status == "completed" && secondChild.status == "completed") {
+        if (!checkTD(thisMatch)) {
+          thisMatch.status = "inProgress";
+        }
+        else {
+          // TODO: call update on parent match
+          await this.advanceNext(matchId);
+        }
+      }
+      else {
+        thisMatch.status = "scheduled";
+      }
+
+      await Datastore.match.update(this.id, matchId, thisMatch);
+
+    }
+
+  }
+
 }
 
 module.exports = Event;
+
+function getWinner(match) {
+  if (match.result[0] > match.result[1]) {
+    return match.competitors[0];
+  }
+  else if (match.result[0] < match.result[1]) {
+    return match.competitors[1];
+  }
+  else {
+    return null;
+  }
+}
+
+/**
+ * Check and set technical defeat
+ */
+function checkTD(match) {
+  if (match.competitors[0] == null) {
+    match.result = [0, 3];
+    match.status = "completed";
+    return true;
+  }
+  else if (match.competitors[1] == null) {
+    match.result = [3, 0];
+    match.status = "completed";
+    return true;
+  }
+  return false;
+}
 
 function shuffle(originalArray) {
   var array = [].concat(originalArray);

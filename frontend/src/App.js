@@ -37,7 +37,7 @@ function App() {
           <Route path="/event-registration" render={(props) => <EventRegistration {...props}/>} />
           <Route path="/signup" render={(props) => (<SignUp {...props} />)}/>
           <Route path="/logout" render={(props) => (<Logout {...props} unsetAccount={unsetAccount}  />)}/>
-          <Route path="/event/:id" render={(props) => <Event {...props} />}/> 
+          <Route path="/event/:id" render={(props) => <Event {...props} username={cookies.username} />}/> 
         </Switch>
       </Router>
     </div>

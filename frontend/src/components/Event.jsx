@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../axiosConfig.js";
 import SingleElimination from "./Bracket";
 import { useParams } from "react-router-dom";
@@ -33,68 +33,107 @@ import "../css/Event.css";
 function Event(props) {
 
   const { id } = useParams();
+  const { username } = props;
   
   const [eventData, setEventData] = useState({});
   const [rounds, setRounds] = useState([]);
+  const [currentMatchId, setCurrentMatchId] = useState('1');
 
-  return (
-    <div className="event">
-      <button onClick={() => {
-        axios.get(`http://localhost:3001/createMatches/${id}`)
-        .then(res => {
-          setEventData(res.data);
-          setRounds(generateBracket(res.data));
-          console.log(res.data)
-          alert("Match is now in progress.")
-          // setEventData(res.data);
-        })
-        .catch(err => {
-          // alert(err.respone.data)
-          console.log(err)
-        });
-      }}>
-        Create Bracket
-      </button>
-      <button onClick={() => {
-        axios.get(`http://localhost:3001/getEvent/${id}`)
-        .then(res => {
-          setEventData(res.data);
-          setRounds(generateBracket(res.data))
-        })
-        .catch(err => {
-          // alert(err.response.data)
-          console.log(err)
-        })
-          
-      }}>Get Bracket</button>
+  const selectMatch = (matchId) => {
+    
+    setCurrentMatchId("" + matchId);
+  }
 
-      { eventData && eventData.matches &&
-        <div className="match-container">
-        <MatchList matches={eventData.matches} />
-        </div>
-      }
-      { rounds &&
+  const getBrackets = () => {
+    axios.get(`http://localhost:3001/getEvent/${id}`)
+    .then(res => {
+      setEventData(res.data);
+      setRounds(generateBracket(res.data))
+    })
+    .catch(err => {
+      // alert(err.response.data)
+      console.log(err)
+    })
+  }
+
+  useEffect(getBrackets, [id]);
+
+  if (eventData && eventData.status === "pending") {
+    return (
+      <div className="event-page">
+        <h1 className="message">Event hasn't started yet</h1>
+        { username && username === eventData.admin &&
+        <button className="create" onClick={() => {
+          axios.get(`http://localhost:3001/createMatches/${id}`)
+          .then(res => {
+            setEventData(res.data);
+            setRounds(generateBracket(res.data));
+            console.log(res.data)
+            alert("Match is now in progress.")
+            getBrackets();
+            // setEventData(res.data);
+          })
+          .catch(err => {
+            // alert(err.respone.data)
+            console.log(err)
+          });
+        }}>
+          Start Event
+        </button>
+        }
+      </div>
+    );
+  }
+  else if (eventData && eventData.matches && eventData.matches.length > 0) {
+    return (
+      <div className="event-page">
+  
+        {/* <button onClick={getBrackets}>Refresh</button> */}
+
+        <h1 className="event-name">{eventData.name}</h1>
+
         <div className="bracket-container">
           <SingleElimination rounds={rounds}/>
         </div>
-      
-      } 
-      
-      
-      <MatchResultForm eventId={id} />
-      
-      
-      
-    </div>
-  );
+
+        { username && 
+          <MatchResultForm 
+            eventId={id} 
+            matchId={currentMatchId} 
+            getBrackets={getBrackets} 
+            matches={eventData.matches}
+          />
+        }
+
+        <div className="match-container">
+        <MatchList 
+          matches={eventData.matches} 
+          selectMatch={selectMatch}
+          username={username}
+          eventAdmin={eventData.admin}
+        />
+        </div>
+
+      </div>
+    );
+  }
+  else {
+    return (
+      <div className="event-page">
+        <h1 className="message">Oops, something went wrong...</h1>
+      </div>
+    );
+  }
+
+  
 }
 
 function MatchResultForm(props) {
 
-  const {eventId} = props;
+  const {eventId, matches, getBrackets, matchId} = props;
 
   const initialForm = {
-    matchid: "1",
+    // matchid: matchId,
     res1: "",
     res2: ""
   }
@@ -108,26 +147,35 @@ function MatchResultForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {eventid: parseInt(eventId)};
+    const data = {
+      eventid: parseInt(eventId),
+      matchid: parseInt(matchId),
+    };
     for (const field in result) {
       data[field] = parseInt(result[field]);
     }
-    console.log(data);
     axios.post('http://localhost:3001/submitResults', data)
     .then(res => {
       console.log(res.data);
+      getBrackets();
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.response.data);
+      getBrackets();
     })
+  }
+
+  if (matchId < 1) {
+    return null;
   }
 
   return (
     <div className="event-container">
       <div className="match-result-form">
-        <p className="match-result-form-title">Player 1 vs. Player 2</p>
+        <p className="match-result-form-title">Match {matchId}</p>
+        <p className="match-result-form-competitors">{matches[matchId - 1].competitors[0]} vs {matches[matchId - 1].competitors[1] || "N/A"}</p>
         <form onSubmit={handleSubmit}>
-          <div className="pad-match">
+          {/* <div className="pad-match">
             <label className="match-result-form-text" htmlFor="matchid">  Match ID  </label>
             <input
               className="match-result-form-result-field"
@@ -138,10 +186,9 @@ function MatchResultForm(props) {
               onChange={handleInputChange}
             />
           </div>
-          <br/>
+          <br/> */}
           <div className="player-container">
             <div className="player1-container">
-              <label className="match-result-form-text" htmlFor="res1">Player 1 </label>
               <input
                 className="match-result-form-result-field"
                 id="res1"
@@ -161,7 +208,6 @@ function MatchResultForm(props) {
                 value={result.res2}
                 onChange={handleInputChange}
               />
-              <label className="match-result-form-text" htmlFor="res2"> Player 2 </label>
             </div>
           </div>
           <br/>
@@ -177,7 +223,7 @@ function MatchResultForm(props) {
 }
 
 function MatchList(props) {
-  const {matches} = props;
+  const {matches, selectMatch, eventAdmin, username} = props;
   return (
     <div className="match-list">
       <table cellSpacing="0">
@@ -191,7 +237,13 @@ function MatchList(props) {
         <tbody>
         {matches.map((match, index) => {
           return (
-            <MatchEntry {...match} key={index} />
+            <MatchEntry 
+              {...match} 
+              key={index} 
+              selectMatch={selectMatch}
+              username={username}
+              eventAdmin={eventAdmin}
+            />
           );
         })}
         </tbody>
@@ -202,13 +254,18 @@ function MatchList(props) {
 }
 
 function MatchEntry(props) {
-  const { status, competitors, result } = props;
+  const { id, status, competitors, result, username, eventAdmin, selectMatch } = props;
 
   if (competitors.length > 0) {
     return (
-      <tr className="match-entry">
+      <tr className="match-entry" onClick={() => {
+        if (competitors.includes(username) || username === eventAdmin)
+          selectMatch(id);
+        else 
+          selectMatch(-1);
+      }}>
         <td className="match">
-          <span className="competitor">{competitors[0]}</span>
+          <span className="competitor">{competitors[0] || 'N/A'}</span>
           <span className="versus">vs</span> 
           <span className="competitor">{competitors[1] || 'N/A'}</span>
         </td>
@@ -292,7 +349,10 @@ function generateBracket(event) {
         teams: [
           { name: event.matches[currentIndex].competitors[0], score: event.matches[currentIndex].result[0] },
           { name: event.matches[currentIndex].competitors[1], score: event.matches[currentIndex].result[1] },
-        ]
+        ],
+        // date: `${currentIndex} -> (${(2 * (currentIndex) - event.matches.length)}, ${(2 * (currentIndex) - event.matches.length - 1)})`
+        // date: `${currentIndex + 1} -> (${(2 * (currentIndex + 1) - event.matches.length - 1)}, ${(2 * (currentIndex + 1) - event.matches.length - 2)})`
+        date: `${currentIndex + 1}`
       });
       currentIndex++;
     }

@@ -107,6 +107,24 @@ app.get('/get-user/:tag', (req, res) => {
 
 });
 
+app.get('/getEvent/:eventId', async (req, res) => {
+  await Event.fromId(req.params.eventId)
+  .then(event => {
+
+    if(event) {
+      res.status(200)
+      res.send(event)
+    }
+    else{
+      
+      res.status(401)
+      res.send("Admin must create bracket before you can retrieve it.")
+      
+    }
+  })
+
+})
+
 
 app.use((req, res, next) => {   //ENFORCE AUTHENTICATION
   if (!req.body.username) {
@@ -159,54 +177,40 @@ app.post('/test', (req, res) => {
 app.get('/createMatches/:eventId', async (req, res) => {
   const event = await Event.fromId(req.params.eventId);
   if(event){
-
     if(event.status == "pending"){
-      
-      const matches = event.initMatches();
-      if(matches){
-        const changeStatus = await datastore.event.update({id: parseInt(req.params.eventId)}, {status: "inProgress"})
-        if(changeStatus){
-
-          res.status(200).json(event);
+      if (event.participants.length > 1) {
+        const matches = event.initMatches();
+        if(matches){
+          const changeStatus = await datastore.event.update({id: parseInt(req.params.eventId)}, {status: "inProgress"});
+          if(changeStatus){
+  
+            res.status(200).json(event);
+          }
+          else{
+            res.status(404);
+            res.send("Error");
+          }
+  
         }
         else{
           res.status(404);
-          res.send("Error")
+          res.send("Error");
         }
-
       }
-      else{
+      else {
         res.status(404);
-        res.send("Error")
+        res.send("Error");
       }
     }
     else{
-      res.status(404)
-      res.send("Match is already in progress.")
+      res.status(404);
+      res.send("Match is already in progress.");
     }
   }
   else{
     res.status(404)
     res.send("Error")
   }
-
-})
-
-app.get('/getEvent/:eventId', async (req, res) => {
-    await Event.fromId(req.params.eventId)
-    .then(event => {
-
-      if(event) {
-        res.status(200)
-        res.send(event)
-      }
-      else{
-        
-        res.status(401)
-        res.send("Admin must create bracket before you can retrieve it.")
-        
-      }
-    })
 
 })
 

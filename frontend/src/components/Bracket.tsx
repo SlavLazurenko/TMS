@@ -4,9 +4,7 @@ import { Bracket, Seed, SeedItem, SeedTeam, SeedTime, RenderSeedProps } from 're
 const RenderSeed = ({ breakpoint, seed }: RenderSeedProps) => {
   const score1 = seed.teams?.[0]?.score;
   const score2 = seed.teams?.[1]?.score;
-
-  console.log(score1, score2);
-
+  
   return (
     <Seed mobileBreakpoint={breakpoint}>
       <SeedItem style={{ width: '100%' }}>
