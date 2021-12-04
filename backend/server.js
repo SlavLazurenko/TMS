@@ -107,6 +107,24 @@ app.get('/get-user/:tag', (req, res) => {
 
 });
 
+app.get('/getEvent/:eventId', async (req, res) => {
+  await Event.fromId(req.params.eventId)
+  .then(event => {
+
+    if(event) {
+      res.status(200)
+      res.send(event)
+    }
+    else{
+      
+      res.status(401)
+      res.send("Admin must create bracket before you can retrieve it.")
+      
+    }
+  })
+
+})
+
 
 app.use((req, res, next) => {   //ENFORCE AUTHENTICATION
   if (!req.body.username) {
@@ -133,7 +151,7 @@ app.post('/eventRegistration', (req, res) => {
       }
 
       avatar.name = (new Date()).getTime().toString(36) + Math.random().toString(36).slice(2) + fileType
-      avatar.mv('/img/event-images/' + avatar.name);
+      avatar.mv('../frontend/public/img/event-images/' + avatar.name);
 
       api.registerEvent(req.body, req.files)
       .then(call => {
@@ -193,24 +211,6 @@ app.get('/createMatches/:eventId', async (req, res) => {
     res.status(404)
     res.send("Error")
   }
-
-})
-
-app.get('/getEvent/:eventId', async (req, res) => {
-    await Event.fromId(req.params.eventId)
-    .then(event => {
-
-      if(event) {
-        res.status(200)
-        res.send(event)
-      }
-      else{
-        
-        res.status(401)
-        res.send("Admin must create bracket before you can retrieve it.")
-        
-      }
-    })
 
 })
 
