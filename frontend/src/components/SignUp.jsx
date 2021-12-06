@@ -34,8 +34,9 @@ const SignUp = props => {
           .then(res => {
               
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
+            alert(res.data)
             props.history.push('/login')
-
+            
           })
           .catch(err => {
             
