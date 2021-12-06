@@ -61,6 +61,7 @@ function Event(props) {
   if (eventData && eventData.status === "pending") {
     return (
       <div className="event-page">
+        <EventInfoHeader eventData={eventData}/>
         <h1 className="message">Event hasn't started yet</h1>
         { username && username === eventData.admin &&
           <button className="create" onClick={() => {
@@ -129,7 +130,9 @@ function Event(props) {
   
         {/* <button onClick={getBrackets}>Refresh</button> */}
 
-        <h1 className="event-name">{eventData.name}</h1>
+        {/* <h1 className="event-name">{eventData.name}</h1> */}
+
+        <EventInfoHeader eventData={eventData}/>
 
         <div className="bracket-container">
           <SingleElimination rounds={rounds}/>
@@ -163,8 +166,37 @@ function Event(props) {
       </div>
     );
   }
-
   
+}
+
+function EventInfoHeader(props) {
+  const {eventData} = props;
+  if (eventData.id > 0) {
+    return (
+      <div className="event-info">
+        <h1 className="event-name">{eventData.name}</h1>
+        <div className="info-section admin">
+          <h3 className="title">Admin</h3>
+          <div className="data">{eventData.admin}</div>
+        </div>
+        <div className="info-section discipline">
+          <h3 className="title">Game</h3>
+          <div className="data">{eventData.discipline}</div>
+        </div>
+        <div className="info-section description">
+          <h3 className="title">Description</h3>
+          <div className="data">{eventData.description}</div>
+        </div>
+        <div className="info-section participants">
+          <h3 className="title">Participants</h3>
+          <div className="data">{eventData.participants.length}/{eventData.maxParticipants}</div>
+        </div>
+      </div>
+    );
+  }
+  else {
+    return null;
+  }
 }
 
 function MatchResultForm(props) {

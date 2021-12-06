@@ -7,6 +7,51 @@
   margin: 0 auto 10em auto;
 }
 
+.event-page .event-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.event-page .event-info .info-section {
+  flex: 0 0 50%;
+  margin: 0.6em 0;
+}
+
+.event-page .event-info .info-section .title {
+  color: #cc7474;
+  margin: 0;
+}
+
+.event-page .event-info .info-section .data {
+  color: #ffffff;
+  margin: 0;
+}
+
+.event-page .event-info .admin {
+  order: 1;
+}
+
+.event-page .event-info .discipline {
+  order: 3;
+}
+
+.event-page .event-info .participants {
+  order: 2;
+}
+
+.event-page .event-info .description {
+  order: 4;
+  flex: 0 0 100%;
+}
+
+.event-page .event-info .description .data {
+  width: 70%;
+}
+
+
 .event-page h1.message {
   color: #a8a8a8;
   margin: 2em auto;
@@ -50,14 +95,16 @@
 }
 
 .event-page .event-name {
+  flex: 0 0 100%;
   font-size: 2em;
   color: #ffffff;
-  margin: 2em auto;
+  margin: 2em auto 1em auto;
+  text-align: center;
 }
 
 .event-page .bracket-container {
   order: 1;
-  margin-bottom: 3em;
+  margin: 3em 0;
 }
 
 .event-page .match-container {
