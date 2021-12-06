@@ -36,6 +36,29 @@ class EventDao extends Dao {
     return this.find({name: name}, { findOne: true });
   }
 
+  async addParticipant(eventId, ...username) {
+    try {
+      const result = await this.collection.findOneAndUpdate(
+        { 
+          id: eventId 
+        }, 
+        {
+          $addToSet: { participants: { $each: username } }
+        },
+        {
+          returnDocument: 'after',
+          projection: {
+            participants: 1
+          }
+        }
+      );
+
+      return { ok: result.ok, participants: result.value.participants };
+    } catch (e) {
+      return { error: e, ok: 0 };
+    }
+  }
+
   /**
    * Finds matches of a given user
    * TODO: move to separate class: MatchDao

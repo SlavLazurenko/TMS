@@ -63,24 +63,63 @@ function Event(props) {
       <div className="event-page">
         <h1 className="message">Event hasn't started yet</h1>
         { username && username === eventData.admin &&
-        <button className="create" onClick={() => {
-          axios.get(`http://localhost:3001/createMatches/${id}`)
-          .then(res => {
-            setEventData(res.data);
-            setRounds(generateBracket(res.data));
-            console.log(res.data)
-            alert("Match is now in progress.")
-            getBrackets();
-            // setEventData(res.data);
-          })
-          .catch(err => {
-            // alert(err.respone.data)
-            console.log(err)
-          });
-        }}>
-          Start Event
-        </button>
+          <button className="create" onClick={() => {
+            axios.get(`http://localhost:3001/createMatches/${id}`)
+            .then(res => {
+              setEventData(res.data);
+              setRounds(generateBracket(res.data));
+              console.log(res.data)
+              alert("Match is now in progress.")
+              getBrackets();
+              // setEventData(res.data);
+            })
+            .catch(err => {
+              // alert(err.respone.data)
+              console.log(err)
+            });
+          }}>
+            Start Event
+          </button>
         }
+
+        {(() => {
+          if (!username || (username !== eventData.admin && !eventData.participants.includes(username))) {
+            return (
+              <button className="participate" onClick={() => {
+                if (username != null) {
+                  axios.post(`http://localhost:3001/participate/`, {eventId: eventData.id})
+                  .then(res => {
+                    console.log(res);
+                    if (res && res.data && res.data.message) {
+                      alert(res.data.message);
+                    }
+                    else {
+                      alert("Message not found");
+                    }
+                  })
+                  .catch(error => {
+                    if (error.response) {
+                      alert(error.response.data.message);
+                    } else {
+                      console.log('Error', error.message);
+                      alert("Oops, something went wrong");
+                    }
+                  });
+                }
+                else {
+                  alert("Unregistered users cannot participate in events. Please, register your account.")
+                }
+              }}>
+                Participate
+              </button>
+            );
+          }
+          else if (eventData.participants.includes(username)) {
+            return (
+              <h2 className="participant-message">You are participating</h2>
+            );
+          }
+        })()}
       </div>
     );
   }

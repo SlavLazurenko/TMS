@@ -28,6 +28,27 @@
   background-color: #00b618;
 }
 
+.event-page button.participate {
+  font-size: 1.4em;
+  padding: 0.6em 0.8em;
+  border-radius: 0.4em;
+  text-align: center;
+  margin: 1em auto;
+  border: none;
+  background-color: #1594c7;
+  color: white;
+}
+
+.event-page button.participate:hover {
+  background-color: #127aa3;
+}
+
+.event-page .participant-message {
+  margin: auto;
+  color: #00b618;
+  font-weight: 400;
+}
+
 .event-page .event-name {
   font-size: 2em;
   color: #ffffff;

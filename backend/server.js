@@ -214,6 +214,32 @@ app.get('/createMatches/:eventId', async (req, res) => {
 
 })
 
+app.post('/participate', async (req, res) => {
+  const { eventId, username } = req.body;
+
+  const event = await Event.fromId(eventId);
+
+  if (event) {
+    const result = await event.addParticipant(username);
+    switch (result) {
+      case 'SUCCESS':
+        res.status(200).json({message: "Successfully registered for event."});
+        break;
+      case 'DB_FAIL':
+        res.status(500).json({message: "Can't participate. Server failed to add participant."});
+        break;
+      case 'LIST_FULL':
+        res.status(400).json({message: "Can't participate. List of participants is already full."});
+        break;
+      case 'ALREADY_STARTED':
+        res.status(400).json({message: "Can't participate. Event already started."});
+        break;
+      default:
+        res.status(500).json({message: "Unknown error"});
+    }
+  }
+})
+
 app.post('/submitResults', async (req, res) => {
   
   const event = await Event.fromId(req.body.eventid);
