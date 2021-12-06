@@ -34,6 +34,30 @@ class Event {
     }
   }
 
+  async addParticipant(...username) {
+    if (this.status == "pending") {
+      if (this.participants.length < this.maxParticipants) {
+        const result = await Datastore.event.addParticipant(this.id, ...username);
+        if (result.ok == 1) {
+          this.participants = result.participants;
+          return 'SUCCESS';
+        }
+        else {
+          //update failed
+          return 'DB_FAIL';
+        }
+      }
+      else {
+        //participant list is already full
+        return 'LIST_FULL';
+      }
+    }
+    else {
+      //event already started
+      return 'ALREADY_STARTED';
+    }
+  }
+
   async initMatches() {
     let matches = [];
     const numStartMatches = this.participants.length / 2;
@@ -198,7 +222,7 @@ class Event {
           thisMatch.status = "inProgress";
         }
         else {
-          // TODO: call update on parent match
+          //call update on parent match
           await this.advanceNext(matchId);
         }
       }
