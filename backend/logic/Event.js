@@ -116,7 +116,7 @@ class Event {
 
   async addResult(matchId, username, res1, res2) {
     const match = this.matches[matchId - 1];
-    if (match.competitors.includes(username) || username == this.admin) {
+    if ((match.competitors.includes(username) && match.status != "completed") || username == this.admin) {
       match.submissions[username] = [res1, res2];
       this.updateResult(matchId);
       this.advanceNext(matchId);

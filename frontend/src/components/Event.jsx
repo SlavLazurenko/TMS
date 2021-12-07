@@ -61,6 +61,7 @@ function Event(props) {
   if (eventData && eventData.status === "pending") {
     return (
       <div className="event-page">
+        <EventInfoHeader eventData={eventData}/>
         <h1 className="message">Event hasn't started yet</h1>
         { username && username === eventData.admin &&
           <button className="create" onClick={() => {
@@ -129,7 +130,9 @@ function Event(props) {
   
         {/* <button onClick={getBrackets}>Refresh</button> */}
 
-        <h1 className="event-name">{eventData.name}</h1>
+        {/* <h1 className="event-name">{eventData.name}</h1> */}
+
+        <EventInfoHeader eventData={eventData}/>
 
         <div className="bracket-container">
           <SingleElimination rounds={rounds}/>
@@ -147,6 +150,7 @@ function Event(props) {
         <div className="match-container">
         <MatchList 
           matches={eventData.matches} 
+          currentMatch={currentMatchId}
           selectMatch={selectMatch}
           username={username}
           eventAdmin={eventData.admin}
@@ -163,8 +167,37 @@ function Event(props) {
       </div>
     );
   }
-
   
+}
+
+function EventInfoHeader(props) {
+  const {eventData} = props;
+  if (eventData.id > 0) {
+    return (
+      <div className="event-info">
+        <h1 className="event-name">{eventData.name}</h1>
+        <div className="info-section admin">
+          <h3 className="title">Admin</h3>
+          <div className="data">{eventData.admin}</div>
+        </div>
+        <div className="info-section discipline">
+          <h3 className="title">Game</h3>
+          <div className="data">{eventData.discipline}</div>
+        </div>
+        <div className="info-section description">
+          <h3 className="title">Description</h3>
+          <div className="data">{eventData.description}</div>
+        </div>
+        <div className="info-section participants">
+          <h3 className="title">Participants</h3>
+          <div className="data">{eventData.participants.length}/{eventData.maxParticipants}</div>
+        </div>
+      </div>
+    );
+  }
+  else {
+    return null;
+  }
 }
 
 function MatchResultForm(props) {
@@ -200,6 +233,7 @@ function MatchResultForm(props) {
     })
     .catch(err => {
       console.log(err.response.data);
+      alert('Operation failed');
       getBrackets();
     })
   }
@@ -212,7 +246,7 @@ function MatchResultForm(props) {
     <div className="event-container">
       <div className="match-result-form">
         <p className="match-result-form-title">Match {matchId}</p>
-        <p className="match-result-form-competitors">{matches[matchId - 1].competitors[0]} vs {matches[matchId - 1].competitors[1] || "N/A"}</p>
+        <p className="match-result-form-competitors">{matches[matchId - 1].competitors[0] || "N/A"} vs {matches[matchId - 1].competitors[1] || "N/A"}</p>
         <form onSubmit={handleSubmit}>
           {/* <div className="pad-match">
             <label className="match-result-form-text" htmlFor="matchid">  Match ID  </label>
@@ -262,7 +296,7 @@ function MatchResultForm(props) {
 }
 
 function MatchList(props) {
-  const {matches, selectMatch, eventAdmin, username} = props;
+  const {matches, currentMatch, selectMatch, eventAdmin, username} = props;
   return (
     <div className="match-list">
       <table cellSpacing="0">
@@ -279,6 +313,7 @@ function MatchList(props) {
             <MatchEntry 
               {...match} 
               key={index} 
+              currentMatch={currentMatch}
               selectMatch={selectMatch}
               username={username}
               eventAdmin={eventAdmin}
@@ -293,20 +328,31 @@ function MatchList(props) {
 }
 
 function MatchEntry(props) {
-  const { id, status, competitors, result, username, eventAdmin, selectMatch } = props;
+  const { id, status, competitors, result, username, eventAdmin, selectMatch, currentMatch } = props;
+
+  function Competitor(props) {
+    const { username } = props;
+    if (typeof username === 'string' || username instanceof String) {
+      return <span className="competitor">{username}</span>;
+    }
+    else {
+      return <span className="competitor none">N/A</span>;
+    }
+
+  }
 
   if (competitors.length > 0) {
     return (
-      <tr className="match-entry" onClick={() => {
+      <tr className={`match-entry ${ parseInt(currentMatch) === id ? 'selected' : '' }`}  onClick={() => {
         if (competitors.includes(username) || username === eventAdmin)
           selectMatch(id);
         else 
           selectMatch(-1);
       }}>
         <td className="match">
-          <span className="competitor">{competitors[0] || 'N/A'}</span>
+          <Competitor username={competitors[0]} />
           <span className="versus">vs</span> 
-          <span className="competitor">{competitors[1] || 'N/A'}</span>
+          <Competitor username={competitors[1]} />
         </td>
         {(() => {
           if (result && result[0] != null && result[1] != null) {
