@@ -8,6 +8,9 @@ const fileUpload = require('express-fileupload');
 const cookiesMiddleware = require('universal-cookie-express');
 const datastore = require('./datastore');
 
+const expressWs = require('express-ws')(app);
+// const eventWebsocket = require('./websocket.js');
+const wss = expressWs.getWss();
 
 app.use(express.json());
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
@@ -75,7 +78,165 @@ app.use((req, res, next) => {   //AUTHENTICATE USER
     }
   }
   next();
-})
+});
+
+
+const events = {};
+
+function broadcastEventData(event) {
+  wss.clients.forEach(function each(client) {
+    if (client.eventId == event.id) {
+      client.send(JSON.stringify({action: 'set-event', data: event}));
+    }
+  });
+}
+
+app.ws('/ws/event/:id', async function(ws, req) {
+  ws.eventId = req.params.id;
+  ws.username = req.body.username;
+
+  let c = 0;
+  wss.clients.forEach(function each(client) {
+    c++;
+  });
+  
+  console.log(`connected ${ws.eventId} (${c})`);
+
+  if (events[ws.eventId] === undefined) {
+    const event = await Event.fromId(ws.eventId);
+    if (event) {
+      events[ws.eventId] = event;
+    }
+  }
+
+  ws.send(JSON.stringify({action: 'set-event', data: events[ws.eventId]}));
+
+  ws.on('message', async function(msg) {
+    console.log(`Received: ${msg}`);
+    const { eventId, username } = ws;
+    msg = JSON.parse(msg);
+    if (msg.action == 'create-matches') {
+      let response;
+      const event = events[eventId];
+      if (event) {
+        if (event.status == "pending") {
+          if (event.participants.length > 1) {
+            const matches = event.initMatches();
+            if (matches) {
+              const changeStatus = await datastore.event.update(
+                {id: parseInt(eventId)}, 
+                {status: "inProgress"}
+              );
+              if (changeStatus) {
+                event.status = "inProgress";
+                response = { status: 200, message: 'Event started' }
+              }
+              else {
+                response = { status: 500, error: 'Failed to start event' }
+              }
+            }
+            else {
+              response = { status: 500, error: 'Server error: failed to generate matches' }
+            }
+          }
+          else {
+            response = { status: 400, error: 'Not enough participants to start event' }
+          }
+        }
+        else {
+          response = { status: 400, error: 'Event already started or finished' }
+        }
+      }
+      else {
+        response = { status: 404, error: 'Event not found' }
+      }
+
+      // RESPOND TO CLIENT
+      ws.send(JSON.stringify({
+        ...response,
+        action: 'create-matches'
+      }));
+
+      // UPDATE EVENT DATA FOR EVERYBODY
+      if (response.status == 200) {
+        broadcastEventData(event);
+      }
+    }
+    else if (msg.action == 'participate') {
+      let response;
+
+      const event = events[eventId];
+    
+      if (event) {
+        const result = await event.addParticipant(username);
+        switch (result) {
+          case 'SUCCESS':
+            !event.participants.includes(username) ? event.participants.push(username) : '';
+            response = { status: 200, message: 'Successfully registered for event' };
+            break;
+          case 'DB_FAIL':
+            response = { status: 500, error: 'Server failed to add participant' }
+            break;
+          case 'LIST_FULL':
+            response = { status: 400, error: 'List of participants is already full' }
+            break;
+          case 'ALREADY_STARTED':
+            response = { status: 400, error: 'Event already started' }
+            break;
+          default:
+            response = { status: 500, error: 'Unknown error' }
+        }
+      }
+      else {
+        response = { status: 404, error: 'Event not found' }
+      }
+
+      // RESPOND TO CLIENT
+      ws.send(JSON.stringify({
+        ...response,
+        action: 'participate'
+      }));
+
+      // UPDATE EVENT DATA FOR EVERYBODY
+      if (response.status == 200) {
+        broadcastEventData(event);
+      }
+    }
+    else if (msg.action == 'submit-result') {
+      const event = events[eventId];
+      const {data} = msg;
+  
+      if(event){
+    
+        const result = await event.addResult(data.matchid, username, data.res1, data.res2);
+        if (result == "SUCCESS") {
+
+          response = { status: 200 };
+        }
+        else if (result == "NOT_AUTHORIZED") {
+          response = { status: 401, error: 'Unauthorized' };
+        }
+        else {
+          response = { status: 400, error: 'Operation failed' };
+        }
+      }
+      else{
+        response = { status: 404, error: 'Event not found' }
+      }
+
+      // RESPOND TO CLIENT
+      ws.send(JSON.stringify({
+        ...response,
+        action: 'participate'
+      }));
+
+      // UPDATE EVENT DATA FOR EVERYBODY
+      if (response.status == 200) {
+        broadcastEventData(event);
+      }
+    }
+  });
+});
 
 app.get('/get-user/:tag', (req, res) => {
   Promise.all([
@@ -131,7 +292,7 @@ app.use((req, res, next) => {   //ENFORCE AUTHENTICATION
     return res.status(401).json({error: "Not authenticated"});
   }
   next();
-})
+});
 
 app.post('/eventRegistration', (req, res) => {
   try {                                             // check if req.body has file before making api req
@@ -241,27 +402,6 @@ app.post('/participate', async (req, res) => {
 })
 
 app.post('/submitResults', async (req, res) => {
-  
-  const event = await Event.fromId(req.body.eventid);
-  
-  if(event){
-
-    const result = await event.addResult(req.body.matchid, req.body.username, req.body.res1, req.body.res2);
-    if (result == "SUCCESS") {
-      res.status(200);
-      res.send(result);
-    }
-    else {
-      res.status(400);
-      res.send(result);
-    }
-
-  }
-  else{
-    
-    res.status(400)
-    res.send("Error: app.post(/submitResults)")
-  }
   
 })
 

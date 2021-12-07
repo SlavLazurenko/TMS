@@ -4,80 +4,99 @@ import SingleElimination from "./Bracket";
 import { useParams } from "react-router-dom";
 import "../css/Event.css";
 
-// const defaultEvent = {
-//   id: 1,
-//   name: 'SUPER WOT',
-//   admin: 'sagepages',
-//   description: 'This event is for absolute savages.',
-//   start: '2021-11-29T17:48',
-//   end: '2021-12-09T17:48',
-//   accessibility: 'Public',
-//   type: 'SingleElimination',
-//   participant: 'TeamPlay',
-//   discipline: 'World of Tanks',
-//   maxParticipants: 12,
-//   logo: '/img/event-images/kwienhlls2f9i1ghl09.jpg',
-//   participants: [ 'sagepages', 'slav', 'luffy', 'bigboy', 'dudu', '111' ],
-//   matches: [
-//     { id: 1, status: "conflict", competitors: [ 'sagepages', 'bigboy' ], result: [ null, null ] },
-//     { id: 2, status: "inProgress", competitors: [ 'dudu', 'slav' ], result: [ null, null ] },
-//     { id: 3, status: "completed", competitors: [ '111' ], result: [ 3, 0 ] },
-//     { id: 4, status: "completed", competitors: [ 'luffy' ], result: [ 3, 0 ] },
-//     { id: 5, status: "scheduled", competitors: [], result: [ null, null ] },
-//     { id: 6, status: "scheduled", competitors: [], result: [ null, null ] },
-//     { id: 7, status: "scheduled", competitors: [], result: [ null, null ] }
-//   ]
-// };
-
+import { w3cwebsocket } from "websocket";
 
 function Event(props) {
-
   const { id } = useParams();
   const { username } = props;
-  
+
+  const [client, setClient] = useState(null);
+  // const [reconnect, setReconnect] = useState(false);
   const [eventData, setEventData] = useState({});
   const [rounds, setRounds] = useState([]);
-  const [currentMatchId, setCurrentMatchId] = useState('1');
+  const [currentMatchId, setCurrentMatchId] = useState('0');
+
+  const connect = (eventId) => {
+    return new w3cwebsocket(`ws://localhost:3001/ws/event/${eventId}`, 'echo-protocol');
+  }
+
+  const resolveServerMessage = (msg) => {
+    switch (msg.action) {
+      case 'set-event': {
+        if (msg.data) {
+          setEventData(msg.data);
+          if (msg.data.status !== 'pending') {
+            setRounds(generateBracket(msg.data));
+          }
+        }
+        break;
+      }
+      default:
+        if (msg.error) {
+          alert(`ERROR: ${msg.error}`);
+        }
+        else if (msg.message) {
+          alert(msg.message);
+        }
+    }
+    if (msg.action === 'set-event') {
+
+    }
+    else if (msg.action === 'create-matches') {
+
+    }
+  }
 
   const selectMatch = (matchId) => {
-    
     setCurrentMatchId("" + matchId);
   }
 
   const getBrackets = () => {
     axios.get(`http://localhost:3001/getEvent/${id}`)
-    .then(res => {
-      setEventData(res.data);
-      setRounds(generateBracket(res.data))
-    })
-    .catch(err => {
-      // alert(err.response.data)
-      console.log(err)
-    })
+      .then(res => {
+        setEventData(res.data);
+        setRounds(generateBracket(res.data))
+      })
+      .catch(err => {
+        // alert(err.response.data)
+        console.log(err)
+      })
   }
 
-  useEffect(getBrackets, [id]);
+  useEffect(() => {
+
+
+    const connection = connect(id);
+    connection.onopen = function () {
+      console.log("Event ws connection established");
+    }
+    connection.onclose = function () {
+      console.log("Event ws closed");
+      alert("Connection lost, please reload the page");
+    }
+    connection.onmessage = function (e) {
+      const msg = JSON.parse(e.data);
+      console.log(msg);
+      resolveServerMessage(msg);
+    }
+    setClient(connection);
+
+    // return () => {
+    //   client.close();
+    // }
+
+  }, [id]);
 
   if (eventData && eventData.status === "pending") {
     return (
       <div className="event-page">
-        <EventInfoHeader eventData={eventData}/>
+        <EventInfoHeader eventData={eventData} />
         <h1 className="message">Event hasn't started yet</h1>
-        { username && username === eventData.admin &&
+        {username && username === eventData.admin &&
           <button className="create" onClick={() => {
-            axios.get(`http://localhost:3001/createMatches/${id}`)
-            .then(res => {
-              setEventData(res.data);
-              setRounds(generateBracket(res.data));
-              console.log(res.data)
-              alert("Match is now in progress.")
-              getBrackets();
-              // setEventData(res.data);
-            })
-            .catch(err => {
-              // alert(err.respone.data)
-              console.log(err)
-            });
+            client.send(JSON.stringify({
+              action: 'create-matches'
+            }));
           }}>
             Start Event
           </button>
@@ -88,24 +107,9 @@ function Event(props) {
             return (
               <button className="participate" onClick={() => {
                 if (username != null) {
-                  axios.post(`http://localhost:3001/participate/`, {eventId: eventData.id})
-                  .then(res => {
-                    console.log(res);
-                    if (res && res.data && res.data.message) {
-                      alert(res.data.message);
-                    }
-                    else {
-                      alert("Message not found");
-                    }
-                  })
-                  .catch(error => {
-                    if (error.response) {
-                      alert(error.response.data.message);
-                    } else {
-                      console.log('Error', error.message);
-                      alert("Oops, something went wrong");
-                    }
-                  });
+                  client.send(JSON.stringify({
+                    action: 'participate'
+                  }));
                 }
                 else {
                   alert("Unregistered users cannot participate in events. Please, register your account.")
@@ -127,34 +131,34 @@ function Event(props) {
   else if (eventData && eventData.matches && eventData.matches.length > 0) {
     return (
       <div className="event-page">
-  
+
         {/* <button onClick={getBrackets}>Refresh</button> */}
 
         {/* <h1 className="event-name">{eventData.name}</h1> */}
 
-        <EventInfoHeader eventData={eventData}/>
+        <EventInfoHeader eventData={eventData} />
 
         <div className="bracket-container">
-          <SingleElimination rounds={rounds}/>
+          <SingleElimination rounds={rounds} />
         </div>
 
-        { username && 
-          <MatchResultForm 
-            eventId={id} 
-            matchId={currentMatchId} 
-            getBrackets={getBrackets} 
+        {username &&
+          <MatchResultForm
+            eventId={id}
+            matchId={currentMatchId}
             matches={eventData.matches}
+            client={client}
           />
         }
 
         <div className="match-container">
-        <MatchList 
-          matches={eventData.matches} 
-          currentMatch={currentMatchId}
-          selectMatch={selectMatch}
-          username={username}
-          eventAdmin={eventData.admin}
-        />
+          <MatchList
+            matches={eventData.matches}
+            currentMatch={currentMatchId}
+            selectMatch={selectMatch}
+            username={username}
+            eventAdmin={eventData.admin}
+          />
         </div>
 
       </div>
@@ -167,11 +171,11 @@ function Event(props) {
       </div>
     );
   }
-  
+
 }
 
 function EventInfoHeader(props) {
-  const {eventData} = props;
+  const { eventData } = props;
   if (eventData.id > 0) {
     return (
       <div className="event-info">
@@ -202,7 +206,7 @@ function EventInfoHeader(props) {
 
 function MatchResultForm(props) {
 
-  const {eventId, matches, getBrackets, matchId} = props;
+  const { eventId, matches, client, matchId } = props;
 
   const initialForm = {
     // matchid: matchId,
@@ -213,8 +217,8 @@ function MatchResultForm(props) {
   const [result, setResult] = useState(initialForm);
 
   const handleInputChange = event => {
-    const {name, value} = event.target;
-    setResult({...result, [name]: value});
+    const { name, value } = event.target;
+    setResult({ ...result, [name]: value });
   }
 
   const handleSubmit = (e) => {
@@ -226,16 +230,10 @@ function MatchResultForm(props) {
     for (const field in result) {
       data[field] = parseInt(result[field]);
     }
-    axios.post('http://localhost:3001/submitResults', data)
-    .then(res => {
-      console.log(res.data);
-      getBrackets();
-    })
-    .catch(err => {
-      console.log(err.response.data);
-      alert('Operation failed');
-      getBrackets();
-    })
+    client.send(JSON.stringify({
+      action: 'submit-result',
+      data: data
+    }));
   }
 
   if (matchId < 1) {
@@ -283,8 +281,8 @@ function MatchResultForm(props) {
               />
             </div>
           </div>
-          <br/>
-          <input 
+          <br />
+          <input
             className="match-result-form-submit"
             type="submit"
             value="Submit"
@@ -296,7 +294,7 @@ function MatchResultForm(props) {
 }
 
 function MatchList(props) {
-  const {matches, currentMatch, selectMatch, eventAdmin, username} = props;
+  const { matches, currentMatch, selectMatch, eventAdmin, username } = props;
   return (
     <div className="match-list">
       <table cellSpacing="0">
@@ -308,18 +306,18 @@ function MatchList(props) {
           </tr>
         </thead>
         <tbody>
-        {matches.map((match, index) => {
-          return (
-            <MatchEntry 
-              {...match} 
-              key={index} 
-              currentMatch={currentMatch}
-              selectMatch={selectMatch}
-              username={username}
-              eventAdmin={eventAdmin}
-            />
-          );
-        })}
+          {matches.map((match, index) => {
+            return (
+              <MatchEntry
+                {...match}
+                key={index}
+                currentMatch={currentMatch}
+                selectMatch={selectMatch}
+                username={username}
+                eventAdmin={eventAdmin}
+              />
+            );
+          })}
         </tbody>
       </table>
     </div>
@@ -343,20 +341,20 @@ function MatchEntry(props) {
 
   if (competitors.length > 0) {
     return (
-      <tr className={`match-entry ${ parseInt(currentMatch) === id ? 'selected' : '' }`}  onClick={() => {
+      <tr className={`match-entry ${parseInt(currentMatch) === id ? 'selected' : ''}`} onClick={() => {
         if (competitors.includes(username) || username === eventAdmin)
           selectMatch(id);
-        else 
+        else
           selectMatch(-1);
       }}>
         <td className="match">
           <Competitor username={competitors[0]} />
-          <span className="versus">vs</span> 
+          <span className="versus">vs</span>
           <Competitor username={competitors[1]} />
         </td>
         {(() => {
           if (result && result[0] != null && result[1] != null) {
-            return (          
+            return (
               <td className="result">
                 <span className="digit">{result[0] === null ? '-' : result[0]}</span>
                 <span className="colon">:</span>
@@ -371,7 +369,7 @@ function MatchEntry(props) {
             );
           }
         })()}
-        
+
         <td className="status">
           {(() => {
             // scheduled, inProgress, conflict, completed
@@ -405,7 +403,7 @@ function MatchEntry(props) {
 function generateBracket(event) {
   const numStartMatches = event.participants.length / 2;
   const minMatches = Math.pow(2, Math.ceil(Math.log(numStartMatches) / Math.log(2)));
-  
+
   let brackets = [];
 
   let currentIndex = 0;
@@ -442,7 +440,7 @@ function generateBracket(event) {
       currentIndex++;
     }
     brackets.push(round);
-    
+
   }
 
   return brackets;
