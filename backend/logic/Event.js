@@ -129,7 +129,6 @@ class Event {
         console.log(result);
         return "DB_FAIL";
       }
-      return "SUCCESS";
     }
     else {
       return "NOT_AUTHORIZED";

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navigation, Home, SearchEvent, Event, Profile, Login, SignUp, EventRegistration, Logout } from "./components";
+import { Navigation, Home, SearchEvent, Event, Profile, Login, SignUp, EventRegistration, Logout, WebsocketTest } from "./components";
 import { useCookies } from 'react-cookie';
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
           <Route path="/signup" render={(props) => (<SignUp {...props} />)}/>
           <Route path="/logout" render={(props) => (<Logout {...props} unsetAccount={unsetAccount}  />)}/>
           <Route path="/event/:id" render={(props) => <Event {...props} username={cookies.username} />}/> 
+          <Route path="/websocket" render={(props) => <WebsocketTest {...props}/>} />
         </Switch>
       </Router>
     </div>
