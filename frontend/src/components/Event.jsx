@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "../axiosConfig.js";
 import SingleElimination from "./Bracket";
 import { useParams } from "react-router-dom";
 import "../css/Event.css";
@@ -49,18 +48,6 @@ function Event(props) {
 
   const selectMatch = (matchId) => {
     setCurrentMatchId("" + matchId);
-  }
-
-  const getBrackets = () => {
-    axios.get(`http://localhost:3001/getEvent/${id}`)
-      .then(res => {
-        setEventData(res.data);
-        setRounds(generateBracket(res.data))
-      })
-      .catch(err => {
-        // alert(err.response.data)
-        console.log(err)
-      })
   }
 
   useEffect(() => {
@@ -131,10 +118,6 @@ function Event(props) {
   else if (eventData && eventData.matches && eventData.matches.length > 0) {
     return (
       <div className="event-page">
-
-        {/* <button onClick={getBrackets}>Refresh</button> */}
-
-        {/* <h1 className="event-name">{eventData.name}</h1> */}
 
         <EventInfoHeader eventData={eventData} />
 
@@ -235,6 +218,13 @@ function MatchResultForm(props) {
       data: data
     }));
   }
+
+  useEffect(() => {
+    setResult({
+      res1: "",
+      res2: ""
+    })
+  }, [matchId]);
 
   if (matchId < 1) {
     return null;
@@ -433,8 +423,6 @@ function generateBracket(event) {
           { name: event.matches[currentIndex].competitors[0], score: event.matches[currentIndex].result[0] },
           { name: event.matches[currentIndex].competitors[1], score: event.matches[currentIndex].result[1] },
         ],
-        // date: `${currentIndex} -> (${(2 * (currentIndex) - event.matches.length)}, ${(2 * (currentIndex) - event.matches.length - 1)})`
-        // date: `${currentIndex + 1} -> (${(2 * (currentIndex + 1) - event.matches.length - 1)}, ${(2 * (currentIndex + 1) - event.matches.length - 2)})`
         date: `${currentIndex + 1}`
       });
       currentIndex++;
