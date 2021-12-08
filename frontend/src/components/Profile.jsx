@@ -19,7 +19,7 @@ function Profile(props) {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/get-user/${username}`)
+    axios.get(`/get-user/${username}`)
     .then(res => {
       // console.log("Hello", res.status, res.data);
       setAccData(res.data.account);

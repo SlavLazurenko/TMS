@@ -22,7 +22,7 @@ function Login(props) {
     const login = (e) => {
         e.preventDefault()
 
-        axios.post("http://localhost:3001/userLogin", user)
+        axios.post("/userLogin", user)
         .then(res => {
             console.log(`${res.status} ${res.statusText}: ${res.data}`);
             console.log(res.data);

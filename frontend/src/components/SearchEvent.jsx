@@ -143,7 +143,7 @@ function Events(props) {
 
   useEffect(() => {
     // console.log('location', location.key);
-    axios.get(`http://localhost:3001/get-events`)
+    axios.get(`/get-events`)
     .then(res => {
       setEvents(res.data);
     })

@@ -11,7 +11,7 @@ function Home(props) {
         { message }
       </p>
       <button onClick={() => {
-        axios.get("http://localhost:3001/get-message")
+        axios.get("/get-message")
           .then(res => {
             setMessage(`${res.status} ${res.statusText}: ${res.data}`);
           })
@@ -33,7 +33,7 @@ function Home(props) {
         See Cookie
       </button>
       <button onClick={() => {
-        axios.post("http://localhost:3001/test")
+        axios.post("/test")
         .then(res => {
           console.log(res.status, res.data);
         })

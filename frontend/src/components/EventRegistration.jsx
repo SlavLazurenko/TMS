@@ -85,14 +85,14 @@ const EventRegistration = props => {
 
     form.append("file", selectedFile)
     
-    axios.post('http://localhost:3001/eventRegistration', form)
+    axios.post('/eventRegistration', form)
     .then(res => {
       console.log(`${res.status} ${res.statusText}: ${res.response}`)
       props.history.push("/search-event");
     })
     .catch(e => {
       alert(e.response.data)
-      console.log(`${e} ${e.response.data}`)
+      console.log(e, e.response.data)
     
     })
 

@@ -30,7 +30,7 @@ const SignUp = props => {
         
         // Implement Form validation 
 
-        axios.post("http://localhost:3001/registerUser", user)
+        axios.post("/registerUser", user)
           .then(res => {
               
             console.log(`${res.status} ${res.statusText}: ${res.data}`);

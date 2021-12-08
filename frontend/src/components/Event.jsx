@@ -5,6 +5,8 @@ import "../css/Event.css";
 
 import { w3cwebsocket } from "websocket";
 
+require('dotenv').config();
+
 function Event(props) {
   const { id } = useParams();
   const { username } = props;
@@ -16,7 +18,7 @@ function Event(props) {
   const [currentMatchId, setCurrentMatchId] = useState('0');
 
   const connect = (eventId) => {
-    return new w3cwebsocket(`ws://localhost:3001/ws/event/${eventId}`, 'echo-protocol');
+    return new w3cwebsocket(`ws://${process.env.REACT_APP_PROXY_ADDRESS}/ws/event/${eventId}`, 'echo-protocol');
   }
 
   const resolveServerMessage = (msg) => {
